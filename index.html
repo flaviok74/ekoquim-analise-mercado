@@ -8,99 +8,84 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
 <style>
   :root {
-    --gd: #1b5e20; --gm: #2e7d32; --gl: #388e3c; --gp: #e8f5e9; --gbg: #f1f8f1;
-    --red: #c62828; --rl: #ffebee; --gray: #607d8b; --graylt: #90a4ae;
-    --txt: #1a1a1a; --muted: #555; --white: #fff;
-    --shadow: 0 2px 8px rgba(0,0,0,0.08); --r: 10px;
+    --gd:#1b5e20;--gm:#2e7d32;--gl:#388e3c;--gp:#e8f5e9;--gbg:#f1f8f1;
+    --red:#c62828;--rl:#ffebee;--gray:#607d8b;--graylt:#90a4ae;
+    --txt:#1a1a1a;--muted:#555;--white:#fff;
+    --shadow:0 2px 8px rgba(0,0,0,0.08);--r:10px;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--gbg); color: var(--txt); font-size: 14px; line-height: 1.5; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:var(--gbg);color:var(--txt);font-size:14px;line-height:1.5;}
+  .header{background:linear-gradient(135deg,var(--gd) 0%,var(--gl) 100%);color:#fff;padding:26px 40px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;}
+  .header h1{font-size:21px;font-weight:700;margin-bottom:6px;}
+  .header-meta{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;opacity:0.9;}
+  .badge{background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:6px 14px;font-size:11px;font-weight:600;letter-spacing:0.5px;}
+  .container{max-width:1280px;margin:0 auto;padding:26px 22px;}
+  .sec{font-size:12px;font-weight:700;color:var(--gd);text-transform:uppercase;letter-spacing:0.8px;border-left:4px solid var(--gl);padding-left:10px;margin:28px 0 14px;}
+  .pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;}
+  .pill.up{background:#e8f5e9;color:var(--gm);}
+  .pill.dn{background:var(--rl);color:var(--red);}
+  .pill.fl{background:#f5f5f5;color:#666;}
 
-  /* HEADER */
-  .header { background: linear-gradient(135deg, var(--gd) 0%, var(--gl) 100%); color: #fff; padding: 26px 40px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; }
-  .header h1 { font-size: 21px; font-weight: 700; margin-bottom: 6px; }
-  .header-meta { display: flex; gap: 18px; flew-wrap: wrap; font-size: 12px; opacity: 0.9; }
-  .badge { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 6px 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; }
+  /* PRODUCTS */
+  .prod-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;margin-bottom:4px;}
+  .prod-card{background:var(--white);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);border-top:4px solid var(--gl);display:flex;flex-direction:column;gap:5px;}
+  .prod-card.dn{border-top-color:var(--red);}
+  .prod-card.fl{border-top-color:var(--graylt);}
+  .prod-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+  .prod-name-pt{font-size:15px;font-weight:700;display:block;}
+  .prod-name-en{font-size:11px;color:var(--muted);}
+  .prod-price-row{display:flex;align-items:baseline;gap:6px;}
+  .prod-usd{font-size:22px;font-weight:800;color:var(--gd);}
+  .prod-usd.dn{color:var(--red);}
+  .prod-usd.fl{color:var(--gray);}
+  .prod-unit{font-size:11px;color:var(--muted);}
+  .prod-cny{font-size:12px;color:var(--muted);}
+  .prod-chart{position:relative;height:140px;margin:8px 0 4px;}
+  .prod-trend{font-size:11.5px;color:var(--muted);border-top:1px solid var(--gp);padding-top:6px;}
 
-  /* LAYOUT */
-  .container { max-width: 1280px; margin: 0 auto; padding: 26px 22px; }
-  .sec { font-size: 12px; font-weight: 700; color: var(--gd); text-transform: uppercase; letter-spacing: 0.8px; border-left: 4px solid var(--gl); padding-left: 10px; margin: 28px 0 14px; }
-
-  /* PILL */
-  .pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; }
-  .pill.up { background: #e8f5e9; color: var(--gm); }
-  .pill.dn { background: var(--rl); color: var(--red); }
-  .pill.fl { background: #f5f5f5; color: #666; }
-
-  /* PRODUCT GRID */
-  .prod-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; margin-bottom: 4px; }
-  .prod-card { background: var(--white); border-radius: var(--r); padding: 16px 18px; box-shadow: var(--shadow); border-top: 4px solid var(--gl); display: flex; flex-direction: column; gap: 5px; }
-  .prod-card.dn { border-top-color: var(--red); }
-  .prod-card.fl { border-top-color: var(--graylt); }
-  .prod-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-  .prod-name-pt { font-size: 15px; font-weight: 700; display: block; }
-  .prod-name-en { font-size: 11px; color: var(--muted); }
-  .prod-price-row { display: flex; align-items: baseline; gap: 6px; }
-  .prod-usd { font-size: 22px; font-weight: 800; color: var(--gd); }
-  .prod-usd.dn { color: var(--red); }
-  .prod-usd.fl { color: var(--gray); }
-  .prod-unit { font-size: 11px; color: var(--muted); }
-  .prod-cny { font-size: 12px; color: var(--muted); }
-  .prod-chart { position: relative; height: 96px; margin: 6px 0 4px; }
-  .prod-trend { font-size: 11.5px; color: var(--muted); border-top: 1px solid var(--gp); padding-top: 6px; }
-
-  /* MATERIAL GRID */
-  .mat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 14px; }
-  .mat-card { background: var(--white); border-radius: var(--r); padding: 14px 16px; box-shadow: var(--shadow); border-top: 3px solid var(--gl); display: flex; flex-direction: column; gap: 4px; }
-  .mat-card.fl { border-top-color: var(--graylt); }
-  .mat-name { font-size: 12px; font-weight: 700; color: var(--gd); text-transform: uppercase; letter-spacing: 0.3px; }
-  .mat-price { font-size: 20px; font-weight: 800; color: var(--txt); }
-  .mat-unit { font-size: 11px; color: var(--muted); }
-  .mat-note { font-size: 11px; color: var(--muted); }
-  .mat-chart { position: relative; height: 52px; margin: 6px 0 2px; }
-  .mat-foot { display: flex; justify-content: space-between; align-items: center; }
+  /* MATERIALS */
+  .mat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px;}
+  .mat-card{background:var(--white);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow);border-top:3px solid var(--gl);display:flex;flex-direction:column;gap:4px;}
+  .mat-card.fl{border-top-color:var(--graylt);}
+  .mat-name{font-size:12px;font-weight:700;color:var(--gd);text-transform:uppercase;letter-spacing:0.3px;}
+  .mat-price{font-size:20px;font-weight:800;color:var(--txt);}
+  .mat-unit{font-size:11px;color:var(--muted);}
+  .mat-chart{position:relative;height:56px;margin:6px 0 2px;}
+  .mat-foot{display:flex;justify-content:space-between;align-items:center;}
+  .mat-note{font-size:11px;color:var(--muted);}
 
   /* FREIGHT */
-  .freight-banner { background: var(--white); border-radius: var(--r); box-shadow: var(--shadow); border-left: 6px solid var(--gd); padding: 18px 22px; margin-bottom: 14px; display: flex; align-items: center; flex-wrap: wrap; gap: 22px; }
-  .fr-route { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
-  .fr-val { font-size: 36px; font-weight: 900; color: var(--gd); line-height: 1; }
-  .fr-unit { font-size: 12px; color: var(--muted); margin-top: 2px; }
-  .fr-stats { display: flex; gap: 20px; flex-wrap: wrap; }
-  .fr-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; }
-  .fr-v { font-size: 17px; font-weight: 800; margin-top: 2px; }
-  .fr-v.dn { color: var(--red); }
-  .fr-v.up { color: var(--gm); }
-  .fr-src { font-size: 10px; color: var(--muted); margin-left: auto; align-self: flex-end; }
-
-  /* CHART CARDS */
-  .chart-card { background: var(--white); border-radius: var(--r); padding: 18px 20px; box-shadow: var(--shadow); }
-  .chart-title { font-size: 11px; font-weight: 700; color: var(--gd); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.4px; }
-  .chart-wrap { position: relative; }
-  .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
-  @media (max-width: 768px) { .charts-row, .prod-grid, .mat-grid { grid-template-columns: 1fr; } }
-
-  /* TABLE */
-  .data-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 14px; }
-  .data-table th { background: var(--gd); color: #fff; padding: 9px 13px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap; }
-  .data-table td { padding: 9px 13px; border-bottom: 1px solid var(--gp); font-size: 13px; vertical-align: middle; }
-  .data-table tr:last-child td { border-bottom: none; }
-  .data-table tr:hover td { background: var(--gp); }
+  .freight-banner{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);border-left:6px solid var(--gd);padding:18px 22px;margin-bottom:14px;display:flex;align-items:center;flex-wrap:wrap;gap:22px;}
+  .fr-route{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;}
+  .fr-val{font-size:36px;font-weight:900;color:var(--gd);line-height:1;}
+  .fr-unit{font-size:12px;color:var(--muted);margin-top:2px;}
+  .fr-stats{display:flex;gap:20px;flex-wrap:wrap;}
+  .fr-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.3px;font-weight:600;}
+  .fr-v{font-size:17px;font-weight:800;margin-top:2px;}
+  .fr-v.dn{color:var(--red);}
+  .fr-v.up{color:var(--gm);}
+  .fr-src{font-size:10px;color:var(--muted);margin-left:auto;align-self:flex-end;}
+  .chart-card{background:var(--white);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow);}
+  .chart-title{font-size:11px;font-weight:700;color:var(--gd);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.4px;}
+  .chart-wrap{position:relative;}
 
   /* NEWS */
-  .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 12px; margin-bottom: 24px; }
-  .news-card { background: var(--white); border-radius: var(--r); padding: 13px 15px; box-shadow: var(--shadow); border-top: 3px solid var(--gp); transition: border-color 0.15s, transform 0.15s; }
-  .news-card:hover { border-top-color: var(--gl); transform: translateY(-1px); }
-  .news-tag { display: inline-block; background: var(--gl); color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; margin-bottom: 5px; }
-  .news-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
-  .news-body { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .news-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-bottom:24px;}
+  .news-card{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;transition:transform 0.15s,box-shadow 0.15s;}
+  .news-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.12);}
+  .news-img{width:100%;height:145px;object-fit:cover;display:block;background:#e0e0e0;}
+  .news-content{padding:12px 15px 15px;}
+  .news-tag{display:inline-block;background:var(--gl);color:#fff;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;margin-bottom:6px;}
+  .news-title{font-size:13px;font-weight:700;margin-bottom:6px;line-height:1.4;color:var(--txt);}
+  .news-body{font-size:12px;color:var(--muted);line-height:1.6;}
 
   /* FOOTER */
-  .footer { background: var(--gd); color: #c8e6c9; padding: 14px 40px; font-size: 11px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .footer{background:var(--gd);color:#c8e6c9;padding:14px 40px;font-size:11px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-top:8px;}
+  @media(max-width:768px){.prod-grid,.mat-grid,.news-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div>
     <h1>📊 Análise de Mercado Ekoquim</h1>
@@ -116,9 +101,7 @@
 
 <div class="container">
 
-  <!-- ══════════════════════ PRODUTOS ══════════════════════ -->
   <div class="sec">Produtos Monitorados — Far East → LATAM</div>
-
   <div class="prod-grid">
 
     <div class="prod-card up">
@@ -129,7 +112,7 @@
       <div class="prod-price-row"><span class="prod-usd">$1,277.6</span><span class="prod-unit">USD/ton</span></div>
       <div class="prod-cny">8,833 CNY/ton</div>
       <div class="prod-chart"><canvas id="cp0"></canvas></div>
-    2 <div class="prod-trend">Alta forte — custo de óxido de propileno sustenta piso</div>
+      <div class="prod-trend">Alta forte — custo de óxido de propileno sustenta piso</div>
     </div>
 
     <div class="prod-card up">
@@ -200,9 +183,7 @@
 
   </div>
 
-  <!-- ══════════════════════ FRETE ══════════════════════ -->
   <div class="sec">Frete Far East → América do Sul (XSICFESE)</div>
-
   <div class="freight-banner">
     <div>
       <div class="fr-route">Far East Outbound · East Coast South America</div>
@@ -216,15 +197,12 @@
     </div>
     <div class="fr-src">Compass FT · 25/03/2026</div>
   </div>
-
   <div class="chart-card" style="margin-bottom:14px">
-    <div class="chart-title">Frete XSICFESE — Evolução Estimada no Mês (USD/FEU)</div>
-    <div class="chart-wrap" style="height:230px"><canvas id="chartFrete"></canvas></div>
+    <div class="chart-title">Frete XSICFESE — Evolução no Mês (USD/FEU) · Far East → East Coast South America</div>
+    <div class="chart-wrap" style="height:250px"><canvas id="chartFrete"></canvas></div>
   </div>
 
-  <!-- ══════════════════════ MATÉRIAS-PRIMAS ══════════════════════ -->
   <div class="sec">Matérias-Primas Estratégicas</div>
-
   <div class="mat-grid">
 
     <div class="mat-card">
@@ -259,7 +237,7 @@
       <div class="mat-foot"><span class="mat-note">10,200 CNY/ton</span><span class="pill up">▲ Alta</span></div>
     </div>
 
-    <div class="mat-card">
+    <div class="mat-card fl">
       <div class="mat-name">Metanol</div>
       <div class="mat-price">$447.5</div>
       <div class="mat-unit">USD/ton</div>
@@ -301,49 +279,81 @@
 
   </div>
 
-  <!-- ══════════════════════ NOTÍCIAS ══════════════════════ -->
   <div class="sec">Principais Notícias do Setor (D-3)</div>
   <div class="news-grid">
+
     <div class="news-card">
-      <span class="news-tag">GlobalKem 25/03</span>
-      <div class="news-title">China: Mercado de Ácido Acético em Ascensão</div>
-      <div class="news-body">Preços subiram com demanda de downstream, apoiados por paralisações de inspeção de primavera em várias unidades de grande porte.</div>
+      <img class="news-img" src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=600&h=290&fit=crop&auto=format" alt="Ácido Acético" loading="lazy">
+      <div class="news-content">
+        <span class="news-tag">GlobalKem 25/03</span>
+        <div class="news-title">China: Mercado de Ácido Acético em Ascensão Acelerada</div>
+        <div class="news-body">Os preços do ácido acético na China subiram consistentemente ao longo de março, impulsionados por forte demanda de downstream — especialmente de fabricantes de acetato de vinila (VAM) e tereftalato de dimetila (DMT). O principal catalisador foi a onda de inspeções de segurança de primavera (春季大检查) que forçou paradas não programadas em pelo menos quatro grandes plantas na província de Jiangsu e Shandong. A redução temporária de oferta, combinada com reposição de estoques após o Ano Novo Lunar, criou desequilíbrio agudo. Traders reportam que contratos spot para abril já foram fechados 12–15 USD/ton acima da referência CFR SEA da semana passada. Perspectiva de curto prazo permanece altista enquanto as inspeções continuarem.</div>
+      </div>
     </div>
+
     <div class="news-card">
-      <span class="news-tag">GlobalKem 25/03</span>
-      <div class="news-title">Impacto Geopolítico nas Etanolaminas</div>
-      <div class="news-body">Fretes elevados do Golfo e tensões logísticas afetam cadeia global; compradores da Ásia reavaliando contratos spot.</div>
+      <img class="news-img" src="https://images.unsplash.com/photo-1578574577315-3fbeb0cecdc2?w=600&h=290&fit=crop&auto=format" alt="Fretes Marítimos" loading="lazy">
+      <div class="news-content">
+        <span class="news-tag">GlobalKem 25/03</span>
+        <div class="news-title">Fretes Far East → LATAM: Alta de +76% no Mês Pressiona Margens</div>
+        <div class="news-body">O índice XSICFESE (Far East → East Coast South America) saltou de USD 1.656/FEU em 01/03 para USD 2.926/FEU em 25/03, acumulando alta de 76,7% no mês — ritmo inédito desde o pico pós-pandemia de 2021. A pressão vem de múltiplos fatores: escassez de espaço nos navios com rota para Brasil/Argentina, desvio de capacidade para rotas do Mediterrâneo, e aumento repentino de pedidos de importadores brasileiros antecipando tarifas. Impacto direto no custo CIF dos produtos Ekoquim: um aumento de USD 1.270/FEU representa acréscimo de USD 50–90/ton dependendo da densidade do produto. Compradores devem revisar premissas de frete nos contratos vigentes para Q2/2026.</div>
+      </div>
     </div>
+
     <div class="news-card">
-      <span class="news-tag">GlobalKem 25/03</span>
-      <div class="news-title">Preços de Metanol na Ásia: Alta Contida</div>
-      <div class="news-body">Produção interna da China equilibra demanda por derivativos MTO, mas inventários de portos sob pressão.</div>
+      <img class="news-img" src="https://images.unsplash.com/photo-1518709779341-56cf33c66b33?w=600&h=290&fit=crop&auto=format" alt="Metanol Ásia" loading="lazy">
+      <div class="news-content">
+        <span class="news-tag">GlobalKem 25/03</span>
+        <div class="news-title">Metanol na Ásia: Produção Interna da China Segura Alta, Mas Portos Sob Pressão</div>
+        <div class="news-body">O mercado de metanol asiático opera em equilíbrio tenso. A produção doméstica chinesa permanece robusta — estimada em 82% de utilização de capacidade — o que limita altas bruscas de preço spot. No entanto, inventários nos principais portos (Ningbo, Tianjin, Guangzhou) caíram 18% vs. média de fevereiro, reflexo da demanda acelerada por rotas MTO (metanol-to-olefins) e MTBE após recuperação do setor automotivo. No mercado internacional, oferta do Irâ segue restrita por dificuldades logísticas, abrindo espaço para produtores do Oriente Médio. Preço FOB Gulf Coast USA recuou 3 USD/ton na semana, mas perspectiva de médio prazo aponta equilíbrio com viés de alta conforme inventários portuários se estreitem em abril.</div>
+      </div>
     </div>
+
     <div class="news-card">
-      <span class="news-tag">GlobalKem 25/03</span>
-      <div class="news-title">Benzeno: Demanda Downstream Aquece Mercado</div>
-      <div class="news-body">Mercado em alta pelo terceiro mês consecutivo, impulsionado por styrene e caprolactam. Margens no nível mais alto do ano.</div>
+      <img class="news-img" src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=600&h=290&fit=crop&auto=format" alt="Benzeno Refinaria" loading="lazy">
+      <div class="news-content">
+        <span class="news-tag">GlobalKem 25/03</span>
+        <div class="news-title">Benzeno: Terceiro Mês Consecutivo de Alta — Margens no Pico do Ano</div>
+        <div class="news-body">O benzeno registra seu terceiro mês consecutivo de valorização, com o preço FOB Coreia do Sul atingindo USD 1.181,6/ton — nível mais alto desde junho de 2024. A demanda de downstream permanece ampla e diversificada: estirenol impulsionado por recuperação da construção civil, caprolactam aquecido pela demanda de Nylon 6 para têxteis e automotivo, e cumeno suportado por expansão de capacidade de fenol na Ásia. Do lado da oferta, reforma de nafta menos atrativa com o spread petróleo/benzeno em compressão desincentiva produção adicional em algumas refinarias. Traders europeus reportam dificuldade de arbitragem com o mercado asiático. Expectativa do mercado é manutenção acima de USD 1.100/ton até maio, com risco de recuo caso estirenol perca impulso.</div>
+      </div>
     </div>
+
     <div class="news-card">
-      <span class="news-tag">ECHEMI 25/03</span>
-      <div class="news-title">Propilenoglicol: Alta Persistente por Feedstock</div>
-      <div class="news-body">Impasse entre custo e demanda. Custo de óxido de propileno eleva piso; produtores buscam repassar pressão para downstream.</div>
-    </div>
+      <img class="news-img" src="https://images.unsplash.com/photo-1565043666747-69f6646db940?w=600&h=290&fit=crop&auto=format" alt="Propilenoglicol Planta" loading="lazy">
+      <div class="news-content">
+        <span class="news-tag">ECHEMI 25/03</span>
+        <div class="news-title">Propilenoglicol: Alta de 21.6% Sustentada por Custo de Feedstock e Demanda Aquecida</div>
+        <div class="news-body">O propilenoglicol (PG) registrou a maior alta semanal do portfólio Ekoquim em março: +21,6%, levando o preço CFR Brasil para USD 1.277,6/ton. O principal motor é o óxido de propileno (PO), feedstock crítico, que subiu 18% em CNY nas últimas três semanas devido à redução de capacidade em duas plantas HPPO (hydrogen peroxide-to-PO) na China por manutenção programada. Adicionalmente, a demanda de downstream para PG farmacêutico e alimentício — historicamente sazonal em Q1 — surpreendeu positivamente, com compradores da LATAM antecipando pedidos. Produtores chineses resistem a negociar descontos. Risco baixista: retorno das plantas HPPO em abril pode acomodar parte da alta. Recomendação: proteger posição de Q2 com compras antecipadas.</div>
+      </div>
+  2 </div>
+
     <div class="news-card">
-      <span class="news-tag">ECHEMI 25/03</span>
-      <div class="news-title">Ácido Fosfórico: Demanda Agrícola Sustenta Alta</div>
-      <div class="news-body">Alta contínua com compras de base larga. Expectativas de novos pedidos agrícolas se mantêm altas.</div>
+      <img class="news-img" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&h=290&fit=crop&auto=format" alt="Ácido Fosfórico Agricultura" loading="lazy">
+      <div class="news-content">
+        <span class="news-tag">ECHEMI 25/03</span>
+        <div class="news-title">Ácido Fosfórico: Safra Agrícola Global Sustenta Alta Contínua em Q1/2026</div>
+        <div class="news-body">O ácido fosfórico (PA) 54% P₂O₅ mantém trajetória altista com preço CFR Brasil atingindo USD 1.089,6/ton (+2,7% na semana). A pressão de compra é ampla: Índia, Brasil e EUA retomaram importações para reposição de estoques de fertilizantes fosfatados (MAP e DAP) antes da janela de plantio. Exportadores do Marrocos (OCP) e Arábia Saudita (Ma'aden) relatam carnet de pedidos cheio até junho. Na China, restrições informais de exportação de fosfatos mantêm volumes limitados no mercado internacional. O diferencial Brasil–Marrocos está no maior nível em 18 meses. Perspectiva: demanda agrícola sustenta preços elevados pelo menos até maio; risco de recuo em Q3 caso a temporada seja encerrada sem tensões adicionais.</div>
+      </div>
     </div>
+
     <div class="news-card">
-      <span class="news-tag">ECHEMI 25/03</span>
-      <div class="news-title">Soda Cáustica: Alta com Demanda Elevada</div>
-      <div class="news-body">Pressão de matérias-primas e demanda elevada sustentam tendência altista. Retiradas de estoque acima da média.</div>
+      <img class="news-img" src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=290&fit=crop&auto=format" alt="Soda Cáustica Planta" loading="lazy">
+      <div class="news-content">
+        <span class="news-tag">ECHEMI 25/03</span>
+        <div class="news-title">Soda Cáustica: Alta de 4.5% com Retiradas de Estoque Acima da Média Histórica</div>
+        <div class="news-body">A soda cáustica (NaOH 32% e 50%) registra alta de 4,5% na semana, com o preço CFR Brasil chegando a USD 402,4/ton. O mercado é puxado por dois vetores simultâneos: custo de energia elétrica elevado nas plantas de eletrólise da China (encarece produção), e demanda robusta de downstream — mineração de alumina, papel e celulose, e tratamento de água intensificaram compras. Retiradas de estoque nos armazéns portuários no Brasil excederam a média histórica de março em 23%, reduzindo a cobertura disponível para curto prazo. Importadores da LATAM que mantinham postura conservadora de compra devem reavaliar exposição para Q2. Risco: excesso de capacidade cloralcalina na Europa pode liberar fluxo adicional se o spread Europa–Ásia apertar.</div>
+      </div>
     </div>
+
     <div class="news-card">
-      <span class="news-tag">ECHEMI 25/03</span>
-      <div class="news-title">Diclorometano: Queda Precautória por Regulação UE</div>
-      <div class="news-body">Mercado em queda prévia a possível reforma regulatória sobre cloretos. Compradores aguardando definição de metas.</div>
+      <img class="news-img" src="https://images.unsplash.com/photo-1589391886645-d51941baf7fb?w=600&h=290&fit=crop&auto=format" alt="Regulação UE" loading="lazy">
+      <div class="news-content">
+        <span class="news-tag">ECHEMI 25/03</span>
+        <div class="news-title">Diclorometano: Queda Precautória de 2.2% Antecipa Reforma Regulatória da UE sobre Cloretos</div>
+        <div class="news-body">O diclorometano (DCM / CH₂Cl₂) recuou 2,2% na semana para USD 484,4/ton CFR Brasil, movimento atípico num contexto de alta generalizada. O gatilho é a proposta de revisão da Regulação (UE) 2024/573 sobre substâncias que destroem a camada de ozônio, que pode incluir restrições adicionais ao DCM em aplicações de decapagem industrial e farmacêutica. Compradores europeus e asiáticos que reexportam estão em pausa aguardando o texto definitivo previsto para Q2. No Brasil, o DCM tem status de importação sem restrição, mas tradings internacionais reavaliaram contratos de longo prazo. Perspectiva: se a reforma UE for menos restritiva que o temido, o preço deve recuperar rapidamente; caso contrário, pode haver re-precificação estrutural do ativo.</div>
+      </div>
     </div>
+
   </div>
 
 </div>
@@ -354,127 +364,146 @@
 </div>
 
 <script>
-Chart.register(ChartDataLabels);
+window.addEventListener('DOMContentLoaded', function() {
+  Chart.register(ChartDataLabels);
+  const GD='#1b5e20',GM='#2e7d32',GL='#388e3c',RED='#c62828',GR='#90a4ae';
 
-const GD = '#1b5e20', GM = '#2e7d32', GL = '#388e3c', RED = '#c62828', GR = '#90a4ae';
-
-// ─── Produto mini-charts: Semana Anterior vs Atual ─────────────────────────
-const prods = [
-  { id:'cp0', curr:1277.6, chg:21.6 },
-  { id:'cp1', curr:502.8,  chg:10.6 },
-  { id:'cp2', curr:1284.1, chg:3.6  },
-  { id:'cp3', curr:181.5,  chg:0.5  },
-  { id:'cp4', curr:1089.6, chg:2.7  },
-  { id:'cp5', curr:402.4,  chg:4.5  },
-  { id:'cp6', curr:484.4,  chg:-2.2 },
-];
-
-prods.forEach(p => {
-  const prev = p.curr / (1 + p.chg / 100);
-  const color = p.chg > 0 ? GM : (p.chg < 0 ? RED : GR);
-  const lo = Math.min(prev, p.curr), hi = Math.max(prev, p.curr);
-  const pad = (hi - lo) > 0 ? (hi - lo) * 0.45 : hi * 0.06;
-  new Chart(document.getElementById(p.id), {
-    type: 'bar',
-    data: {
-      labels: ['Sem. Ant.', 'Atual'],
-      datasets: [{ data: [prev, p.curr], backgroundColor: [GR, color], borderRadius: 5, borderSkipped: false }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: { enabled: false },
-        datalabels: {
-    2     color: '#fff', font: { weight: 'bold', size: 10 },
-          anchor: 'center', align: 'center', textAlign: 'center',
-          formatter: (v, ctx) => {
-            const fmt = n => '$' + n.toLocaleString('pt-BR', {minimumFractionDigits:0, maximumFractionDigits:0});
-            if (ctx.dataIndex === 0) return fmt(v);
-            const sign = p.chg >= 0 ? '+' : '';
-            return fmt(v) + '\n' + sign + p.chg.toFixed(1) + '%';
+  /* ── PRODUTOS: barras Sem.Ant. vs Atual com eixos X e Y visíveis ── */
+  const prods = [
+    {id:'cp0',curr:1277.6,chg:21.6},
+    {id:'cp1',curr:502.8, chg:10.6},
+    {id:'cp2',curr:1284.1,chg:3.6 },
+    {id:'cp3',curr:181.5, chg:0.5 },
+    {id:'cp4',curr:1089.6,chg:2.7 },
+    {id:'cp5',curr:402.4, chg:4.5 },
+    {id:'cp6',curr:484.4, chg:-2.2},
+  ];
+  prods.forEach(p => {
+    const prev = p.curr/(1+p.chg/100);
+    const color = p.chg>0?GM:(p.chg<0?RED:GR);
+    const lo = Math.min(prev,p.curr), hi = Math.max(prev,p.curr);
+    const spread = hi-lo;
+    const pad = spread>0 ? spread*0.7 : hi*0.08;
+    new Chart(document.getElementById(p.id),{
+      type:'bar',
+      data:{
+        labels:['Sem. Ant.','Atual'],
+        datasets:[{data:[prev,p.curr],backgroundColor:[GR,color],borderRadius:6,borderSkipped:false}]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{
+          legend:{display:false},
+          tooltip:{enabled:false},
+          datalabels:{
+            color:'#fff',font:{weight:'bold',size:10},
+            anchor:'center',align:'center',textAlign:'center',
+            formatter:(v,ctx)=>{
+              const fmt=n=>'$'+Math.round(n).toLocaleString('pt-BR');
+              if(ctx.dataIndex===0) return fmt(v);
+              const sign=p.chg>=0?'+':'';
+              return fmt(v)+'\n'+sign+p.chg.toFixed(1)+'%';
+            }
+          }
+        },
+        scales:{
+          x:{
+            display:true,
+            grid:{display:false},
+            ticks:{color:'#555',font:{size:10},padding:2}
+          },
+          y:{
+            display:true,
+            min:lo-pad,max:hi+pad,beginAtZero:false,
+            grid:{color:'#f0f0f0'},
+            ticks:{
+              color:'#888',font:{size:8},maxTicksLimit:4,
+              callback:v=>'$'+Math.round(v).toLocaleString('pt-BR')
+            }
           }
         }
-      },
-      scales: {
-        x: { display: false },
-        y: { display: false, min: lo - pad, max: hi + pad, beginAtZero: false }
       }
-    }
+    });
   });
-});
 
-// ─── Material mini-charts: barra simples com valor ─────────────────────────
-const mats = [
-  { id:'cm0', v:795.3,   color: GM  },
-  { id:'cm1', v:470.0,   color: GR  },
-  { id:'cm2', v:1181.6,  color: GM  },
-  { id:'cm3', v:1475.0,  color: GD  },
-  { id:'cm4', v:447.5,   color: GR  },
-  { id:'cm5', v:181.5,   color: GR  },
-  { id:'cm6', v:677.5,   color: GM  },
-  { id:'cm7', v:106.077, color: GD  },
-  { id:'cm8', v:2.9274,  color: GL  },
-];
-
-mats.forEach(m => {
-  new Chart(document.getElementById(m.id), {
-    type: 'bar',
-    data: {
-      labels: [''],
-      datasets: [{ data: [m.v], backgroundColor: [m.color], borderRadius: 5, borderSkipped: false }]
-    },
-    options: {
-      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: { enabled: false },
-        datalabels: {
-          color: '#fff', font: { weight: 'bold', size: 10 },
-          anchor: 'center', align: 'center',
-          formatter: v => '$' + v.toLocaleString('pt-BR', {minimumFractionDigits: v < 10 ? 4 : 1, maximumFractionDigits: v < 10 ? 4 : 1})
+  /* ── MATERIAIS: barra horizontal com eixo X (valor) visível ── */
+  const mats = [
+    {id:'cm0',v:795.3,  color:GM},
+    {id:'cm1',v:470.0,  color:GR},
+    {id:'cm2',v:1181.6, color:GM},
+    {id:'cm3',v:1475.0, color:GD},
+    {id:'cm4',v:447.5,  color:GR},
+    {id:'cm5',v:181.5,  color:GR},
+    {id:'cm6',v:677.5,  color:GM},
+    {id:'cm7',v:106.077,color:GD},
+    {id:'cm8',v:2.9274, color:GL},
+  ];
+  mats.forEach(m=>{
+    new Chart(document.getElementById(m.id),{
+      type:'bar',
+      data:{
+        labels:[''],
+        datasets:[{data:[m.v],backgroundColor:[m.color],borderRadius:5,borderSkipped:false}]
+      },
+      options:{
+        indexAxis:'y',responsive:true,maintainAspectRatio:false,
+        plugins:{
+          legend:{display:false},
+          tooltip:{enabled:false},
+          datalabels:{
+            color:'#fff',font:{weight:'bold',size:11},
+            anchor:'center',align:'center',
+            formatter:v=>'$'+v.toLocaleString('pt-BR',{minimumFractionDigits:v<10?4:1,maximumFractionDigits:v<10?4:1})
+          }
+        },
+        scales:{
+          x:{
+            display:true,beginAtZero:true,
+            grid:{color:'#f0f0f0'},
+            ticks:{color:'#888',font:{size:8},maxTicksLimit:4,callback:v=>'$'+v.toLocaleString('pt-BR')}
+          },
+          y:{display:false}
         }
+      }
+    });
+  });
+
+  /* ── FRETE: linha com eixos X (datas) e Y (USD/FEU) ── */
+  new Chart(document.getElementById('chartFrete'),{
+    type:'line',
+    data:{
+      labels:['01/03','05/03','10/03','14/03','17/03','20/03','22/03','24/03','25/03'],
+      datasets:[{
+        data:[1656,1780,1990,2210,2450,2680,2800,2952,2926],
+        borderColor:GD,backgroundColor:'rgba(27,94,32,0.1)',fill:true,
+        tension:0.4,pointRadius:5,pointHoverRadius:7,
+        pointBackgroundColor:GD,borderWidth:2.5
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        datalabels:{
+          color:GD,font:{weight:'700',size:9},
+          align:'top',anchor:'end',offset:4,
+          formatter:v=>'$'+v.toLocaleString('pt-BR')
+        },
+        tooltip:{callbacks:{label:ctx=>' $'+ctx.parsed.y.toLocaleString('pt-BR')+' /FEU'}}
       },
-      scales: {
-        x: { display: false, beginAtZero: true },
-        y: { display: false }
+      scales:{
+        x:{
+          grid:{color:'#f0f0f0'},
+          ticks:{color:'#555',font:{size:10}}
+        },
+        y:{
+          grid:{color:'#e8f5e9'},
+          ticks:{color:'#555',font:{size:10},callback:v=>'$'+v.toLocaleString('pt-BR')},
+          min:1400,suggestedMax:3200
+        }
       }
     }
   });
-});
-
-// ─── Frete — Linha MTD ─────────────────────────────────────────────────────
-new Chart(document.getElementById('chartFrete'), {
-  type: 'line',
-  data: {
-    labels: ['01/03','05/03','10/03','14/03','17/03','20/03','22/03','24/03','25/03'],
-    datasets: [{
-      data: [1656,1780,1990,2210,2450,2680,2800,2952,2926],
-      borderColor: GD, backgroundColor: 'rgba(27,94,32,0.12)', fill: true,
-      tension: 0.4, pointRadius: 5, pointHoverRadius: 7,
-      pointBackgroundColor: GD, borderWidth: 2.5,
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      datalabels: {
-        color: GD, font: { weight: '700', size: 9 },
-        align: 'top', anchor: 'end', offset: 3,
-        formatter: v => '$' + v.toLocaleString('pt-BR')
-      },
-      tooltip: { callbacks: { label: ctx => ' $' + ctx.parsed.y.toLocaleString('pt-BR') + ' /FEU' } }
-    },
-    scales: {
-      x: { grid: { color: '#f0f0f0' } },
-      y: {
-        grid: { color: '#e8f5e9' },
-        ticks: { callback: v => '$' + v.toLocaleString('pt-BR') },
-        min: 1400, suggestedMax: 3200
-      }
-    }
-  }
 });
 </script>
 </body>
