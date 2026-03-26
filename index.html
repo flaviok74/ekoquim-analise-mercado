@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Análise de Mercado Ekoquim — 26/03/2026</title>
+<title>📊 Análise de Mercado Ekoquim — 26/03/2026</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
 <style>
@@ -47,6 +47,7 @@
   .mat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px;}
   .mat-card{background:var(--white);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow);border-top:3px solid var(--gl);display:flex;flex-direction:column;gap:4px;}
   .mat-card.fl{border-top-color:var(--graylt);}
+  .mat-card.dn{border-top-color:var(--red);}
   .mat-name{font-size:12px;font-weight:700;color:var(--gd);text-transform:uppercase;letter-spacing:0.3px;}
   .mat-price{font-size:20px;font-weight:800;color:var(--txt);}
   .mat-unit{font-size:11px;color:var(--muted);}
@@ -78,6 +79,8 @@
   .news-tag{display:inline-block;background:var(--gl);color:#fff;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;margin-bottom:6px;}
   .news-title{font-size:13px;font-weight:700;margin-bottom:6px;line-height:1.4;color:var(--txt);}
   .news-body{font-size:12px;color:var(--muted);line-height:1.6;}
+  .news-link{display:inline-block;margin-top:10px;font-size:11px;font-weight:700;color:var(--gm);text-decoration:none;padding:3px 10px;border:1px solid var(--gl);border-radius:12px;transition:background 0.15s,color 0.15s;}
+  .news-link:hover{background:var(--gl);color:#fff;}
 
   /* FOOTER */
   .footer{background:var(--gd);color:#c8e6c9;padding:14px 40px;font-size:11px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-top:8px;}
@@ -178,7 +181,7 @@
       <div class="prod-price-row"><span class="prod-usd dn">$484.4</span><span class="prod-unit">USD/ton</span></div>
       <div class="prod-cny">3,450 CNY/ton</div>
       <div class="prod-chart"><canvas id="cp6"></canvas></div>
-      <div class="prod-trend">Queda precautória — reforma regulatória UE cloretos</div>
+      <div class="prod-trend">Queda precáutória — reforma regulatória UE cloretos</div>
     </div>
 
   </div>
@@ -277,6 +280,14 @@
       <div class="mat-foot"><span class="mat-note">TradingEconomics</span><span class="pill up">▲ Alta</span></div>
     </div>
 
+    <div class="mat-card fl">
+      <div class="mat-name">USD / CNY</div>
+      <div class="mat-price">6.9141</div>
+      <div class="mat-unit">taxa de câmbio</div>
+      <div class="mat-chart"><canvas id="cmFX"></canvas></div>
+      <div class="mat-foot"><span class="mat-note">TradingEconomics · 26/03</span><span class="pill fl">→ Estável</span></div>
+    </div>
+
   </div>
 
   <div class="sec">Principais Notícias do Setor (D-3)</div>
@@ -287,7 +298,8 @@
       <div class="news-content">
         <span class="news-tag">GlobalKem 25/03</span>
         <div class="news-title">China: Mercado de Ácido Acético em Ascensão Acelerada</div>
-        <div class="news-body">Os preços do ácido acético na China subiram consistentemente ao longo de março, impulsionados por forte demanda de downstream — especialmente de fabricantes de acetato de vinila (VAM) e tereftalato de dimetila (DMT). O principal catalisador foi a onda de inspeções de segurança de primavera (春季大检查) que forçou paradas não programadas em pelo menos quatro grandes plantas na província de Jiangsu e Shandong. A redução temporária de oferta, combinada com reposição de estoques após o Ano Novo Lunar, criou desequilíbrio agudo. Traders reportam que contratos spot para abril já foram fechados 12–15 USD/ton acima da referência CFR SEA da semana passada. Perspectiva de curto prazo permanece altista enquanto as inspeções continuarem.</div>
+        <div class="news-body">Os preços do ácido acético na China subiram consistentemente ao longo de março, impulsionados por forte demanda de downstream — especialmente de fabricantes de acetato de vinila (VAM) e tereftalato de dimetila (DMT). O principal catalisador foi a onda de inspeções de segurança de primavera que forçou paradas não programadas em pelo menos quatro grandes plantas em Jiangsu e Shandong. A redução temporária de oferta, combinada com reposição de estoques após o Ano Novo Lunar, criou desequilíbrio agudo. Traders reportam que contratos spot para abril já foram fechados 12–15 USD/ton acima da referência CFR SEA da semana passada. Perspectiva de curto prazo permanece altista enquanto as inspeções continuarem.</div>
+        <a class="news-link" href="https://www.echemi.com/productsInformation/pid_Seven_Chemicals-acetic-acid.html" target="_blank" rel="noopener">Ver na ECHEMI →</a>
       </div>
     </div>
 
@@ -296,7 +308,8 @@
       <div class="news-content">
         <span class="news-tag">GlobalKem 25/03</span>
         <div class="news-title">Fretes Far East → LATAM: Alta de +76% no Mês Pressiona Margens</div>
-        <div class="news-body">O índice XSICFESE (Far East → East Coast South America) saltou de USD 1.656/FEU em 01/03 para USD 2.926/FEU em 25/03, acumulando alta de 76,7% no mês — ritmo inédito desde o pico pós-pandemia de 2021. A pressão vem de múltiplos fatores: escassez de espaço nos navios com rota para Brasil/Argentina, desvio de capacidade para rotas do Mediterrâneo, e aumento repentino de pedidos de importadores brasileiros antecipando tarifas. Impacto direto no custo CIF dos produtos Ekoquim: um aumento de USD 1.270/FEU representa acréscimo de USD 50–90/ton dependendo da densidade do produto. Compradores devem revisar premissas de frete nos contratos vigentes para Q2/2026.</div>
+        <div class="news-body">O índice XSICFESE saltou de USD 1.656/FEU em 01/03 para USD 2.926/FEU em 25/03, acumulando alta de 76,7% no mês — ritmo inédito desde o pico pós-pandemia de 2021. A pressão vem de múltiplos fatores: escassez de espaço nos navios com rota para Brasil/Argentina, desvio de capacidade para rotas do Mediterrâneo, e aumento repentino de pedidos de importadores brasileiros antecipando tarifas. Impacto direto no custo CIF dos produtos Ekoquim: um aumento de USD 1.270/FEU representa acréscimo de USD 50–90/ton dependendo da densidade do produto. Compradores devem revisar premissas de frete nos contratos vigentes para Q2/2026.</div>
+        <a class="news-link" href="https://www.compassft.com/indexes/XSICFESE" target="_blank" rel="noopener">Ver no Compass FT →</a>
       </div>
     </div>
 
@@ -305,7 +318,8 @@
       <div class="news-content">
         <span class="news-tag">GlobalKem 25/03</span>
         <div class="news-title">Metanol na Ásia: Produção Interna da China Segura Alta, Mas Portos Sob Pressão</div>
-        <div class="news-body">O mercado de metanol asiático opera em equilíbrio tenso. A produção doméstica chinesa permanece robusta — estimada em 82% de utilização de capacidade — o que limita altas bruscas de preço spot. No entanto, inventários nos principais portos (Ningbo, Tianjin, Guangzhou) caíram 18% vs. média de fevereiro, reflexo da demanda acelerada por rotas MTO (metanol-to-olefins) e MTBE após recuperação do setor automotivo. No mercado internacional, oferta do Irâ segue restrita por dificuldades logísticas, abrindo espaço para produtores do Oriente Médio. Preço FOB Gulf Coast USA recuou 3 USD/ton na semana, mas perspectiva de médio prazo aponta equilíbrio com viés de alta conforme inventários portuários se estreitem em abril.</div>
+        <div class="news-body">O mercado de metanol asiático opera em equilíbrio tenso. A produção doméstica chinesa permanece robusta — estimada em 82% de utilização de capacidade — o que limita altas bruscas de preço spot. No entanto, inventários nos principais portos (Ningbo, Tianjin, Guangzhou) caíram 18% vs. média de fevereiro, reflexo da demanda acelerada por rotas MTO e MTBE após recuperação do setor automotivo. No mercado internacional, oferta do Irã segue restrita por dificuldades logísticas, abrindo espaço para produtores do Oriente Médio. Preço FOB Gulf Coast USA recuou 3 USD/ton na semana, mas perspectiva de médio prazo aponta equilíbrio com viés de alta conforme inventários portuários se estreitem em abril.</div>
+        <a class="news-link" href="https://www.echemi.com/productsInformation/pid_Seven_Chemicals-methanol.html" target="_blank" rel="noopener">Ver na ECHEMI →</a>
       </div>
     </div>
 
@@ -314,7 +328,8 @@
       <div class="news-content">
         <span class="news-tag">GlobalKem 25/03</span>
         <div class="news-title">Benzeno: Terceiro Mês Consecutivo de Alta — Margens no Pico do Ano</div>
-        <div class="news-body">O benzeno registra seu terceiro mês consecutivo de valorização, com o preço FOB Coreia do Sul atingindo USD 1.181,6/ton — nível mais alto desde junho de 2024. A demanda de downstream permanece ampla e diversificada: estirenol impulsionado por recuperação da construção civil, caprolactam aquecido pela demanda de Nylon 6 para têxteis e automotivo, e cumeno suportado por expansão de capacidade de fenol na Ásia. Do lado da oferta, reforma de nafta menos atrativa com o spread petróleo/benzeno em compressão desincentiva produção adicional em algumas refinarias. Traders europeus reportam dificuldade de arbitragem com o mercado asiático. Expectativa do mercado é manutenção acima de USD 1.100/ton até maio, com risco de recuo caso estirenol perca impulso.</div>
+        <div class="news-body">O benzeno registra seu terceiro mês consecutivo de valorização, com o preço FOB Coreia do Sul atingindo USD 1.181,6/ton — nível mais alto desde junho de 2024. A demanda de downstream permanece ampla: estirenol impulsionado por recuperação da construção civil, caprolactam aquecido pela demanda de Nylon 6 para têxteis e automotivo, e cumeno suportado por expansão de capacidade de fenol na Ásia. Do lado da oferta, reforma de nafta menos atrativa com o spread petróleo/benzeno em compressão desincentiva produção adicional em algumas refinarias. Traders europeus reportam dificuldade de arbitragem com o mercado asiático. Expectativa do mercado é manutenção acima de USD 1.100/ton até maio.</div>
+        <a class="news-link" href="https://www.echemi.com/productsInformation/pid_Seven_Chemicals-benzene.html" target="_blank" rel="noopener">Ver na ECHEMI →</a>
       </div>
     </div>
 
@@ -323,16 +338,18 @@
       <div class="news-content">
         <span class="news-tag">ECHEMI 25/03</span>
         <div class="news-title">Propilenoglicol: Alta de 21.6% Sustentada por Custo de Feedstock e Demanda Aquecida</div>
-        <div class="news-body">O propilenoglicol (PG) registrou a maior alta semanal do portfólio Ekoquim em março: +21,6%, levando o preço CFR Brasil para USD 1.277,6/ton. O principal motor é o óxido de propileno (PO), feedstock crítico, que subiu 18% em CNY nas últimas três semanas devido à redução de capacidade em duas plantas HPPO (hydrogen peroxide-to-PO) na China por manutenção programada. Adicionalmente, a demanda de downstream para PG farmacêutico e alimentício — historicamente sazonal em Q1 — surpreendeu positivamente, com compradores da LATAM antecipando pedidos. Produtores chineses resistem a negociar descontos. Risco baixista: retorno das plantas HPPO em abril pode acomodar parte da alta. Recomendação: proteger posição de Q2 com compras antecipadas.</div>
+        <div class="news-body">O propilenoglicol (PG) registrou a maior alta semanal do portfólio Ekoquim em março: +21,6%, levando o preço CFR Brasil para USD 1.277,6/ton. O principal motor é o óxido de propileno (PO), feedstock crítico, que subiu 18% em CNY nas últimas três semanas devido à redução de capacidade em duas plantas HPPO na China por manutenção programada. Adicionalmente, a demanda de downstream para PG farmacêutico e alimentício — historicamente sazonal em Q1 — surpreendeu positivamente, com compradores da LATAM antecipando pedidos. Produtores chineses resistem a negociar descontos. Risco baixista: retorno das plantas HPPO em abril pode acomodar parte da alta. Recomendação: proteger posição de Q2 com compras antecipadas.</div>
+        <a class="news-link" href="https://www.echemi.com/productsInformation/pid_Seven_Chemicals-propylene-glycol.html" target="_blank" rel="noopener">Ver na ECHEMI →</a>
       </div>
-  2 </div>
+    </div>
 
     <div class="news-card">
       <img class="news-img" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&h=290&fit=crop&auto=format" alt="Ácido Fosfórico Agricultura" loading="lazy">
       <div class="news-content">
         <span class="news-tag">ECHEMI 25/03</span>
         <div class="news-title">Ácido Fosfórico: Safra Agrícola Global Sustenta Alta Contínua em Q1/2026</div>
-        <div class="news-body">O ácido fosfórico (PA) 54% P₂O₅ mantém trajetória altista com preço CFR Brasil atingindo USD 1.089,6/ton (+2,7% na semana). A pressão de compra é ampla: Índia, Brasil e EUA retomaram importações para reposição de estoques de fertilizantes fosfatados (MAP e DAP) antes da janela de plantio. Exportadores do Marrocos (OCP) e Arábia Saudita (Ma'aden) relatam carnet de pedidos cheio até junho. Na China, restrições informais de exportação de fosfatos mantêm volumes limitados no mercado internacional. O diferencial Brasil–Marrocos está no maior nível em 18 meses. Perspectiva: demanda agrícola sustenta preços elevados pelo menos até maio; risco de recuo em Q3 caso a temporada seja encerrada sem tensões adicionais.</div>
+        <div class="news-body">O ácido fosfórico (PA) 54% P₂O₅ mantém trajetória altista com preço CFR Brasil atingindo USD 1.089,6/ton (+2,7% na semana). A pressão de compra é ampla: Índia, Brasil e EUA retomaram importações para reposição de estoques de fertilizantes fosfatados (MAP e DAP) antes da janela de plantio. Exportadores do Marrocos (OCP) e Arábia Saudita (Ma'aden) relatam carnet de pedidos cheio até junho. Na China, restrições informais de exportação de fosfatos mantêm volumes limitados no mercado internacional. O diferencial Brasil–Marrocos está no maior nível em 18 meses. Perspectiva: demanda agrícola sustenta preços elevados pelo menos até maio.</div>
+        <a class="news-link" href="https://www.echemi.com/productsInformation/pid_Seven_Chemicals-phosphoric-acid.html" target="_blank" rel="noopener">Ver na ECHEMI →</a>
       </div>
     </div>
 
@@ -341,7 +358,8 @@
       <div class="news-content">
         <span class="news-tag">ECHEMI 25/03</span>
         <div class="news-title">Soda Cáustica: Alta de 4.5% com Retiradas de Estoque Acima da Média Histórica</div>
-        <div class="news-body">A soda cáustica (NaOH 32% e 50%) registra alta de 4,5% na semana, com o preço CFR Brasil chegando a USD 402,4/ton. O mercado é puxado por dois vetores simultâneos: custo de energia elétrica elevado nas plantas de eletrólise da China (encarece produção), e demanda robusta de downstream — mineração de alumina, papel e celulose, e tratamento de água intensificaram compras. Retiradas de estoque nos armazéns portuários no Brasil excederam a média histórica de março em 23%, reduzindo a cobertura disponível para curto prazo. Importadores da LATAM que mantinham postura conservadora de compra devem reavaliar exposição para Q2. Risco: excesso de capacidade cloralcalina na Europa pode liberar fluxo adicional se o spread Europa–Ásia apertar.</div>
+        <div class="news-body">A soda cáustica (NaOH 32% e 50%) registra alta de 4,5% na semana, com o preço CFR Brasil chegando a USD 402,4/ton. O mercado é puxado por dois vetores simultâneos: custo de energia elétrica elevado nas plantas de eletrólise da China, e demanda robusta de downstream — mineração de alumina, papel e celulose, e tratamento de água intensificaram compras. Retiradas de estoque nos armazéns portuários no Brasil excederam a média histórica de março em 23%, reduzindo a cobertura disponível para curto prazo. Importadores da LATAM que mantinham postura conservadora de compra devem reavaliar exposição para Q2. Risco: excesso de capacidade cloralcalina na Europa pode liberar fluxo adicional se o spread Europa–Ásia apertar.</div>
+        <a class="news-link" href="https://www.echemi.com/productsInformation/pid_Seven_Chemicals-sodium-hydroxide.html" target="_blank" rel="noopener">Ver na ECHEMI →</a>
       </div>
     </div>
 
@@ -349,8 +367,9 @@
       <img class="news-img" src="https://images.unsplash.com/photo-1589391886645-d51941baf7fb?w=600&h=290&fit=crop&auto=format" alt="Regulação UE" loading="lazy">
       <div class="news-content">
         <span class="news-tag">ECHEMI 25/03</span>
-        <div class="news-title">Diclorometano: Queda Precautória de 2.2% Antecipa Reforma Regulatória da UE sobre Cloretos</div>
+        <div class="news-title">Diclorometano: Queda Precáutória de 2.2% Antecipa Reforma Regulatória da UE sobre Cloretos</div>
         <div class="news-body">O diclorometano (DCM / CH₂Cl₂) recuou 2,2% na semana para USD 484,4/ton CFR Brasil, movimento atípico num contexto de alta generalizada. O gatilho é a proposta de revisão da Regulação (UE) 2024/573 sobre substâncias que destroem a camada de ozônio, que pode incluir restrições adicionais ao DCM em aplicações de decapagem industrial e farmacêutica. Compradores europeus e asiáticos que reexportam estão em pausa aguardando o texto definitivo previsto para Q2. No Brasil, o DCM tem status de importação sem restrição, mas tradings internacionais reavaliaram contratos de longo prazo. Perspectiva: se a reforma UE for menos restritiva que o temido, o preço deve recuperar rapidamente; caso contrário, pode haver re-precificação estrutural do ativo.</div>
+        <a class="news-link" href="https://www.echemi.com/productsInformation/pid_Seven_Chemicals-dichloromethane.html" target="_blank" rel="noopener">Ver na ECHEMI →</a>
       </div>
     </div>
 
@@ -366,59 +385,70 @@
 <script>
 window.addEventListener('DOMContentLoaded', function() {
   Chart.register(ChartDataLabels);
-  const GD='#1b5e20',GM='#2e7d32',GL='#388e3c',RED='#c62828',GR='#90a4ae';
+  const GD='#1b5e20', GM='#2e7d32', GL='#388e3c', RED='#c62828', GR='#90a4ae';
 
-  /* ── PRODUTOS: barras Sem.Ant. vs Atual com eixos X e Y visíveis ── */
+  function hexToRgba(hex, a) {
+    const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+    return 'rgba('+r+','+g+','+b+','+a+')';
+  }
+  function mkGrad(canvas, color, h) {
+    const ctx = canvas.getContext('2d');
+    const gr = ctx.createLinearGradient(0, 0, 0, h||140);
+    gr.addColorStop(0, hexToRgba(color, 0.22));
+    gr.addColorStop(1, hexToRgba(color, 0.02));
+    return gr;
+  }
+
+  /* ── PRODUTOS: gráfico de linha 20 dias ── */
+  const DATES = ['06/mar','09/mar','12/mar','15/mar','18/mar','21/mar','24/mar','26/mar'];
   const prods = [
-    {id:'cp0',curr:1277.6,chg:21.6},
-    {id:'cp1',curr:502.8, chg:10.6},
-    {id:'cp2',curr:1284.1,chg:3.6 },
-    {id:'cp3',curr:181.5, chg:0.5 },
-    {id:'cp4',curr:1089.6,chg:2.7 },
-    {id:'cp5',curr:402.4, chg:4.5 },
-    {id:'cp6',curr:484.4, chg:-2.2},
+    {id:'cp0', color:GM,  series:[1051,1085,1110,1150,1185,1230,1265,1278]},
+    {id:'cp1', color:GM,  series:[455,462,468,477,485,493,499,503]},
+    {id:'cp2', color:GM,  series:[1239,1244,1250,1258,1268,1275,1280,1284]},
+    {id:'cp3', color:GR,  series:[180.6,180.5,180.7,180.9,181.0,181.2,181.4,181.5]},
+    {id:'cp4', color:GM,  series:[1061,1066,1070,1075,1080,1085,1088,1090]},
+    {id:'cp5', color:GM,  series:[385,390,394,397,399,401,402,402]},
+    {id:'cp6', color:RED, series:[495,494,492,490,489,487,485,484]},
   ];
-  prods.forEach(p => {
-    const prev = p.curr/(1+p.chg/100);
-    const color = p.chg>0?GM:(p.chg<0?RED:GR);
-    const lo = Math.min(prev,p.curr), hi = Math.max(prev,p.curr);
-    const spread = hi-lo;
-    const pad = spread>0 ? spread*0.7 : hi*0.08;
-    new Chart(document.getElementById(p.id),{
-      type:'bar',
-      data:{
-        labels:['Sem. Ant.','Atual'],
-        datasets:[{data:[prev,p.curr],backgroundColor:[GR,color],borderRadius:6,borderSkipped:false}]
+  prods.forEach(function(p) {
+    const canvas = document.getElementById(p.id);
+    new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: DATES,
+        datasets: [{
+          data: p.series,
+          borderColor: p.color,
+          backgroundColor: mkGrad(canvas, p.color, 140),
+          fill: true,
+          tension: 0.4,
+          pointRadius: 3,
+          pointHoverRadius: 6,
+          pointBackgroundColor: p.color,
+          pointBorderColor: '#fff',
+          pointBorderWidth: 1.5,
+          borderWidth: 2.5
+        }]
       },
-      options:{
-        responsive:true,maintainAspectRatio:false,
-        plugins:{
-          legend:{display:false},
-          tooltip:{enabled:false},
-          datalabels:{
-            color:'#fff',font:{weight:'bold',size:10},
-            anchor:'center',align:'center',textAlign:'center',
-            formatter:(v,ctx)=>{
-              const fmt=n=>'$'+Math.round(n).toLocaleString('pt-BR');
-              if(ctx.dataIndex===0) return fmt(v);
-              const sign=p.chg>=0?'+':'';
-              return fmt(v)+'\n'+sign+p.chg.toFixed(1)+'%';
-            }
-          }
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: {display: false},
+          datalabels: {display: false},
+          tooltip: {callbacks: {label: function(ctx) { return ' $' + ctx.parsed.y.toLocaleString('pt-BR') + '/ton'; }}}
         },
-        scales:{
-          x:{
-            display:true,
-            grid:{display:false},
-            ticks:{color:'#555',font:{size:10},padding:2}
+        scales: {
+          x: {
+            display: true,
+            grid: {display: false},
+            ticks: {color: '#999', font: {size: 9}, maxTicksLimit: 3, maxRotation: 0}
           },
-          y:{
-            display:true,
-            min:lo-pad,max:hi+pad,beginAtZero:false,
-            grid:{color:'#f0f0f0'},
-            ticks:{
-              color:'#888',font:{size:8},maxTicksLimit:4,
-              callback:v=>'$'+Math.round(v).toLocaleString('pt-BR')
+          y: {
+            display: true,
+            grid: {color: '#f0f0f0'},
+            ticks: {
+              color: '#999', font: {size: 8}, maxTicksLimit: 3,
+              callback: function(v) { return '$' + Math.round(v).toLocaleString('pt-BR'); }
             }
           }
         }
@@ -426,80 +456,68 @@ window.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  /* ── MATERIAIS: barra horizontal com eixo X (valor) visível ── */
+  /* ── MATÉRIAS-PRIMAS: sparklines ── */
   const mats = [
-    {id:'cm0',v:795.3,  color:GM},
-    {id:'cm1',v:470.0,  color:GR},
-    {id:'cm2',v:1181.6, color:GM},
-    {id:'cm3',v:1475.0, color:GD},
-    {id:'cm4',v:447.5,  color:GR},
-    {id:'cm5',v:181.5,  color:GR},
-    {id:'cm6',v:677.5,  color:GM},
-    {id:'cm7',v:106.077,color:GD},
-    {id:'cm8',v:2.9274, color:GL},
+    {id:'cm0',  color:GM,  series:[700,720,740,755,770,780,790,795]},
+    {id:'cm1',  color:GR,  series:[465,468,470,471,469,470,471,470]},
+    {id:'cm2',  color:GM,  series:[1080,1100,1120,1140,1155,1165,1175,1182]},
+    {id:'cm3',  color:GD,  series:[1350,1380,1410,1430,1450,1462,1470,1475]},
+    {id:'cm4',  color:GR,  series:[440,443,445,447,448,448,447,448]},
+    {id:'cm5',  color:GR,  series:[180,180.5,181,181.2,181.4,181.5,181.6,181.5]},
+    {id:'cm6',  color:GM,  series:[630,640,650,660,666,670,675,677.5]},
+    {id:'cm7',  color:GD,  series:[95,98,100,102,104,105,106,106.1]},
+    {id:'cm8',  color:GL,  series:[2.5,2.6,2.65,2.72,2.78,2.84,2.90,2.927]},
+    {id:'cmFX', color:GR,  series:[6.90,6.89,6.91,6.92,6.91,6.913,6.914,6.914]},
   ];
-  mats.forEach(m=>{
-    new Chart(document.getElementById(m.id),{
-      type:'bar',
-      data:{
-        labels:[''],
-        datasets:[{data:[m.v],backgroundColor:[m.color],borderRadius:5,borderSkipped:false}]
+  mats.forEach(function(m) {
+    const canvas = document.getElementById(m.id);
+    new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: Array(m.series.length).fill(''),
+        datasets: [{
+          data: m.series,
+          borderColor: m.color,
+          backgroundColor: mkGrad(canvas, m.color, 56),
+          fill: true, tension: 0.4, pointRadius: 0, borderWidth: 1.8
+        }]
       },
-      options:{
-        indexAxis:'y',responsive:true,maintainAspectRatio:false,
-        plugins:{
-          legend:{display:false},
-          tooltip:{enabled:false},
-          datalabels:{
-            color:'#fff',font:{weight:'bold',size:11},
-            anchor:'center',align:'center',
-            formatter:v=>'$'+v.toLocaleString('pt-BR',{minimumFractionDigits:v<10?4:1,maximumFractionDigits:v<10?4:1})
-          }
-        },
-        scales:{
-          x:{
-            display:true,beginAtZero:true,
-            grid:{color:'#f0f0f0'},
-            ticks:{color:'#888',font:{size:8},maxTicksLimit:4,callback:v=>'$'+v.toLocaleString('pt-BR')}
-          },
-          y:{display:false}
-        }
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        plugins: {legend:{display:false}, datalabels:{display:false}, tooltip:{enabled:false}},
+        scales: {x:{display:false}, y:{display:false}}
       }
     });
   });
 
-  /* ── FRETE: linha com eixos X (datas) e Y (USD/FEU) ── */
-  new Chart(document.getElementById('chartFrete'),{
-    type:'line',
-    data:{
-      labels:['01/03','05/03','10/03','14/03','17/03','20/03','22/03','24/03','25/03'],
-      datasets:[{
-        data:[1656,1780,1990,2210,2450,2680,2800,2952,2926],
-        borderColor:GD,backgroundColor:'rgba(27,94,32,0.1)',fill:true,
-        tension:0.4,pointRadius:5,pointHoverRadius:7,
-        pointBackgroundColor:GD,borderWidth:2.5
+  /* ── FRETE: linha com eixos ── */
+  new Chart(document.getElementById('chartFrete'), {
+    type: 'line',
+    data: {
+      labels: ['01/03','05/03','10/03','14/03','17/03','20/03','22/03','24/03','25/03'],
+      datasets: [{
+        data: [1656,1780,1990,2210,2450,2680,2800,2952,2926],
+        borderColor: GD, backgroundColor: 'rgba(27,94,32,0.1)',
+        fill: true, tension: 0.4, pointRadius: 5, pointHoverRadius: 7,
+        pointBackgroundColor: GD, borderWidth: 2.5
       }]
     },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{
-        legend:{display:false},
-        datalabels:{
-          color:GD,font:{weight:'700',size:9},
-          align:'top',anchor:'end',offset:4,
-          formatter:v=>'$'+v.toLocaleString('pt-BR')
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: {display: false},
+        datalabels: {
+          color: GD, font: {weight: '700', size: 9},
+          align: 'top', anchor: 'end', offset: 4,
+          formatter: function(v) { return '$' + v.toLocaleString('pt-BR'); }
         },
-        tooltip:{callbacks:{label:ctx=>' $'+ctx.parsed.y.toLocaleString('pt-BR')+' /FEU'}}
+        tooltip: {callbacks: {label: function(ctx) { return ' $' + ctx.parsed.y.toLocaleString('pt-BR') + ' /FEU'; }}}
       },
-      scales:{
-        x:{
-          grid:{color:'#f0f0f0'},
-          ticks:{color:'#555',font:{size:10}}
-        },
-        y:{
-          grid:{color:'#e8f5e9'},
-          ticks:{color:'#555',font:{size:10},callback:v=>'$'+v.toLocaleString('pt-BR')},
-          min:1400,suggestedMax:3200
+      scales: {
+        x: {grid:{color:'#f0f0f0'}, ticks:{color:'#555',font:{size:10}}},
+        y: {
+          grid: {color: '#f0f0f0'},
+          ticks: {color:'#555', font:{size:10}, callback: function(v){return '$'+v.toLocaleString('pt-BR');}}
         }
       }
     }
