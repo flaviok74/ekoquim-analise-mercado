@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AnÃ¡lise de Mercado Ekoquim â 26/03/2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --green-dark: #1b5e20;
+    --green-mid: #2e7d32;
+    --green-light: #388e3c;
+    --green-pale: #e8f5e9;
+    --green-bg: #f1f8f1;
+    --red: #c62828;
+    --red-light: #ffebee;
+    --text: #1a1a1a;
+    --text-muted: #555;
+    --border: #c8e6c9;
+    --white: #fff;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--green-bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-light) 100%);
+    color: white;
+    padding: 28px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .header-left h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .header-meta { display: flex; gap: 20px; flex-wrap: wrap; font-size: 12px; opacity: 0.9; }
+  .header-meta span { display: flex; align-items: center; gap: 5px; }
+  .header-badge {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  /* LAYOUT */
+  .container { max-width: 1200px; margin: 0 auto; padding: 28px 24px; }
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-left: 4px solid var(--green-light);
+    padding-left: 10px;
+    margin: 32px 0 16px;
+  }
+
+  /* KPI CARDS */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .kpi-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    border-top: 3px solid var(--green-light);
+    cursor: default;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.12); }
+  .kpi-label { font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .kpi-value { font-size: 20px; font-weight: 800; color: var(--green-dark); margin-bottom: 4px; }
+  .kpi-sub { font-size: 11px; color: var(--text-muted); }
+  .kpi-card.red { border-top-color: var(--red); }
+  .kpi-card.red .kpi-value { color: var(--red); }
+
+  /* CHARTS */
+  .charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .charts-row.single { grid-template-columns: 1fr; }
+  @media (max-width: 768px) { .charts-row { grid-template-columns: 1fr; } }
+
+  .chart-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+  .chart-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .chart-wrap { position: relative; }
+
+  /* FREIGHT CARD */
+  .freight-banner {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border-left: 6px solid var(--green-dark);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .freight-main { }
+  .freight-route { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .freight-value { font-size: 36px; font-weight: 900; color: var(--green-dark); line-height: 1; }
+  .freight-unit { font-size: 13px; font-weight: 500; color: var(--text-muted); margin-top: 2px; }
+  .freight-stats { display: flex; gap: 20px; flex-wrap: wrap; }
+  .freight-stat { }
+  .freight-stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; font-weight: 600; }
+  .freight-stat-val { font-size: 18px; font-weight: 800; margin-top: 2px; }
+  .freight-stat-val.down { color: var(--red); }
+  .freight-stat-val.up { color: var(--green-mid); }
+  .freight-source { font-size: 10px; color: var(--text-muted); margin-left: auto; align-self: flex-end; }
+
+  /* TABLE */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .data-table th {
+    background: var(--green-dark);
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+  }
+  .data-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--green-pale);
+    font-size: 13px;
+    vertical-align: middle;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--green-pale); }
+  .up { color: var(--green-mid); font-weight: 700; }
+  .down { color: var(--red); font-weight: 700; }
+  .flat { color: #777; font-weight: 700; }
+  .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .pill.up { background: #e8f5e9; color: var(--green-mid); }
+  .pill.down { background: var(--red-light); color: var(--red); }
+  .pill.flat { background: #f5f5f5; color: #666; }
+  .product-name { font-weight: 600; font-size: 13px; }
+  .product-pt { font-size: 11px; color: var(--text-muted); }
+  .trend-text { font-size: 12px; color: var(--text-muted); max-width: 260px; }
+
+  /* NEWS */
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .news-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border-top: 3px solid var(--green-pale);
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .news-card:hover { border-top-color: var(--green-light); transform: translateY(-1px); }
+  .news-tag {
+    display: inline-block;
+    background: var(--green-light);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .news-title { font-size: 13px; font-weight: 700; margin-bottom: 5px; color: var(--text); }
+  .news-body { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+  /* FOOTER */
+  .footer {
+    background: var(--green-dark);
+    color: #c8e6c9;
+    padding: 16px 40px;
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .footer a { color: #a5d6a7; }
+
+  /* TOOLTIP OVERRIDE */
+  .chartjs-tooltip { pointer-events: none; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <h1>ð AnÃ¡lise de Mercado Ekoquim</h1>
+    <div class="header-meta">
+      <span>ð 26/03/2026</span>
+      <span>ð± USD/CNY: 6.9141</span>
+      <span>â° 08:30 UTC-3</span>
+      <span>ð ECHEMI Â· Compass FT Â· TradingEconomics</span>
+    </div>
+  </div>
+  <div class="header-badge">RELATÃRIO SEMANAL</div>
+</div>
+
+<div class="container">
+
+  <!-- KPI STRIP -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Produtos Alta</div>
+      <div class="kpi-value">5</div>
+      <div class="kpi-sub">de 7 monitorados</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">Maior Alta</div>
+      <div class="kpi-value">+21.6%</div>
+      <div class="kpi-sub">Propylene Glycol</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">Maior Queda</div>
+      <div class="kpi-value">-2.2%</div>
+      <div class="kpi-sub">Dichloromethane</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Frete Far East</div>
+      <div class="kpi-value">2,926</div>
+      <div class="kpi-sub">USD/FEU Â· XSICFESE</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">Frete MTD</div>
+      <div class="kpi-value">+76.7%</div>
+      <div class="kpi-sub">vs inÃ­cio do mÃªs</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Brent</div>
+      <div class="kpi-value">$106.1</div>
+      <div class="kpi-sub">USD/bbl</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Etileno</div>
+      <div class="kpi-value">$1,475</div>
+      <div class="kpi-sub">USD/ton (feedstock)</div>
+    </div>
+  </div>
+
+  <!-- SECTION: PRODUTOS -->
+  <div class="section-title">Produtos Monitorados â Far East â LATAM</div>
+
+  <!-- CHARTS ROW 1 -->
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">PreÃ§o USD/ton</div>
+      <div class="chart-wrap" style="height:280px">
+        <canvas id="chartPrecos"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">VariaÃ§Ã£o Semanal (%)</div>
+      <div class="chart-wrap" style="height:280px">
+        <canvas id="chartVariacao"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLE: PRODUCTS -->
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Produto</th>
+        <th>USD/ton</th>
+        <th>CNY/ton</th>
+        <th>Var. s/s</th>
+        <th>TendÃªncia</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="product-name">Propylene Glycol</div><div class="product-pt">Propilenoglicol</div></td>
+        <td>$1,277.6</td><td>8,833</td>
+        <td><span class="pill up">â² +21.6%</span></td>
+        <td><span class="trend-text">Alta forte â custo de Ã³xido de propileno sustenta piso</span></td>
+      </tr>
+      <tr>
+        <td><div class="product-name">Acetic Acid</div><div class="product-pt">Ãcido AcÃ©tico</div></td>
+        <td>$502.8</td><td>3,477</td>
+        <td><span class="pill up">â² +10.6%</span></td>
+        <td><span class="trend-text">Alta â inspeÃ§Ãµes de primavera reduzem oferta</span></td>
+      </tr>
+      <tr>
+        <td><div class="product-name">Ethanolamine</div><div class="product-pt">Etanolamina</div></td>
+        <td>$1,284.1</td><td>8,879</td>
+        <td><span class="pill up">â² +3.6%</span></td>
+        <td><span class="trend-text">Alta â etileno firme + demanda agro/limpeza</span></td>
+      </tr>
+      <tr>
+        <td><div class="product-name">Sodium Carbonate</div><div class="product-pt">Carbonato de SÃ³dio</div></td>
+        <td>$181.5</td><td>1,255</td>
+        <td><span class="pill flat">â +0.5%</span></td>
+        <td><span class="trend-text">EstÃ¡vel lateral â novos pedidos sem aquecimento</span></td>
+      </tr>
+      <tr>
+        <td><div class="product-name">Phosphoric Acid</div><div class="product-pt">Ãcido FosfÃ³rico</div></td>
+        <td>$1,089.6</td><td>7,533</td>
+        <td><span class="pill up">â² +2.7%</span></td>
+        <td><span class="trend-text">Alta â demanda agrÃ­cola sustenta tendÃªncia</span></td>
+      </tr>
+      <tr>
+        <td><div class="product-name">Sodium Hydroxide</div><div class="product-pt">Soda CÃ¡ustica</div></td>
+        <td>$402.4</td><td>2,783</td>
+        <td><span class="pill up">â² +4.5%</span></td>
+        <td><span class="trend-text">Alta â matÃ©rias-primas elevadas + demanda firme</span></td>
+      </tr>
+      <tr>
+        <td><div class="product-name">Dichloromethane</div><div class="product-pt">Diclorometano</div></td>
+        <td>$484.4</td><td>3,450</td>
+        <td><span class="pill down">â¼ -2.2%</span></td>
+        <td><span class="trend-text">Queda precautÃ³ria â reforma regulatÃ³ria UE cloretos</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION: FRETE -->
+  <div class="section-title">Frete Far East â AmÃ©rica do Sul (XSICFESE)</div>
+
+  <div class="freight-banner">
+    <div class="freight-main">
+      <div class="freight-route">Far East Outbound Â· East Coast South America</div>
+      <div class="freight-value">2,926</div>
+      <div class="freight-unit">USD / FEU Â· 25/03/2026 Â· Compass FT</div>
+    </div>
+    <div class="freight-stats">
+      <div class="freight-stat">
+        <div class="freight-stat-label">VariaÃ§Ã£o 1D</div>
+        <div class="freight-stat-val down">â¼ â0.88%</div>
+      </div>
+      <div class="freight-stat">
+        <div class="freight-stat-label">MTD (mÃªs)</div>
+        <div class="freight-stat-val up">â² +76.69%</div>
+      </div>
+      <div class="freight-stat">
+        <div class="freight-stat-label">Ãndice</div>
+        <div class="freight-stat-val">XSICFESE</div>
+      </div>
+    </div>
+    <div class="freight-source">Compass FT Â· 25/03/2026</div>
+  </div>
+
+  <!-- FREIGHT CHART -->
+  <div class="chart-card" style="margin-bottom:16px">
+    <div class="chart-title">Frete XSICFESE â EvoluÃ§Ã£o Estimada no MÃªs (USD/FEU)</div>
+    <div class="chart-wrap" style="height:240px">
+      <canvas id="chartFrete"></canvas>
+    </div>
+  </div>
+
+  <!-- SECTION: MATÃRIAS-PRIMAS -->
+  <div class="section-title">MatÃ©rias-Primas EstratÃ©gicas</div>
+
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">PreÃ§o USD/ton (principais)</div>
+      <div class="chart-wrap" style="height:260px">
+        <canvas id="chartRawMat"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Energia â Brent & Henry Hub</div>
+      <div class="chart-wrap" style="height:260px">
+        <canvas id="chartEnergia"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr><th>Material</th><th>PreÃ§o</th><th>Unidade</th><th>Nota</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Enxofre</td><td>$795.3</td><td>USD/ton</td><td>5,500 CNY/ton</td><td><span class="pill up">â² Alta</span></td></tr>
+      <tr><td>AmÃ´nia</td><td>$470.0</td><td>USD/ton</td><td>FOB Oriente MÃ©dio</td><td><span class="pill flat">â EstÃ¡vel</span></td></tr>
+      <tr><td>Benzeno</td><td>$1,181.6</td><td>USD/ton</td><td>8,170 CNY/ton</td><td><span class="pill up">â² Alta</span></td></tr>
+      <tr><td>Etileno</td><td>$1,475.0</td><td>USD/ton</td><td>10,200 CNY/ton</td><td><span class="pill up">â² Alta</span></td></tr>
+      <tr><td>GÃ¡s Natural (Henry Hub)</td><td>$2.9274</td><td>USD/MMBtu</td><td>TradingEconomics</td><td><span class="pill up">â² Alta</span></td></tr>
+      <tr><td>Brent</td><td>$106.077</td><td>USD/bbl</td><td>TradingEconomics</td><td><span class="pill up">â² Alta</span></td></tr>
+      <tr><td>Metanol</td><td>$447.5</td><td>USD/ton</td><td>3,094 CNY/ton</td><td><span class="pill flat">â EstÃ¡vel</span></td></tr>
+      <tr><td>Barrilha (Soda Ash)</td><td>$181.5</td><td>USD/ton</td><td>1,255 CNY/ton</td><td><span class="pill flat">â EstÃ¡vel</span></td></tr>
+      <tr><td>Ureia (Urea)</td><td>$677.50</td><td>USD/ton</td><td>FOB granulado</td><td><span class="pill up">â² Alta</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION: NOTÃCIAS -->
+  <div class="section-title">Principais NotÃ­cias do Setor (D-3)</div>
+  <div class="news-grid">
+    <div class="news-card">
+      <span class="news-tag">GlobalKem 25/03</span>
+      <div class="news-title">China: Mercado de Ãcido AcÃ©tico em AscensÃ£o</div>
+      <div class="news-body">PreÃ§os subiram com demanda de downstream, apoiados por paralisaÃ§Ãµes de inspeÃ§Ã£o de primavera em vÃ¡rias unidades de grande porte.</div>
+    </div>
+    <div class="news-card">
+      <span class="news-tag">GlobalKem 25/03</span>
+      <div class="news-title">Impacto GeopolÃ­tico nas Etanolaminas</div>
+      <div class="news-body">Fretes elevados do Golfo e tensÃµes logÃ­sticas afetam cadeia global; compradores da Ãsia reavaliando contratos spot.</div>
+    </div>
+    <div class="news-card">
+      <span class="news-tag">GlobalKem 25/03</span>
+      <div class="news-title">PreÃ§os de Metanol na Ãsia: Alta Contida</div>
+      <div class="news-body">ProduÃ§Ã£o interna da China equilibra demanda por derivativos MTO, mas inventÃ¡rios de portos sob pressÃ£o.</div>
+    </div>
+    <div class="news-card">
+      <span class="news-tag">GlobalKem 25/03</span>
+      <div class="news-title">Benzeno: Demanda Downstream Aquece Mercado</div>
+      <div class="news-body">Mercado em alta pelo terceiro mÃªs consecutivo, impulsionado por styrene e caprolactam. Margens no nÃ­vel mais alto do ano.</div>
+    </div>
+    <div class="news-card">
+      <span class="news-tag">ECHEMI 25/03</span>
+      <div class="news-title">Propilenoglicol: Alta Persistente por Feedstock</div>
+      <div class="news-body">Impasse entre custo e demanda. Custo de Ã³xido de propileno eleva piso; produtores buscam repassar pressÃ£o para downstream.</div>
+    </div>
+    <div class="news-card">
+      <span class="news-tag">ECHEMI 25/03</span>
+      <div class="news-title">Ãcido FosfÃ³rico: Demanda AgrÃ­cola Sustenta Alta</div>
+      <div class="news-body">Alta contÃ­nua com compras de base larga. Expectativas de novos pedidos agrÃ­colas se mantÃªm altas.</div>
+    </div>
+    <div class="news-card">
+      <span class="news-tag">ECHEMI 25/03</span>
+      <div class="news-title">Soda CÃ¡ustica: Alta com Demanda Elevada</div>
+      <div class="news-body">PressÃ£o de matÃ©rias-primas e demanda elevada sustentam tendÃªncia altista. Retiradas de estoque acima da mÃ©dia.</div>
+    </div>
+    <div class="news-card">
+      <span class="news-tag">ECHEMI 25/03</span>
+      <div class="news-title">Diclorometano: Queda PrecautÃ³ria por RegulaÃ§Ã£o UE</div>
+      <div class="news-body">Mercado em queda prÃ©via a possÃ­vel reforma regulatÃ³ria sobre cloretos. Compradores aguardando definiÃ§Ã£o de metas.</div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<div class="footer">
+  <div>
+    <strong>Ekoquim â AnÃ¡lise de Mercado Automatizada</strong><br>
+    Fontes: ECHEMI Â· GlobalKem Â· Compass FT Â· TradingEconomics Â· BusinessAnalytiq
+  </div>
+  <div style="text-align:right">
+    Coleta: 26/03/2026 08:30 UTC-3 &nbsp;Â·&nbsp; USD/CNY: 6.9141<br>
+    Produto gerado automaticamente
+  </div>
+</div>
+
+<script>
+// âââ DADOS ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+const produtos = ['Propylene\nGlycol','Acetic\nAcid','Ethanol-\namine','Sodium\nCarbonate','Phosphoric\nAcid','Sodium\nHydroxide','Dichloro-\nmethane'];
+const precos   = [1277.6, 502.8, 1284.1, 181.5, 1089.6, 402.4, 484.4];
+const variacoes= [21.6, 10.6, 3.6, 0.5, 2.7, 4.5, -2.2];
+
+const rawMats  = ['Enxofre','AmÃ´nia','Benzeno','Etileno','Metanol','Barrilha','Ureia'];
+const rawPrecs = [795.3, 470.0, 1181.6, 1475.0, 447.5, 181.5, 677.5];
+
+// Estimativa frete MTD (baseada em +76.69% a partir de ~1,656 USD/FEU em 01/03)
+const freteLabels = ['01/03','05/03','10/03','14/03','17/03','20/03','22/03','24/03','25/03'];
+const freteVals   = [1656, 1780, 1990, 2210, 2450, 2680, 2800, 2952, 2926];
+
+// âââ HELPER ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+const GREEN_DARK = '#1b5e20';
+const GREEN_MID  = '#2e7d32';
+const GREEN_LIGHT= '#388e3c';
+const GREEN_PALE = '#c8e6c9';
+const RED        = '#c62828';
+const RED_PALE   = '#ffcdd2';
+
+Chart.defaults.font.family = "'Segoe UI', Arial, sans-serif";
+Chart.defaults.font.size = 11;
+
+function colorByVal(v) {
+  if (v > 0) return GREEN_MID;
+  if (v < 0) return RED;
+  return '#888';
+}
+
+// âââ CHART 1: PREÃOS âââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+new Chart(document.getElementById('chartPrecos'), {
+  type: 'bar',
+  data: {
+    labels: produtos,
+    datasets: [{
+      label: 'USD/ton',
+      data: precos,
+      backgroundColor: [
+        '#2e7d32','#388e3c','#43a047','#66bb6a','#1b5e20','#4caf50','#81c784'
+      ],
+      borderRadius: 5,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => ' $' + ctx.parsed.y.toLocaleString('pt-BR', {minimumFractionDigits:1}) + ' /ton'
+        }
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { maxRotation: 0 } },
+      y: {
+        grid: { color: '#e8f5e9' },
+        ticks: { callback: v => '$' + v.toLocaleString('pt-BR') }
+      }
+    }
+  }
+});
+
+// âââ CHART 2: VARIAÃÃO âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+new Chart(document.getElementById('chartVariacao'), {
+  type: 'bar',
+  data: {
+    labels: produtos,
+    datasets: [{
+      label: 'Var. s/s (%)',
+      data: variacoes,
+      backgroundColor: variacoes.map(v => v > 0 ? GREEN_MID : (v < 0 ? RED : '#888')),
+      borderRadius: 5,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => ' ' + (ctx.parsed.y > 0 ? '+' : '') + ctx.parsed.y.toFixed(1) + '%'
+        }
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { maxRotation: 0 } },
+      y: {
+        grid: { color: '#f5f5f5' },
+        ticks: { callback: v => v + '%' }
+      }
+    }
+  }
+});
+
+// âââ CHART 3: FRETE ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+new Chart(document.getElementById('chartFrete'), {
+  type: 'line',
+  data: {
+    labels: freteLabels,
+    datasets: [{
+      label: 'XSICFESE (USD/FEU)',
+      data: freteVals,
+      borderColor: GREEN_DARK,
+      backgroundColor: 'rgba(27,94,32,0.12)',
+      fill: true,
+      tension: 0.4,
+      pointRadius: 5,
+      pointHoverRadius: 7,
+      pointBackgroundColor: GREEN_DARK,
+      borderWidth: 2.5,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => ' $' + ctx.parsed.y.toLocaleString('pt-BR') + ' /FEU'
+        }
+      },
+      annotation: {}
+    },
+    scales: {
+      x: { grid: { color: '#f0f0f0' } },
+      y: {
+        grid: { color: '#e8f5e9' },
+        ticks: { callback: v => '$' + v.toLocaleString('pt-BR') },
+        min: 1400
+      }
+    }
+  }
+});
+
+// âââ CHART 4: RAW MATERIALS (excl. energia) ââââââââââââââââââââââââââââââââââ
+new Chart(document.getElementById('chartRawMat'), {
+  type: 'bar',
+  data: {
+    labels: rawMats,
+    datasets: [{
+      label: 'USD/ton',
+      data: rawPrecs,
+      backgroundColor: [
+        '#43a047','#66bb6a','#1b5e20','#2e7d32','#4caf50','#81c784','#388e3c'
+      ],
+      borderRadius: 5,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => ' $' + ctx.parsed.x.toLocaleString('pt-BR', {minimumFractionDigits:1}) + '/ton'
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: '#e8f5e9' },
+        ticks: { callback: v => '$' + v }
+      },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// âââ CHART 5: ENERGIA (DOUGHNUT) âââââââââââââââââââââââââââââââââââââââââââââ
+new Chart(document.getElementById('chartEnergia'), {
+  type: 'bar',
+  data: {
+    labels: ['Brent\n(USD/bbl)', 'Henry Hub\n(USD/MMBtu Ã10)'],
+    datasets: [{
+      label: 'Valor',
+      data: [106.077, 29.274],
+      backgroundColor: [GREEN_DARK, GREEN_LIGHT],
+      borderRadius: 6,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => {
+            if (ctx.dataIndex === 0) return ' Brent: $' + ctx.parsed.y.toFixed(3) + ' /bbl';
+            return ' Henry Hub: $' + (ctx.parsed.y / 10).toFixed(4) + ' /MMBtu';
+          }
+        }
+      }
+    },
+    scales: {
+      x: { grid: { display: false } },
+      y: {
+        grid: { color: '#e8f5e9' },
+        ticks: { callback: v => '$' + v }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
+
