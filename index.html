@@ -4,1323 +4,922 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ekoquim — Análise de Mercado | 31 Mar 2026</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 <style>
-  :root {
-    --green-dark: #00613A;
-    --green-mid: #008A52;
-    --green-light: #E8F5EE;
-    --green-pale: #F3FAF6;
-    --alta: #D32F2F;
-    --alta-bg: #FFF0F0;
-    --alta-border: #FFCDD2;
-    --queda: #1B6B1B;
-    --queda-bg: #F0FAF0;
-    --queda-border: #C8E6C9;
-    --estavel: #B8860B;
-    --estavel-bg: #FFFBF0;
-    --estavel-border: #FFE082;
-    --text-dark: #1A2B22;
-    --text-mid: #3D5A47;
-    --text-light: #6B8570;
-    --border: #D0E8DA;
-    --card-bg: #FFFFFF;
-    --shadow: 0 2px 8px rgba(0,97,58,0.10);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: var(--green-pale);
-    color: var(--text-dark);
-    font-size: 14px;
-    line-height: 1.5;
-  }
-
-  /* HEADER */
-  header {
-    background: var(--green-dark);
-    padding: 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
-  }
-  .header-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 14px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-  }
-  .header-logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .logo-mark {
-    width: 38px;
-    height: 38px;
-    background: #00A96E;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    font-weight: 900;
-    color: white;
-    letter-spacing: -1px;
-  }
-  .header-title {
-    color: white;
-  }
-  .header-title h1 {
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-  }
-  .header-title p {
-    font-size: 11px;
-    color: #A8D9C0;
-    margin-top: 1px;
-  }
-  .header-meta {
-    text-align: right;
-    color: #A8D9C0;
-    font-size: 11px;
-  }
-  .header-meta .date {
-    font-size: 14px;
-    font-weight: 600;
-    color: white;
-  }
-  .header-meta .usdcny {
-    margin-top: 3px;
-  }
-
-  /* MAIN */
-  main {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 24px 16px 40px;
-  }
-
-  /* SECTION HEADERS */
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 32px 0 16px;
-  }
-  .section-header h2 {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--green-dark);
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-  }
-  .section-line {
-    flex: 1;
-    height: 2px;
-    background: var(--green-mid);
-    border-radius: 2px;
-  }
-  .section-badge {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--green-dark);
-    background: var(--green-light);
-    padding: 3px 10px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    white-space: nowrap;
-  }
-
-  /* CARDS GRID */
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-    gap: 16px;
-  }
-  .cards-grid-4 {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 14px;
-  }
-
-  /* PRODUCT CARD */
-  .product-card {
-    background: var(--card-bg);
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    overflow: hidden;
-    transition: box-shadow 0.2s;
-  }
-  .product-card:hover {
-    box-shadow: 0 4px 16px rgba(0,97,58,0.15);
-  }
-  .card-header {
-    padding: 12px 16px 10px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 8px;
-  }
-  .card-name {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--green-dark);
-    line-height: 1.3;
-  }
-  .card-sub {
-    font-size: 10px;
-    color: var(--text-light);
-    margin-top: 2px;
-  }
-  .trend-badge {
-    flex-shrink: 0;
-    padding: 3px 8px;
-    border-radius: 10px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-  }
-  .trend-alta { background: var(--alta-bg); color: var(--alta); border: 1px solid var(--alta-border); }
-  .trend-queda { background: var(--queda-bg); color: var(--queda); border: 1px solid var(--queda-border); }
-  .trend-estavel { background: var(--estavel-bg); color: var(--estavel); border: 1px solid var(--estavel-border); }
-
-  .card-prices {
-    padding: 10px 16px 8px;
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-  }
-  .price-main {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--text-dark);
-  }
-  .price-unit {
-    font-size: 11px;
-    color: var(--text-light);
-  }
-  .price-usd {
-    font-size: 11px;
-    color: var(--text-light);
-    margin-left: auto;
-  }
-  .card-change {
-    padding: 0 16px 10px;
-    font-size: 11px;
-    display: flex;
-    gap: 12px;
-  }
-  .change-val {
-    font-weight: 700;
-  }
-  .change-val.up { color: var(--alta); }
-  .change-val.down { color: var(--queda); }
-  .change-val.neutral { color: var(--estavel); }
-  .card-chart {
-    padding: 8px 12px 12px;
-    height: 110px;
-  }
-  .card-chart.alta-bg canvas { }
-
-  /* Chart container colors by trend */
-  .chart-wrap {
-    position: relative;
-    height: 100px;
-    border-radius: 6px;
-    overflow: hidden;
-    padding: 4px;
-  }
-  .chart-wrap.alta { background: linear-gradient(180deg, rgba(211,47,47,0.06) 0%, rgba(211,47,47,0.02) 100%); }
-  .chart-wrap.queda { background: linear-gradient(180deg, rgba(27,107,27,0.06) 0%, rgba(27,107,27,0.02) 100%); }
-  .chart-wrap.estavel { background: linear-gradient(180deg, rgba(184,134,11,0.06) 0%, rgba(184,134,11,0.02) 100%); }
-
-  /* FREIGHT SECTION */
-  .freight-card {
-    background: var(--card-bg);
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    overflow: hidden;
-  }
-  .freight-header {
-    background: var(--green-dark);
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .freight-header h3 {
-    color: white;
-    font-size: 14px;
-    font-weight: 700;
-  }
-  .freight-header .freight-route {
-    font-size: 11px;
-    color: #A8D9C0;
-    margin-top: 2px;
-  }
-  .freight-stats {
-    display: flex;
-    gap: 32px;
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-  }
-  .freight-stat {
-    text-align: center;
-  }
-  .freight-stat .val {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--green-dark);
-  }
-  .freight-stat .lbl {
-    font-size: 10px;
-    color: var(--text-light);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-top: 2px;
-  }
-  .freight-chart {
-    padding: 16px 16px 12px;
-    height: 180px;
-  }
-
-  /* RAW MATERIAL CARD */
-  .raw-card {
-    background: var(--card-bg);
-    border-radius: 10px;
-    box-shadow: 0 1px 6px rgba(0,97,58,0.08);
-    border: 1px solid var(--border);
-    padding: 12px 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .raw-card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-  .raw-name {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--green-dark);
-  }
-  .raw-sub {
-    font-size: 10px;
-    color: var(--text-light);
-    margin-top: 1px;
-  }
-  .raw-price {
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--text-dark);
-    text-align: right;
-  }
-  .raw-unit {
-    font-size: 10px;
-    color: var(--text-light);
-    text-align: right;
-  }
-  .raw-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .raw-change {
-    font-size: 11px;
-    font-weight: 700;
-  }
-  .raw-source {
-    font-size: 10px;
-    color: var(--text-light);
-  }
-  .raw-chart {
-    height: 50px;
-    margin-top: 2px;
-  }
-
-  /* USD/CNY CARD */
-  .usdcny-card {
-    background: var(--green-dark);
-    border-radius: 10px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--green-dark);
-    padding: 14px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .usdcny-title {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    color: #A8D9C0;
-  }
-  .usdcny-rate {
-    font-size: 24px;
-    font-weight: 900;
-    letter-spacing: -0.5px;
-  }
-  .usdcny-sub {
-    font-size: 10px;
-    color: #A8D9C0;
-  }
-  .usdcny-chart {
-    height: 50px;
-    margin-top: 4px;
-  }
-
-  /* AMMONIA SPECIAL CARD */
-  .ammonia-regions {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 6px;
-    margin-top: 4px;
-  }
-  .ammonia-region {
-    background: var(--green-light);
-    border-radius: 6px;
-    padding: 5px 7px;
-    text-align: center;
-  }
-  .ammonia-region .reg-name {
-    font-size: 9px;
-    color: var(--text-light);
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-  }
-  .ammonia-region .reg-price {
-    font-size: 13px;
-    font-weight: 800;
-    color: var(--green-dark);
-  }
-
-  /* UNAVAILABLE CARD */
-  .unavailable-note {
-    font-size: 11px;
-    color: var(--text-light);
-    font-style: italic;
-    padding: 10px 0 4px;
-    text-align: center;
-  }
-
-  /* NEWS SECTION */
-  .news-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-    gap: 14px;
-  }
-  .news-card {
-    background: var(--card-bg);
-    border-radius: 10px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .news-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--green-mid);
-  }
-  .news-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text-dark);
-    line-height: 1.4;
-  }
-  .news-body {
-    font-size: 12px;
-    color: var(--text-mid);
-    line-height: 1.5;
-  }
-  .news-source {
-    font-size: 10px;
-    color: var(--text-light);
-    margin-top: 4px;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  /* DISCLAIMER */
-  .disclaimer {
-    margin-top: 32px;
-    padding: 14px 18px;
-    background: white;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    font-size: 11px;
-    color: var(--text-light);
-    line-height: 1.6;
-  }
-
-  /* FOOTER */
-  footer {
-    background: var(--green-dark);
-    color: #A8D9C0;
-    text-align: center;
-    padding: 16px;
-    font-size: 11px;
-    margin-top: 32px;
-  }
-  footer strong { color: white; }
-
-  /* SUMMARY BAR */
-  .summary-bar {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 20px;
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-    box-shadow: var(--shadow);
-    margin-bottom: 4px;
-  }
-  .summary-item {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  .summary-label {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text-light);
-  }
-  .summary-value {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text-dark);
-  }
-  .summary-value.up { color: var(--alta); }
-  .summary-value.down { color: var(--queda); }
-
-  @media (max-width: 600px) {
-    .cards-grid { grid-template-columns: 1fr; }
-    .cards-grid-4 { grid-template-columns: 1fr 1fr; }
-    .news-grid { grid-template-columns: 1fr; }
-    .freight-stats { gap: 16px; }
-  }
+:root{--g:#00613A;--gm:#008A52;--gl:#E8F5EE;--gp:#F3FAF6;--alta:#C62828;--altabg:#FFF0F0;--altabr:#FFCDD2;--queda:#1B6B1B;--quedabg:#F0FAF0;--quedabr:#C8E6C9;--est:#B8860B;--estbg:#FFFBF0;--estbr:#FFE082;--td:#1A2B22;--tm:#3D5A47;--tl:#6B8570;--bdr:#D0E8DA;--shd:0 2px 8px rgba(0,97,58,0.10);}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gp);color:var(--td);font-size:14px;line-height:1.5}
+header{background:var(--g);position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+.hi{max-width:1400px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.logo{width:36px;height:36px;background:#00A96E;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;flex-shrink:0}
+.ht h1{font-size:17px;font-weight:700;color:#fff}
+.ht p{font-size:11px;color:#A8D9C0}
+.hm{text-align:right;color:#A8D9C0;font-size:11px}
+.hm .dt{font-size:14px;font-weight:600;color:#fff}
+main{max-width:1400px;margin:0 auto;padding:20px 14px 40px}
+.sh{display:flex;align-items:center;gap:10px;margin:28px 0 14px}
+.sh h2{font-size:14px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.8px;white-space:nowrap}
+.sl{flex:1;height:2px;background:var(--gm);border-radius:2px}
+.sb{font-size:10px;font-weight:600;color:var(--g);background:var(--gl);padding:3px 10px;border-radius:12px;border:1px solid var(--bdr);white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.card{background:#fff;border-radius:12px;box-shadow:var(--shd);border:1px solid var(--bdr);overflow:hidden}
+.card:hover{box-shadow:0 4px 16px rgba(0,97,58,.15)}
+.ch{padding:11px 15px 9px;border-bottom:1px solid var(--bdr);display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.cn{font-size:13px;font-weight:700;color:var(--g)}
+.csub{font-size:10px;color:var(--tl);margin-top:1px}
+.tbA{padding:3px 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--altabg);color:var(--alta);border:1px solid var(--altabr);flex-shrink:0}
+.tbQ{padding:3px 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--quedabg);color:var(--queda);border:1px solid var(--quedabr);flex-shrink:0}
+.tbE{padding:3px 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--estbg);color:var(--est);border:1px solid var(--estbr);flex-shrink:0}
+.cp{padding:10px 15px 6px;display:flex;align-items:baseline;gap:8px}
+.pm{font-size:20px;font-weight:800;color:var(--td)}
+.pu{font-size:11px;color:var(--tl)}
+.pusd{font-size:11px;color:var(--tl);margin-left:auto}
+.cc{padding:0 15px 8px;font-size:11px;display:flex;gap:10px;flex-wrap:wrap}
+.up{color:var(--alta);font-weight:700} .dn{color:var(--queda);font-weight:700} .nt{color:var(--est);font-weight:700}
+.cg{padding:6px 10px 10px}
+.fc{background:#fff;border-radius:12px;box-shadow:var(--shd);border:1px solid var(--bdr);overflow:hidden}
+.fh{background:var(--g);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.fh h3{color:#fff;font-size:14px;font-weight:700}
+.fh .fr{font-size:10px;color:#A8D9C0;margin-top:2px}
+.fs{display:flex;gap:28px;padding:14px 18px;border-bottom:1px solid var(--bdr);flex-wrap:wrap}
+.fstat .val{font-size:19px;font-weight:800;color:var(--g)}
+.fstat .lbl{font-size:9px;color:var(--tl);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
+.fg{padding:12px 14px 14px}
+.rc{background:#fff;border-radius:10px;box-shadow:0 1px 5px rgba(0,97,58,.08);border:1px solid var(--bdr);padding:12px 13px;display:flex;flex-direction:column;gap:5px}
+.rt{display:flex;justify-content:space-between;align-items:flex-start}
+.rn{font-size:12px;font-weight:700;color:var(--g)}
+.rsub{font-size:10px;color:var(--tl);margin-top:1px}
+.rp{font-size:16px;font-weight:800;color:var(--td);text-align:right}
+.ru{font-size:10px;color:var(--tl);text-align:right}
+.rb{display:flex;justify-content:space-between;align-items:center}
+.rsrc{font-size:10px;color:var(--tl)}
+.rg{height:90px;margin-top:2px}
+.amm{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:4px}
+.ar{background:var(--gl);border-radius:6px;padding:5px 6px;text-align:center}
+.ar .an{font-size:9px;color:var(--tl);text-transform:uppercase;letter-spacing:.3px}
+.ar .ap{font-size:13px;font-weight:800;color:var(--g)}
+.una{font-size:11px;color:var(--tl);font-style:italic;padding:12px 0 4px;text-align:center}
+.ucc{background:var(--g);border-radius:10px;padding:14px;color:#fff}
+.uct{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#A8D9C0}
+.ucr{font-size:24px;font-weight:900;letter-spacing:-.5px}
+.ucs{font-size:10px;color:#A8D9C0;margin-top:2px}
+.ucg{height:55px;margin-top:6px}
+.ng{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:14px}
+.nc{background:#fff;border-radius:10px;box-shadow:var(--shd);border:1px solid var(--bdr);padding:14px 15px;display:flex;flex-direction:column;gap:5px}
+.ntag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gm)}
+.ntitle{font-size:13px;font-weight:700;color:var(--td);line-height:1.4}
+.nbody{font-size:12px;color:var(--tm);line-height:1.5}
+.nsrc{font-size:10px;color:var(--tl);margin-top:4px;display:flex;justify-content:space-between}
+.disc{margin-top:28px;padding:14px 18px;background:#fff;border-radius:8px;border:1px solid var(--bdr);font-size:11px;color:var(--tl);line-height:1.6}
+footer{background:var(--g);color:#A8D9C0;text-align:center;padding:14px;font-size:11px;margin-top:28px}
+footer strong{color:#fff}
+.sbar{background:#fff;border:1px solid var(--bdr);border-radius:10px;padding:12px 18px;display:flex;gap:22px;flex-wrap:wrap;box-shadow:var(--shd);margin-bottom:2px}
+.si{display:flex;flex-direction:column;gap:2px}
+.sl2{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--tl)}
+.sv{font-size:13px;font-weight:700;color:var(--td)}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}.ng{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<!-- HEADER -->
 <header>
-  <div class="header-inner">
-    <div class="header-logo">
-      <div class="logo-mark">EK</div>
-      <div class="header-title">
-        <h1>Análise de Mercado Químico</h1>
-        <p>Ekoquim — Monitoramento de Preços e Tendências</p>
-      </div>
-    </div>
-    <div class="header-meta">
-      <div class="date">31 Mar 2026 — Segunda-feira</div>
-      <div class="usdcny">USD/CNY: 6,9151 &nbsp;|&nbsp; Brent: US$107,92/bbl &nbsp;|&nbsp; XSICFESE: US$2.915/FEU</div>
-    </div>
-  </div>
+<div class="hi">
+<div style="display:flex;align-items:center;gap:12px">
+<div class="logo">EK</div>
+<div class="ht"><h1>Análise de Mercado Químico</h1><p>Ekoquim — Monitoramento de Preços e Tendências</p></div>
+</div>
+<div class="hm"><div class="dt">31 Mar 2026 — Segunda-feira</div><div>USD/CNY: 6,9151 &nbsp;|&nbsp; Brent: US$107,92/bbl &nbsp;|&nbsp; XSICFESE: US$2.915/FEU</div></div>
+</div>
 </header>
-
 <main>
 
-  <!-- SUMMARY BAR -->
-  <div class="summary-bar">
-    <div class="summary-item">
-      <span class="summary-label">Produtos Monitorados</span>
-      <span class="summary-value">7 principais + 8 insumos</span>
-    </div>
-    <div class="summary-item">
-      <span class="summary-label">Tendência Dominante</span>
-      <span class="summary-value up">▲ Alta (6 de 7 produtos)</span>
-    </div>
-    <div class="summary-item">
-      <span class="summary-label">Destaque da Semana</span>
-      <span class="summary-value up">PG +25,2% &nbsp;|&nbsp; Enxofre +14,7%</span>
-    </div>
-    <div class="summary-item">
-      <span class="summary-label">Fator Macro</span>
-      <span class="summary-value">Crise Estreito de Ormuz</span>
-    </div>
-    <div class="summary-item">
-      <span class="summary-label">USD/CNY</span>
-      <span class="summary-value">6,9151 (estável)</span>
-    </div>
-  </div>
+<div class="sbar">
+<div class="si"><span class="sl2">Produtos Monitorados</span><span class="sv">7 produtos + 8 insumos</span></div>
+<div class="si"><span class="sl2">Tendência Dominante</span><span class="sv up">▲ ALTA (6/7 produtos)</span></div>
+<div class="si"><span class="sl2">Destaque da Semana</span><span class="sv up">PG +25,2% &nbsp;|&nbsp; Enxofre +14,7%</span></div>
+<div class="si"><span class="sl2">Fator Macro Crítico</span><span class="sv">Crise Estreito de Ormuz</span></div>
+<div class="si"><span class="sl2">USD/CNY</span><span class="sv">6,9151 (estável)</span></div>
+</div>
 
-  <!-- PRODUTOS MONITORADOS -->
-  <div class="section-header">
-    <h2>Produtos Monitorados</h2>
-    <div class="section-line"></div>
-    <span class="section-badge">ECHEMI — China Domestic | Mar 16–30, 2026</span>
-  </div>
+<div class="sh"><h2>Produtos Monitorados</h2><div class="sl"></div><span class="sb">ECHEMI — China Domestic &nbsp;|&nbsp; Mar 16–30, 2026 &nbsp;|&nbsp; CNY/mt → USD</span></div>
 
-  <div class="cards-grid">
+<div class="grid">
 
-    <!-- PROPYLENE GLYCOL -->
-    <div class="product-card">
-      <div class="card-header">
-        <div>
-          <div class="card-name">Propilenoglicol (PG)</div>
-          <div class="card-sub">Propylene Glycol — China Domestic</div>
-        </div>
-        <span class="trend-badge trend-alta">▲ ALTA +25,2%</span>
-      </div>
-      <div class="card-prices">
-        <span class="price-main">10.267</span>
-        <span class="price-unit">CNY/mt</span>
-        <span class="price-usd">≈ US$1.484/mt</span>
-      </div>
-      <div class="card-change">
-        <span>D-7: 8.200 CNY/mt</span>
-        <span class="change-val up">▲ +2.067 CNY (+25,2%)</span>
-        <span>Mar 30</span>
-      </div>
-      <div class="card-chart">
-        <div class="chart-wrap alta">
-          <canvas id="chart-pg"></canvas>
-        </div>
-      </div>
-    </div>
+<div class="card">
+<div class="ch"><div><div class="cn">Propilenoglicol (PG)</div><div class="csub">Propylene Glycol — China Domestic</div></div><span class="tbA">▲ ALTA +25,2%</span></div>
+<div class="cp"><span class="pm">10.267</span><span class="pu">CNY/mt</span><span class="pusd">≈ US$1.484/mt</span></div>
+<div class="cc"><span>D-7: 8.200 CNY</span><span class="up">▲ +2.067 CNY (+25,2%)</span><span>Mar 30</span></div>
+<div class="cg"><svg viewBox="0 0 320 150" style="width:100%;height:150px;display:block;">
+<path d="M 50.0,108.8 L 76.0,108.8 L 102.0,108.8 L 128.0,111.9 L 154.0,105.2 L 180.0,83.7 L 206.0,66.6 L 232.0,66.6 L 258.0,55.0 L 284.0,48.7 L 310.0,28.1 L 310.0,122.0 L 50.0,122.0 Z" fill="rgba(198,40,40,0.08)" stroke="none"/>
+<line x1="50" y1="111.9" x2="310" y2="111.9" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="84.0" x2="310" y2="84.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="56.0" x2="310" y2="56.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="28.1" x2="310" y2="28.1" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="18" x2="50" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="50" y1="122" x2="310" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="46" y1="111.9" x2="50" y2="111.9" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="114.9" text-anchor="end" font-size="8" fill="#555">7.150</text>
+<line x1="46" y1="84.0" x2="50" y2="84.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="87.0" text-anchor="end" font-size="8" fill="#555">8.188</text>
+<line x1="46" y1="56.0" x2="50" y2="56.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="59.0" text-anchor="end" font-size="8" fill="#555">9.227</text>
+<line x1="46" y1="28.1" x2="50" y2="28.1" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="31.1" text-anchor="end" font-size="8" fill="#555">10.266</text>
+<line x1="50.0" y1="122" x2="50.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="50.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 16</text>
+<line x1="102.0" y1="122" x2="102.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="102.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 18</text>
+<line x1="154.0" y1="122" x2="154.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="154.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 20</text>
+<line x1="206.0" y1="122" x2="206.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="206.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 24</text>
+<line x1="258.0" y1="122" x2="258.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="258.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 26</text>
+<line x1="310.0" y1="122" x2="310.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="310.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 30</text>
+<path d="M 50.0,108.8 L 76.0,108.8 L 102.0,108.8 L 128.0,111.9 L 154.0,105.2 L 180.0,83.7 L 206.0,66.6 L 232.0,66.6 L 258.0,55.0 L 284.0,48.7 L 310.0,28.1" fill="none" stroke="#C62828" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="50.0" cy="108.8" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="76.0" cy="108.8" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="102.0" cy="108.8" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="128.0" cy="111.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="154.0" cy="105.2" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="180.0" cy="83.7" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="206.0" cy="66.6" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="232.0" cy="66.6" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="258.0" cy="55.0" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="284.0" cy="48.7" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="310.0" cy="28.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<text x="310.0" y="22.1" text-anchor="middle" font-size="8" fill="#C62828" font-weight="bold">10.266</text>
+<text x="128.0" y="124.9" text-anchor="middle" font-size="8" fill="#999">7.150</text>
+</svg></div>
+</div>
 
-    <!-- ACETIC ACID -->
-    <div class="product-card">
-      <div class="card-header">
-        <div>
-          <div class="card-name">Ácido Acético</div>
-          <div class="card-sub">Acetic Acid — China Domestic</div>
-        </div>
-        <span class="trend-badge trend-alta">▲ ALTA +18,7%</span>
-      </div>
-      <div class="card-prices">
-        <span class="price-main">3.983</span>
-        <span class="price-unit">CNY/mt</span>
-        <span class="price-usd">≈ US$576/mt</span>
-      </div>
-      <div class="card-change">
-        <span>D-7: 3.357 CNY/mt</span>
-        <span class="change-val up">▲ +627 CNY (+18,7%)</span>
-        <span>Mar 30</span>
-      </div>
-      <div class="card-chart">
-        <div class="chart-wrap alta">
-          <canvas id="chart-aa"></canvas>
-        </div>
-      </div>
-    </div>
+<div class="card">
+<div class="ch"><div><div class="cn">Ácido Acético</div><div class="csub">Acetic Acid — China Domestic</div></div><span class="tbA">▲ ALTA +18,7%</span></div>
+<div class="cp"><span class="pm">3.983</span><span class="pu">CNY/mt</span><span class="pusd">≈ US$576/mt</span></div>
+<div class="cc"><span>D-7: 3.357 CNY</span><span class="up">▲ +627 CNY (+18,7%)</span><span>Mar 30</span></div>
+<div class="cg"><svg viewBox="0 0 320 150" style="width:100%;height:150px;display:block;">
+<path d="M 50.0,111.9 L 76.0,111.9 L 102.0,107.2 L 128.0,100.6 L 154.0,96.5 L 180.0,87.1 L 206.0,78.9 L 232.0,75.8 L 258.0,69.8 L 284.0,63.2 L 310.0,28.1 L 310.0,122.0 L 50.0,122.0 Z" fill="rgba(198,40,40,0.08)" stroke="none"/>
+<line x1="50" y1="111.9" x2="310" y2="111.9" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="84.0" x2="310" y2="84.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="56.0" x2="310" y2="56.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="28.1" x2="310" y2="28.1" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="18" x2="50" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="50" y1="122" x2="310" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="46" y1="111.9" x2="50" y2="111.9" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="114.9" text-anchor="end" font-size="8" fill="#555">3.093</text>
+<line x1="46" y1="84.0" x2="50" y2="84.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="87.0" text-anchor="end" font-size="8" fill="#555">3.389</text>
+<line x1="46" y1="56.0" x2="50" y2="56.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="59.0" text-anchor="end" font-size="8" fill="#555">3.686</text>
+<line x1="46" y1="28.1" x2="50" y2="28.1" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="31.1" text-anchor="end" font-size="8" fill="#555">3.983</text>
+<line x1="50.0" y1="122" x2="50.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="50.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 16</text>
+<line x1="102.0" y1="122" x2="102.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="102.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 18</text>
+<line x1="154.0" y1="122" x2="154.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="154.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 20</text>
+<line x1="206.0" y1="122" x2="206.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="206.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 24</text>
+<line x1="258.0" y1="122" x2="258.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="258.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 26</text>
+<line x1="310.0" y1="122" x2="310.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="310.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 30</text>
+<path d="M 50.0,111.9 L 76.0,111.9 L 102.0,107.2 L 128.0,100.6 L 154.0,96.5 L 180.0,87.1 L 206.0,78.9 L 232.0,75.8 L 258.0,69.8 L 284.0,63.2 L 310.0,28.1" fill="none" stroke="#C62828" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="50.0" cy="111.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="76.0" cy="111.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="102.0" cy="107.2" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="128.0" cy="100.6" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="154.0" cy="96.5" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="180.0" cy="87.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="206.0" cy="78.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="232.0" cy="75.8" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="258.0" cy="69.8" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="284.0" cy="63.2" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="310.0" cy="28.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<text x="310.0" y="22.1" text-anchor="middle" font-size="8" fill="#C62828" font-weight="bold">3.983</text>
+<text x="76.0" y="124.9" text-anchor="middle" font-size="8" fill="#999">3.093</text>
+</svg></div>
+</div>
 
-    <!-- ETHANOLAMINE -->
-    <div class="product-card">
-      <div class="card-header">
-        <div>
-          <div class="card-name">Etanolamina</div>
-          <div class="card-sub">Ethanolamine — China Domestic</div>
-        </div>
-        <span class="trend-badge trend-alta">▲ ALTA +4,6%</span>
-      </div>
-      <div class="card-prices">
-        <span class="price-main">9.000</span>
-        <span class="price-unit">CNY/mt</span>
-        <span class="price-usd">≈ US$1.302/mt</span>
-      </div>
-      <div class="card-change">
-        <span>D-7: 8.607 CNY/mt</span>
-        <span class="change-val up">▲ +393 CNY (+4,6%)</span>
-        <span>Mar 30</span>
-      </div>
-      <div class="card-chart">
-        <div class="chart-wrap alta">
-          <canvas id="chart-ea"></canvas>
-        </div>
-      </div>
-    </div>
+<div class="card">
+<div class="ch"><div><div class="cn">Etanolamina</div><div class="csub">Ethanolamine — China Domestic</div></div><span class="tbA">▲ ALTA +4,6%</span></div>
+<div class="cp"><span class="pm">9.000</span><span class="pu">CNY/mt</span><span class="pusd">≈ US$1.302/mt</span></div>
+<div class="cc"><span>D-7: 8.607 CNY</span><span class="up">▲ +393 CNY (+4,6%)</span><span>Mar 30</span></div>
+<div class="cg"><svg viewBox="0 0 320 150" style="width:100%;height:150px;display:block;">
+<path d="M 50.0,111.9 L 76.0,93.6 L 102.0,93.6 L 128.0,93.6 L 154.0,100.6 L 180.0,88.5 L 206.0,62.4 L 232.0,46.7 L 258.0,38.0 L 284.0,38.0 L 310.0,28.1 L 310.0,122.0 L 50.0,122.0 Z" fill="rgba(198,40,40,0.08)" stroke="none"/>
+<line x1="50" y1="111.9" x2="310" y2="111.9" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="84.0" x2="310" y2="84.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="56.0" x2="310" y2="56.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="28.1" x2="310" y2="28.1" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="18" x2="50" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="50" y1="122" x2="310" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="46" y1="111.9" x2="50" y2="111.9" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="114.9" text-anchor="end" font-size="8" fill="#555">8.454</text>
+<line x1="46" y1="84.0" x2="50" y2="84.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="87.0" text-anchor="end" font-size="8" fill="#555">8.636</text>
+<line x1="46" y1="56.0" x2="50" y2="56.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="59.0" text-anchor="end" font-size="8" fill="#555">8.818</text>
+<line x1="46" y1="28.1" x2="50" y2="28.1" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="31.1" text-anchor="end" font-size="8" fill="#555">9.000</text>
+<line x1="50.0" y1="122" x2="50.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="50.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 16</text>
+<line x1="102.0" y1="122" x2="102.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="102.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 18</text>
+<line x1="154.0" y1="122" x2="154.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="154.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 20</text>
+<line x1="206.0" y1="122" x2="206.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="206.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 24</text>
+<line x1="258.0" y1="122" x2="258.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="258.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 26</text>
+<line x1="310.0" y1="122" x2="310.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="310.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 30</text>
+<path d="M 50.0,111.9 L 76.0,93.6 L 102.0,93.6 L 128.0,93.6 L 154.0,100.6 L 180.0,88.5 L 206.0,62.4 L 232.0,46.7 L 258.0,38.0 L 284.0,38.0 L 310.0,28.1" fill="none" stroke="#C62828" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="50.0" cy="111.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="76.0" cy="93.6" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="102.0" cy="93.6" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="128.0" cy="93.6" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="154.0" cy="100.6" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="180.0" cy="88.5" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="206.0" cy="62.4" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="232.0" cy="46.7" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="258.0" cy="38.0" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="284.0" cy="38.0" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="310.0" cy="28.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<text x="310.0" y="22.1" text-anchor="middle" font-size="8" fill="#C62828" font-weight="bold">9.000</text>
+<text x="50.0" y="124.9" text-anchor="middle" font-size="8" fill="#999">8.454</text>
+</svg></div>
+</div>
 
-    <!-- SODIUM CARBONATE -->
-    <div class="product-card">
-      <div class="card-header">
-        <div>
-          <div class="card-name">Carbonato de Sódio</div>
-          <div class="card-sub">Sodium Carbonate / Soda Ash — China Domestic</div>
-        </div>
-        <span class="trend-badge trend-estavel">➡ ESTÁVEL −0,7%</span>
-      </div>
-      <div class="card-prices">
-        <span class="price-main">1.246</span>
-        <span class="price-unit">CNY/mt</span>
-        <span class="price-usd">≈ US$180/mt</span>
-      </div>
-      <div class="card-change">
-        <span>D-7: 1.255 CNY/mt</span>
-        <span class="change-val neutral">▼ −9 CNY (−0,7%)</span>
-        <span>Mar 30</span>
-      </div>
-      <div class="card-chart">
-        <div class="chart-wrap estavel">
-          <canvas id="chart-sc"></canvas>
-        </div>
-      </div>
-    </div>
+<div class="card">
+<div class="ch"><div><div class="cn">Carbonato de Sódio</div><div class="csub">Sodium Carbonate / Soda Ash — China Domestic</div></div><span class="tbE">➡ ESTÁVEL −0,7%</span></div>
+<div class="cp"><span class="pm">1.246</span><span class="pu">CNY/mt</span><span class="pusd">≈ US$180/mt</span></div>
+<div class="cc"><span>D-7: 1.255 CNY</span><span class="nt">▼ −9 CNY (−0,7%)</span><span>Mar 30</span></div>
+<div class="cg"><svg viewBox="0 0 320 150" style="width:100%;height:150px;display:block;">
+<path d="M 50.0,38.9 L 76.0,42.9 L 102.0,42.9 L 128.0,111.9 L 154.0,45.6 L 180.0,30.8 L 206.0,28.1 L 232.0,30.8 L 258.0,41.5 L 284.0,41.5 L 310.0,46.9 L 310.0,122.0 L 50.0,122.0 Z" fill="rgba(184,134,11,0.08)" stroke="none"/>
+<line x1="50" y1="111.9" x2="310" y2="111.9" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="84.0" x2="310" y2="84.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="56.0" x2="310" y2="56.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="28.1" x2="310" y2="28.1" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="18" x2="50" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="50" y1="122" x2="310" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="46" y1="111.9" x2="50" y2="111.9" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="114.9" text-anchor="end" font-size="8" fill="#555">1.212</text>
+<line x1="46" y1="84.0" x2="50" y2="84.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="87.0" text-anchor="end" font-size="8" fill="#555">1.226</text>
+<line x1="46" y1="56.0" x2="50" y2="56.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="59.0" text-anchor="end" font-size="8" fill="#555">1.241</text>
+<line x1="46" y1="28.1" x2="50" y2="28.1" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="31.1" text-anchor="end" font-size="8" fill="#555">1.256</text>
+<line x1="50.0" y1="122" x2="50.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="50.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 16</text>
+<line x1="102.0" y1="122" x2="102.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="102.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 18</text>
+<line x1="154.0" y1="122" x2="154.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="154.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 20</text>
+<line x1="206.0" y1="122" x2="206.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="206.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 24</text>
+<line x1="258.0" y1="122" x2="258.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="258.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 26</text>
+<line x1="310.0" y1="122" x2="310.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="310.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 30</text>
+<path d="M 50.0,38.9 L 76.0,42.9 L 102.0,42.9 L 128.0,111.9 L 154.0,45.6 L 180.0,30.8 L 206.0,28.1 L 232.0,30.8 L 258.0,41.5 L 284.0,41.5 L 310.0,46.9" fill="none" stroke="#B8860B" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="50.0" cy="38.9" r="3" fill="#B8860B" stroke="white" stroke-width="1.5"/>
+<circle cx="76.0" cy="42.9" r="3" fill="#B8860B" stroke="white" stroke-width="1.5"/>
+<circle cx="102.0" cy="42.9" r="3" fill="#B8860B" stroke="white" stroke-width="1.5"/>
+<circle cx="128.0" cy="111.9" r="3" fill="#B8860B" stroke="white" stroke-width="1.5"/>
+<circle cx="154.0" cy="45.6" r="3" fill="#B8860B" stroke="white" stroke-width="1.5"/>
+<circle cx="180.0" cy="30.8" r="3" fill="#B8860B" stroke="white" stroke-width="1.5"/>
+<circle cx="206.0" cy="28.1" r="3" fill="#B8860B" stroke="white" stroke-width="1.5"/>
+<circle cx="232.0" cy="30.8" r="3" fill="#B8860B" stroke="white" stroke-width="1.5"/>
+<circle cx="258.0" cy="41.5" r="3" fill="#B8860B" stroke="white" stroke-width="1.5"/>
+<circle cx="284.0" cy="41.5" r="3" fill="#B8860B" stroke="white" stroke-width="1.5"/>
+<circle cx="310.0" cy="46.9" r="3" fill="#B8860B" stroke="white" stroke-width="1.5"/>
+<text x="206.0" y="22.1" text-anchor="middle" font-size="8" fill="#B8860B" font-weight="bold">1.256</text>
+<text x="128.0" y="124.9" text-anchor="middle" font-size="8" fill="#999">1.212</text>
+</svg></div>
+</div>
 
-    <!-- PHOSPHORIC ACID -->
-    <div class="product-card">
-      <div class="card-header">
-        <div>
-          <div class="card-name">Ácido Fosfórico</div>
-          <div class="card-sub">Phosphoric Acid — China Domestic</div>
-        </div>
-        <span class="trend-badge trend-alta">▲ ALTA +10,5%</span>
-      </div>
-      <div class="card-prices">
-        <span class="price-main">8.138</span>
-        <span class="price-unit">CNY/mt</span>
-        <span class="price-usd">≈ US$1.177/mt</span>
-      </div>
-      <div class="card-change">
-        <span>D-7: 7.367 CNY/mt</span>
-        <span class="change-val up">▲ +771 CNY (+10,5%)</span>
-        <span>Mar 30</span>
-      </div>
-      <div class="card-chart">
-        <div class="chart-wrap alta">
-          <canvas id="chart-pa"></canvas>
-        </div>
-      </div>
-    </div>
+<div class="card">
+<div class="ch"><div><div class="cn">Ácido Fosfórico</div><div class="csub">Phosphoric Acid — China Domestic</div></div><span class="tbA">▲ ALTA +10,5%</span></div>
+<div class="cp"><span class="pm">8.138</span><span class="pu">CNY/mt</span><span class="pusd">≈ US$1.177/mt</span></div>
+<div class="cc"><span>D-7: 7.367 CNY</span><span class="up">▲ +771 CNY (+10,5%)</span><span>Mar 30</span></div>
+<div class="cg"><svg viewBox="0 0 320 150" style="width:100%;height:150px;display:block;">
+<path d="M 50.0,91.9 L 76.0,108.6 L 102.0,108.6 L 128.0,111.9 L 154.0,111.9 L 180.0,105.3 L 206.0,88.6 L 232.0,88.6 L 258.0,63.5 L 284.0,28.1 L 310.0,28.1 L 310.0,122.0 L 50.0,122.0 Z" fill="rgba(198,40,40,0.08)" stroke="none"/>
+<line x1="50" y1="111.9" x2="310" y2="111.9" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="84.0" x2="310" y2="84.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="56.0" x2="310" y2="56.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="28.1" x2="310" y2="28.1" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="18" x2="50" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="50" y1="122" x2="310" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="46" y1="111.9" x2="50" y2="111.9" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="114.9" text-anchor="end" font-size="8" fill="#555">7.300</text>
+<line x1="46" y1="84.0" x2="50" y2="84.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="87.0" text-anchor="end" font-size="8" fill="#555">7.579</text>
+<line x1="46" y1="56.0" x2="50" y2="56.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="59.0" text-anchor="end" font-size="8" fill="#555">7.858</text>
+<line x1="46" y1="28.1" x2="50" y2="28.1" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="31.1" text-anchor="end" font-size="8" fill="#555">8.137</text>
+<line x1="50.0" y1="122" x2="50.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="50.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 16</text>
+<line x1="102.0" y1="122" x2="102.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="102.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 18</text>
+<line x1="154.0" y1="122" x2="154.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="154.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 20</text>
+<line x1="206.0" y1="122" x2="206.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="206.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 24</text>
+<line x1="258.0" y1="122" x2="258.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="258.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 26</text>
+<line x1="310.0" y1="122" x2="310.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="310.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 30</text>
+<path d="M 50.0,91.9 L 76.0,108.6 L 102.0,108.6 L 128.0,111.9 L 154.0,111.9 L 180.0,105.3 L 206.0,88.6 L 232.0,88.6 L 258.0,63.5 L 284.0,28.1 L 310.0,28.1" fill="none" stroke="#C62828" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="50.0" cy="91.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="76.0" cy="108.6" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="102.0" cy="108.6" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="128.0" cy="111.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="154.0" cy="111.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="180.0" cy="105.3" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="206.0" cy="88.6" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="232.0" cy="88.6" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="258.0" cy="63.5" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="284.0" cy="28.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="310.0" cy="28.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<text x="284.0" y="22.1" text-anchor="middle" font-size="8" fill="#C62828" font-weight="bold">8.137</text>
+<text x="128.0" y="124.9" text-anchor="middle" font-size="8" fill="#999">7.300</text>
+</svg></div>
+</div>
 
-    <!-- SODIUM HYDROXIDE -->
-    <div class="product-card">
-      <div class="card-header">
-        <div>
-          <div class="card-name">Soda Cáustica (NaOH)</div>
-          <div class="card-sub">Sodium Hydroxide — China Domestic</div>
-        </div>
-        <span class="trend-badge trend-alta">▲ ALTA +2,8%</span>
-      </div>
-      <div class="card-prices">
-        <span class="price-main">1.447</span>
-        <span class="price-unit">CNY/mt</span>
-        <span class="price-usd">≈ US$209/mt</span>
-      </div>
-      <div class="card-change">
-        <span>D-7: 1.407 CNY/mt</span>
-        <span class="change-val up">▲ +40 CNY (+2,8%)</span>
-        <span>Mar 29</span>
-      </div>
-      <div class="card-chart">
-        <div class="chart-wrap alta">
-          <canvas id="chart-naoh"></canvas>
-        </div>
-      </div>
-    </div>
+<div class="card">
+<div class="ch"><div><div class="cn">Soda Cáustica (NaOH)</div><div class="csub">Sodium Hydroxide — China Domestic</div></div><span class="tbA">▲ ALTA +2,8%</span></div>
+<div class="cp"><span class="pm">1.447</span><span class="pu">CNY/mt</span><span class="pusd">≈ US$209/mt</span></div>
+<div class="cc"><span>D-7: 1.407 CNY</span><span class="up">▲ +40 CNY (+2,8%)</span><span>Mar 29</span></div>
+<div class="cg"><svg viewBox="0 0 320 150" style="width:100%;height:150px;display:block;">
+<path d="M 50.0,111.9 L 93.3,105.4 L 136.7,60.2 L 180.0,74.9 L 223.3,28.1 L 266.7,76.1 L 310.0,76.1 L 310.0,122.0 L 50.0,122.0 Z" fill="rgba(198,40,40,0.08)" stroke="none"/>
+<line x1="50" y1="111.9" x2="310" y2="111.9" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="84.0" x2="310" y2="84.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="56.0" x2="310" y2="56.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="28.1" x2="310" y2="28.1" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="18" x2="50" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="50" y1="122" x2="310" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="46" y1="111.9" x2="50" y2="111.9" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="114.9" text-anchor="end" font-size="8" fill="#555">1.406</text>
+<line x1="46" y1="84.0" x2="50" y2="84.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="87.0" text-anchor="end" font-size="8" fill="#555">1.437</text>
+<line x1="46" y1="56.0" x2="50" y2="56.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="59.0" text-anchor="end" font-size="8" fill="#555">1.468</text>
+<line x1="46" y1="28.1" x2="50" y2="28.1" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="31.1" text-anchor="end" font-size="8" fill="#555">1.499</text>
+<line x1="50.0" y1="122" x2="50.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="50.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 22</text>
+<line x1="93.3" y1="122" x2="93.3" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="93.3" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 23</text>
+<line x1="136.7" y1="122" x2="136.7" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="136.7" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 24</text>
+<line x1="180.0" y1="122" x2="180.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="180.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 25</text>
+<line x1="223.3" y1="122" x2="223.3" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="223.3" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 26</text>
+<line x1="266.7" y1="122" x2="266.7" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="266.7" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 27</text>
+<line x1="310.0" y1="122" x2="310.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="310.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 29</text>
+<path d="M 50.0,111.9 L 93.3,105.4 L 136.7,60.2 L 180.0,74.9 L 223.3,28.1 L 266.7,76.1 L 310.0,76.1" fill="none" stroke="#C62828" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="50.0" cy="111.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="93.3" cy="105.4" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="136.7" cy="60.2" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="180.0" cy="74.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="223.3" cy="28.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="266.7" cy="76.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="310.0" cy="76.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<text x="223.3" y="22.1" text-anchor="middle" font-size="8" fill="#C62828" font-weight="bold">1.499</text>
+<text x="50.0" y="124.9" text-anchor="middle" font-size="8" fill="#999">1.406</text>
+</svg></div>
+</div>
 
-    <!-- DICHLOROMETHANE -->
-    <div class="product-card">
-      <div class="card-header">
-        <div>
-          <div class="card-name">Diclorometano (DCM)</div>
-          <div class="card-sub">Dichloromethane — China Domestic</div>
-        </div>
-        <span class="trend-badge trend-alta">▲ ALTA +5,3%</span>
-      </div>
-      <div class="card-prices">
-        <span class="price-main">2.495</span>
-        <span class="price-unit">CNY/mt</span>
-        <span class="price-usd">≈ US$361/mt</span>
-      </div>
-      <div class="card-change">
-        <span>D-7: 2.370 CNY/mt</span>
-        <span class="change-val up">▲ +125 CNY (+5,3%)</span>
-        <span>Mar 30</span>
-      </div>
-      <div class="card-chart">
-        <div class="chart-wrap alta">
-          <canvas id="chart-dcm"></canvas>
-        </div>
-      </div>
-    </div>
+<div class="card">
+<div class="ch"><div><div class="cn">Diclorometano (DCM)</div><div class="csub">Dichloromethane — China Domestic</div></div><span class="tbA">▲ ALTA +5,3%</span></div>
+<div class="cp"><span class="pm">2.495</span><span class="pu">CNY/mt</span><span class="pusd">≈ US$361/mt</span></div>
+<div class="cc"><span>D-7: 2.370 CNY</span><span class="up">▲ +125 CNY (+5,3%)</span><span>Mar 30</span></div>
+<div class="cg"><svg viewBox="0 0 320 150" style="width:100%;height:150px;display:block;">
+<path d="M 50.0,28.1 L 76.0,81.5 L 102.0,81.5 L 128.0,92.0 L 154.0,111.9 L 180.0,71.0 L 206.0,67.9 L 232.0,67.9 L 258.0,60.6 L 284.0,60.6 L 310.0,44.8 L 310.0,122.0 L 50.0,122.0 Z" fill="rgba(198,40,40,0.08)" stroke="none"/>
+<line x1="50" y1="111.9" x2="310" y2="111.9" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="84.0" x2="310" y2="84.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="56.0" x2="310" y2="56.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="28.1" x2="310" y2="28.1" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="18" x2="50" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="50" y1="122" x2="310" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="46" y1="111.9" x2="50" y2="111.9" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="114.9" text-anchor="end" font-size="8" fill="#555">2.175</text>
+<line x1="46" y1="84.0" x2="50" y2="84.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="87.0" text-anchor="end" font-size="8" fill="#555">2.308</text>
+<line x1="46" y1="56.0" x2="50" y2="56.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="59.0" text-anchor="end" font-size="8" fill="#555">2.441</text>
+<line x1="46" y1="28.1" x2="50" y2="28.1" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="31.1" text-anchor="end" font-size="8" fill="#555">2.575</text>
+<line x1="50.0" y1="122" x2="50.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="50.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 16</text>
+<line x1="102.0" y1="122" x2="102.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="102.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 18</text>
+<line x1="154.0" y1="122" x2="154.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="154.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 20</text>
+<line x1="206.0" y1="122" x2="206.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="206.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 24</text>
+<line x1="258.0" y1="122" x2="258.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="258.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 26</text>
+<line x1="310.0" y1="122" x2="310.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="310.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 30</text>
+<path d="M 50.0,28.1 L 76.0,81.5 L 102.0,81.5 L 128.0,92.0 L 154.0,111.9 L 180.0,71.0 L 206.0,67.9 L 232.0,67.9 L 258.0,60.6 L 284.0,60.6 L 310.0,44.8" fill="none" stroke="#C62828" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="50.0" cy="28.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="76.0" cy="81.5" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="102.0" cy="81.5" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="128.0" cy="92.0" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="154.0" cy="111.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="180.0" cy="71.0" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="206.0" cy="67.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="232.0" cy="67.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="258.0" cy="60.6" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="284.0" cy="60.6" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="310.0" cy="44.8" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<text x="50.0" y="22.1" text-anchor="middle" font-size="8" fill="#C62828" font-weight="bold">2.575</text>
+<text x="154.0" y="124.9" text-anchor="middle" font-size="8" fill="#999">2.175</text>
+</svg></div>
+</div>
 
-  </div><!-- /cards-grid -->
+</div>
 
-  <!-- FRETE XSICFESE -->
-  <div class="section-header">
-    <h2>Frete Marítimo</h2>
-    <div class="section-line"></div>
-    <span class="section-badge">XSICFESE — Far East → S. America East Coast</span>
-  </div>
+<div class="sh"><h2>Frete Marítimo</h2><div class="sl"></div><span class="sb">XSICFESE — Far East → S. America East Coast</span></div>
+<div class="fc">
+<div class="fh">
+<div><h3>XSICFESE — Xeneta Shipping Index</h3><div class="fr">Far East → América do Sul Costa Leste &nbsp;|&nbsp; USD/FEU &nbsp;|&nbsp; Fonte: Compass FT</div></div>
+<span style="padding:3px 8px;border-radius:10px;font-size:11px;font-weight:700;background:rgba(255,255,255,.12);color:#A8D9C0;border:1px solid rgba(255,255,255,.2);">▼ QUEDA −1,3%</span>
+</div>
+<div class="fs">
+<div class="fstat"><div class="val">US$2.915</div><div class="lbl">Atual (Mar 30)</div></div>
+<div class="fstat"><div class="val">US$2.952</div><div class="lbl">D-7 (Mar 24)</div></div>
+<div class="fstat"><div class="val" style="color:var(--queda)">−US$37 (−1,3%)</div><div class="lbl">Variação Semanal</div></div>
+<div class="fstat"><div class="val">US$1.565</div><div class="lbl">Mín. Período (Jan/26)</div></div>
+<div class="fstat"><div class="val">US$2.065</div><div class="lbl">Início (Dez/25)</div></div>
+</div>
+<div class="fg"><svg viewBox="0 0 800 170" style="width:100%;height:170px;display:block;">
+<path d="M 50.0,100.6 L 88.9,86.2 L 127.9,85.2 L 166.8,99.7 L 205.8,123.8 L 244.7,112.5 L 283.7,113.5 L 322.6,130.0 L 361.6,129.3 L 400.5,117.9 L 439.5,102.9 L 478.4,95.4 L 517.4,82.7 L 556.3,58.8 L 595.3,46.1 L 634.2,36.5 L 673.2,33.7 L 712.1,30.0 L 751.1,30.0 L 790.0,32.9 L 790.0,142.0 L 50.0,142.0 Z" fill="rgba(0,107,60,0.08)" stroke="none"/>
+<line x1="50" y1="130.0" x2="790" y2="130.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="96.7" x2="790" y2="96.7" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="63.3" x2="790" y2="63.3" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="30.0" x2="790" y2="30.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="18" x2="50" y2="142" stroke="#bbb" stroke-width="1"/>
+<line x1="50" y1="142" x2="790" y2="142" stroke="#bbb" stroke-width="1"/>
+<line x1="46" y1="130.0" x2="50" y2="130.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="133.0" text-anchor="end" font-size="8" fill="#555">1.696</text>
+<line x1="46" y1="96.7" x2="50" y2="96.7" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="99.7" text-anchor="end" font-size="8" fill="#555">2.114</text>
+<line x1="46" y1="63.3" x2="50" y2="63.3" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="66.3" text-anchor="end" font-size="8" fill="#555">2.533</text>
+<line x1="46" y1="30.0" x2="50" y2="30.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="33.0" text-anchor="end" font-size="8" fill="#555">2.952</text>
+<line x1="50.0" y1="142" x2="50.0" y2="146" stroke="#bbb" stroke-width="1"/>
+<text x="50.0" y="155" text-anchor="middle" font-size="8" fill="#555">01/12</text>
+<line x1="205.8" y1="142" x2="205.8" y2="146" stroke="#bbb" stroke-width="1"/>
+<text x="205.8" y="155" text-anchor="middle" font-size="8" fill="#555">30/12</text>
+<line x1="361.6" y1="142" x2="361.6" y2="146" stroke="#bbb" stroke-width="1"/>
+<text x="361.6" y="155" text-anchor="middle" font-size="8" fill="#555">27/01</text>
+<line x1="517.4" y1="142" x2="517.4" y2="146" stroke="#bbb" stroke-width="1"/>
+<text x="517.4" y="155" text-anchor="middle" font-size="8" fill="#555">24/02</text>
+<line x1="673.2" y1="142" x2="673.2" y2="146" stroke="#bbb" stroke-width="1"/>
+<text x="673.2" y="155" text-anchor="middle" font-size="8" fill="#555">20/03</text>
+<line x1="790.0" y1="142" x2="790.0" y2="146" stroke="#bbb" stroke-width="1"/>
+<text x="790.0" y="155" text-anchor="middle" font-size="8" fill="#555">30/03</text>
+<path d="M 50.0,100.6 L 88.9,86.2 L 127.9,85.2 L 166.8,99.7 L 205.8,123.8 L 244.7,112.5 L 283.7,113.5 L 322.6,130.0 L 361.6,129.3 L 400.5,117.9 L 439.5,102.9 L 478.4,95.4 L 517.4,82.7 L 556.3,58.8 L 595.3,46.1 L 634.2,36.5 L 673.2,33.7 L 712.1,30.0 L 751.1,30.0 L 790.0,32.9" fill="none" stroke="#006B3C" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="50.0" cy="100.6" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="88.9" cy="86.2" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="127.9" cy="85.2" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="166.8" cy="99.7" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="205.8" cy="123.8" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="244.7" cy="112.5" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="283.7" cy="113.5" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="322.6" cy="130.0" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="361.6" cy="129.3" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="400.5" cy="117.9" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="439.5" cy="102.9" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="478.4" cy="95.4" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="517.4" cy="82.7" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="556.3" cy="58.8" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="595.3" cy="46.1" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="634.2" cy="36.5" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="673.2" cy="33.7" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="712.1" cy="30.0" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="751.1" cy="30.0" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<circle cx="790.0" cy="32.9" r="3" fill="#006B3C" stroke="white" stroke-width="1.5"/>
+<text x="712.1" y="24.0" text-anchor="middle" font-size="8" fill="#006B3C" font-weight="bold">2.952</text>
+<text x="322.6" y="143.0" text-anchor="middle" font-size="8" fill="#999">1.696</text>
+</svg></div>
+</div>
 
-  <div class="freight-card">
-    <div class="freight-header">
-      <div>
-        <h3>XSICFESE — Xeneta Shipping Index</h3>
-        <div class="freight-route">Far East → América do Sul Costa Leste &nbsp;|&nbsp; USD/FEU &nbsp;|&nbsp; Fonte: Compass FT</div>
-      </div>
-      <span class="trend-badge trend-queda" style="background:rgba(255,255,255,0.12);color:#A8D9C0;border-color:rgba(255,255,255,0.2);">▼ QUEDA −1,3%</span>
-    </div>
-    <div class="freight-stats">
-      <div class="freight-stat">
-        <div class="val">US$2.915</div>
-        <div class="lbl">Atual (Mar 30)</div>
-      </div>
-      <div class="freight-stat">
-        <div class="val">US$2.952</div>
-        <div class="lbl">D-7 (Mar 24)</div>
-      </div>
-      <div class="freight-stat">
-        <div class="val" style="color:var(--queda)">−US$37 (−1,3%)</div>
-        <div class="lbl">Variação Semanal</div>
-      </div>
-      <div class="freight-stat">
-        <div class="val">US$2.065</div>
-        <div class="lbl">Mín. 4 meses (Dez/25)</div>
-      </div>
-      <div class="freight-stat">
-        <div class="val">81 pts</div>
-        <div class="lbl">Histórico (Dez 25–Mar 26)</div>
-      </div>
-    </div>
-    <div class="freight-chart">
-      <canvas id="chart-freight"></canvas>
-    </div>
-  </div>
+<div class="sh"><h2>Matérias-Primas Estratégicas</h2><div class="sl"></div><span class="sb">TradingEconomics · ECHEMI · BusinessAnalytiq | 31 Mar 2026</span></div>
+<div class="grid4">
 
-  <!-- MATÉRIAS-PRIMAS -->
-  <div class="section-header">
-    <h2>Matérias-Primas Estratégicas</h2>
-    <div class="section-line"></div>
-    <span class="section-badge">TradingEconomics · ECHEMI · BusinessAnalytiq | 31 Mar 2026</span>
-  </div>
+<div class="rc">
+<div class="rt"><div><div class="rn">🛢 Petróleo Brent</div><div class="rsub">Brent Crude Oil — ICE Futures</div></div><div><div class="rp">107,92</div><div class="ru">USD/bbl</div></div></div>
+<div class="rb"><span class="up">▲ +3,3% vs D-7 (104,49)</span><span class="rsrc">TradingEconomics</span></div>
+<div class="rg"><svg viewBox="0 0 320 150" style="width:100%;height:150px;display:block;">
+<path d="M 50.0,61.0 L 78.9,52.3 L 107.8,28.1 L 136.7,111.9 L 165.6,80.8 L 194.4,96.3 L 223.3,98.6 L 252.2,75.1 L 281.1,60.9 L 310.0,57.3 L 310.0,122.0 L 50.0,122.0 Z" fill="rgba(198,40,40,0.08)" stroke="none"/>
+<line x1="50" y1="111.9" x2="310" y2="111.9" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="84.0" x2="310" y2="84.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="56.0" x2="310" y2="56.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="28.1" x2="310" y2="28.1" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="18" x2="50" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="50" y1="122" x2="310" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="46" y1="111.9" x2="50" y2="111.9" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="114.9" text-anchor="end" font-size="8" fill="#555">99.9</text>
+<line x1="46" y1="84.0" x2="50" y2="84.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="87.0" text-anchor="end" font-size="8" fill="#555">104</text>
+<line x1="46" y1="56.0" x2="50" y2="56.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="59.0" text-anchor="end" font-size="8" fill="#555">108</text>
+<line x1="46" y1="28.1" x2="50" y2="28.1" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="31.1" text-anchor="end" font-size="8" fill="#555">112</text>
+<line x1="50.0" y1="122" x2="50.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="50.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 18</text>
+<line x1="107.8" y1="122" x2="107.8" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="107.8" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 20</text>
+<line x1="165.6" y1="122" x2="165.6" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="165.6" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 24</text>
+<line x1="223.3" y1="122" x2="223.3" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="223.3" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 26</text>
+<line x1="281.1" y1="122" x2="281.1" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="281.1" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 30</text>
+<line x1="310.0" y1="122" x2="310.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="310.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 31</text>
+<path d="M 50.0,61.0 L 78.9,52.3 L 107.8,28.1 L 136.7,111.9 L 165.6,80.8 L 194.4,96.3 L 223.3,98.6 L 252.2,75.1 L 281.1,60.9 L 310.0,57.3" fill="none" stroke="#C62828" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="50.0" cy="61.0" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="78.9" cy="52.3" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="107.8" cy="28.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="136.7" cy="111.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="165.6" cy="80.8" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="194.4" cy="96.3" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="223.3" cy="98.6" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="252.2" cy="75.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="281.1" cy="60.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="310.0" cy="57.3" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<text x="107.8" y="22.1" text-anchor="middle" font-size="8" fill="#C62828" font-weight="bold">112</text>
+<text x="136.7" y="124.9" text-anchor="middle" font-size="8" fill="#999">99.9</text>
+</svg></div>
+</div>
 
-  <div class="cards-grid-4">
+<div class="rc">
+<div class="rt"><div><div class="rn">🔥 Gás Natural</div><div class="rsub">Henry Hub — NYMEX</div></div><div><div class="rp">2,846</div><div class="ru">USD/MMBtu</div></div></div>
+<div class="rb"><span class="dn">▼ −2,3% vs D-7 (2,912)</span><span class="rsrc">TradingEconomics</span></div>
+<div class="rg"><svg viewBox="0 0 320 150" style="width:100%;height:150px;display:block;">
+<path d="M 50.0,54.5 L 78.9,28.1 L 107.8,46.7 L 136.7,100.1 L 165.6,94.6 L 194.4,94.6 L 223.3,90.4 L 252.2,65.0 L 281.1,101.2 L 310.0,111.9 L 310.0,122.0 L 50.0,122.0 Z" fill="rgba(27,107,27,0.08)" stroke="none"/>
+<line x1="50" y1="111.9" x2="310" y2="111.9" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="84.0" x2="310" y2="84.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="56.0" x2="310" y2="56.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="28.1" x2="310" y2="28.1" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="18" x2="50" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="50" y1="122" x2="310" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="46" y1="111.9" x2="50" y2="111.9" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="114.9" text-anchor="end" font-size="8" fill="#555">2.846</text>
+<line x1="46" y1="84.0" x2="50" y2="84.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="87.0" text-anchor="end" font-size="8" fill="#555">2.953</text>
+<line x1="46" y1="56.0" x2="50" y2="56.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="59.0" text-anchor="end" font-size="8" fill="#555">3.059</text>
+<line x1="46" y1="28.1" x2="50" y2="28.1" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="31.1" text-anchor="end" font-size="8" fill="#555">3.166</text>
+<line x1="50.0" y1="122" x2="50.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="50.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 18</text>
+<line x1="107.8" y1="122" x2="107.8" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="107.8" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 20</text>
+<line x1="165.6" y1="122" x2="165.6" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="165.6" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 24</text>
+<line x1="223.3" y1="122" x2="223.3" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="223.3" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 26</text>
+<line x1="281.1" y1="122" x2="281.1" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="281.1" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 30</text>
+<line x1="310.0" y1="122" x2="310.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="310.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 31</text>
+<path d="M 50.0,54.5 L 78.9,28.1 L 107.8,46.7 L 136.7,100.1 L 165.6,94.6 L 194.4,94.6 L 223.3,90.4 L 252.2,65.0 L 281.1,101.2 L 310.0,111.9" fill="none" stroke="#1B6B1B" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="50.0" cy="54.5" r="3" fill="#1B6B1B" stroke="white" stroke-width="1.5"/>
+<circle cx="78.9" cy="28.1" r="3" fill="#1B6B1B" stroke="white" stroke-width="1.5"/>
+<circle cx="107.8" cy="46.7" r="3" fill="#1B6B1B" stroke="white" stroke-width="1.5"/>
+<circle cx="136.7" cy="100.1" r="3" fill="#1B6B1B" stroke="white" stroke-width="1.5"/>
+<circle cx="165.6" cy="94.6" r="3" fill="#1B6B1B" stroke="white" stroke-width="1.5"/>
+<circle cx="194.4" cy="94.6" r="3" fill="#1B6B1B" stroke="white" stroke-width="1.5"/>
+<circle cx="223.3" cy="90.4" r="3" fill="#1B6B1B" stroke="white" stroke-width="1.5"/>
+<circle cx="252.2" cy="65.0" r="3" fill="#1B6B1B" stroke="white" stroke-width="1.5"/>
+<circle cx="281.1" cy="101.2" r="3" fill="#1B6B1B" stroke="white" stroke-width="1.5"/>
+<circle cx="310.0" cy="111.9" r="3" fill="#1B6B1B" stroke="white" stroke-width="1.5"/>
+<text x="78.9" y="22.1" text-anchor="middle" font-size="8" fill="#1B6B1B" font-weight="bold">3.166</text>
+<text x="310.0" y="124.9" text-anchor="middle" font-size="8" fill="#999">2.846</text>
+</svg></div>
+</div>
 
-    <!-- BRENT -->
-    <div class="raw-card">
-      <div class="raw-card-top">
-        <div>
-          <div class="raw-name">🛢 Petróleo Brent</div>
-          <div class="raw-sub">Brent Crude Oil — ICE Futures</div>
-        </div>
-        <div>
-          <div class="raw-price">107,92</div>
-          <div class="raw-unit">USD/bbl</div>
-        </div>
-      </div>
-      <div class="raw-bottom">
-        <span class="raw-change up" style="color:var(--alta)">▲ +3,3% vs D-7</span>
-        <span class="raw-source">TradingEconomics</span>
-      </div>
-      <div class="raw-chart">
-        <canvas id="chart-brent"></canvas>
-      </div>
-    </div>
+<div class="rc">
+<div class="rt"><div><div class="rn">⚗️ Metanol</div><div class="rsub">Methanol — China Domestic</div></div><div><div class="rp">3.159</div><div class="ru">CNY/ton ≈ US$457</div></div></div>
+<div class="rb"><span class="up">▲ +2,0% vs D-7 (3.096)</span><span class="rsrc">TradingEconomics</span></div>
+<div class="rg"><svg viewBox="0 0 320 150" style="width:100%;height:150px;display:block;">
+<path d="M 50.0,111.9 L 78.9,60.6 L 107.8,73.8 L 136.7,28.1 L 165.6,75.1 L 194.4,82.0 L 223.3,50.6 L 252.2,33.9 L 281.1,31.7 L 310.0,61.4 L 310.0,122.0 L 50.0,122.0 Z" fill="rgba(198,40,40,0.08)" stroke="none"/>
+<line x1="50" y1="111.9" x2="310" y2="111.9" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="84.0" x2="310" y2="84.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="56.0" x2="310" y2="56.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="28.1" x2="310" y2="28.1" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="18" x2="50" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="50" y1="122" x2="310" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="46" y1="111.9" x2="50" y2="111.9" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="114.9" text-anchor="end" font-size="8" fill="#555">2.926</text>
+<line x1="46" y1="84.0" x2="50" y2="84.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="87.0" text-anchor="end" font-size="8" fill="#555">3.055</text>
+<line x1="46" y1="56.0" x2="50" y2="56.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="59.0" text-anchor="end" font-size="8" fill="#555">3.184</text>
+<line x1="46" y1="28.1" x2="50" y2="28.1" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="31.1" text-anchor="end" font-size="8" fill="#555">3.313</text>
+<line x1="50.0" y1="122" x2="50.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="50.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 18</text>
+<line x1="107.8" y1="122" x2="107.8" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="107.8" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 20</text>
+<line x1="165.6" y1="122" x2="165.6" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="165.6" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 24</text>
+<line x1="223.3" y1="122" x2="223.3" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="223.3" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 26</text>
+<line x1="281.1" y1="122" x2="281.1" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="281.1" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 30</text>
+<line x1="310.0" y1="122" x2="310.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="310.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 31</text>
+<path d="M 50.0,111.9 L 78.9,60.6 L 107.8,73.8 L 136.7,28.1 L 165.6,75.1 L 194.4,82.0 L 223.3,50.6 L 252.2,33.9 L 281.1,31.7 L 310.0,61.4" fill="none" stroke="#C62828" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="50.0" cy="111.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="78.9" cy="60.6" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="107.8" cy="73.8" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="136.7" cy="28.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="165.6" cy="75.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="194.4" cy="82.0" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="223.3" cy="50.6" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="252.2" cy="33.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="281.1" cy="31.7" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="310.0" cy="61.4" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<text x="136.7" y="22.1" text-anchor="middle" font-size="8" fill="#C62828" font-weight="bold">3.313</text>
+<text x="50.0" y="124.9" text-anchor="middle" font-size="8" fill="#999">2.926</text>
+</svg></div>
+</div>
 
-    <!-- NATURAL GAS -->
-    <div class="raw-card">
-      <div class="raw-card-top">
-        <div>
-          <div class="raw-name">🔥 Gás Natural</div>
-          <div class="raw-sub">Henry Hub — NYMEX</div>
-        </div>
-        <div>
-          <div class="raw-price">2,846</div>
-          <div class="raw-unit">USD/MMBtu</div>
-        </div>
-      </div>
-      <div class="raw-bottom">
-        <span class="raw-change" style="color:var(--queda)">▼ −2,3% vs D-7</span>
-        <span class="raw-source">TradingEconomics</span>
-      </div>
-      <div class="raw-chart">
-        <canvas id="chart-gas"></canvas>
-      </div>
-    </div>
+<div class="rc">
+<div class="rt"><div><div class="rn">🌿 Ureia</div><div class="rsub">Urea — Granular FOB</div></div><div><div class="rp">690,00</div><div class="ru">USD/ton</div></div></div>
+<div class="rb"><span class="up">▲ +2,2% vs D-7 (675,00)</span><span class="rsrc">TradingEconomics</span></div>
+<div class="rg"><svg viewBox="0 0 320 150" style="width:100%;height:150px;display:block;">
+<path d="M 50.0,111.4 L 78.9,111.9 L 107.8,38.9 L 136.7,38.9 L 165.6,50.3 L 194.4,47.8 L 223.3,45.3 L 252.2,28.1 L 281.1,35.5 L 310.0,33.0 L 310.0,122.0 L 50.0,122.0 Z" fill="rgba(198,40,40,0.08)" stroke="none"/>
+<line x1="50" y1="111.9" x2="310" y2="111.9" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="84.0" x2="310" y2="84.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="56.0" x2="310" y2="56.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="28.1" x2="310" y2="28.1" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="18" x2="50" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="50" y1="122" x2="310" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="46" y1="111.9" x2="50" y2="111.9" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="114.9" text-anchor="end" font-size="8" fill="#555">610</text>
+<line x1="46" y1="84.0" x2="50" y2="84.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="87.0" text-anchor="end" font-size="8" fill="#555">638</text>
+<line x1="46" y1="56.0" x2="50" y2="56.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="59.0" text-anchor="end" font-size="8" fill="#555">667</text>
+<line x1="46" y1="28.1" x2="50" y2="28.1" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="31.1" text-anchor="end" font-size="8" fill="#555">695</text>
+<line x1="50.0" y1="122" x2="50.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="50.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 17</text>
+<line x1="107.8" y1="122" x2="107.8" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="107.8" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 19</text>
+<line x1="165.6" y1="122" x2="165.6" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="165.6" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 23</text>
+<line x1="223.3" y1="122" x2="223.3" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="223.3" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 25</text>
+<line x1="281.1" y1="122" x2="281.1" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="281.1" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 27</text>
+<line x1="310.0" y1="122" x2="310.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="310.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 30</text>
+<path d="M 50.0,111.4 L 78.9,111.9 L 107.8,38.9 L 136.7,38.9 L 165.6,50.3 L 194.4,47.8 L 223.3,45.3 L 252.2,28.1 L 281.1,35.5 L 310.0,33.0" fill="none" stroke="#C62828" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="50.0" cy="111.4" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="78.9" cy="111.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="107.8" cy="38.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="136.7" cy="38.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="165.6" cy="50.3" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="194.4" cy="47.8" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="223.3" cy="45.3" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="252.2" cy="28.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="281.1" cy="35.5" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="310.0" cy="33.0" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<text x="252.2" y="22.1" text-anchor="middle" font-size="8" fill="#C62828" font-weight="bold">695</text>
+<text x="78.9" y="124.9" text-anchor="middle" font-size="8" fill="#999">610</text>
+</svg></div>
+</div>
 
-    <!-- METHANOL -->
-    <div class="raw-card">
-      <div class="raw-card-top">
-        <div>
-          <div class="raw-name">⚗️ Metanol</div>
-          <div class="raw-sub">Methanol — China Domestic</div>
-        </div>
-        <div>
-          <div class="raw-price">3.159</div>
-          <div class="raw-unit">CNY/ton ≈ US$457</div>
-        </div>
-      </div>
-      <div class="raw-bottom">
-        <span class="raw-change up" style="color:var(--alta)">▲ +2,0% vs D-7</span>
-        <span class="raw-source">TradingEconomics</span>
-      </div>
-      <div class="raw-chart">
-        <canvas id="chart-methanol"></canvas>
-      </div>
-    </div>
+<div class="rc">
+<div class="rt"><div><div class="rn">🟡 Enxofre</div><div class="rsub">Sulfur — China Domestic</div></div><div><div class="rp">5.943</div><div class="ru">CNY/ton ≈ US$859</div></div></div>
+<div class="rb"><span class="up">▲ +14,7% vs D-7 &nbsp;|&nbsp; +144% YoY</span><span class="rsrc">TradingEconomics</span></div>
+<div class="rg"><svg viewBox="0 0 320 150" style="width:100%;height:150px;display:block;">
+<path d="M 50.0,111.9 L 78.9,105.6 L 107.8,99.3 L 136.7,89.8 L 165.6,76.1 L 194.4,63.5 L 223.3,56.1 L 252.2,53.4 L 281.1,41.8 L 310.0,28.1 L 310.0,122.0 L 50.0,122.0 Z" fill="rgba(198,40,40,0.08)" stroke="none"/>
+<line x1="50" y1="111.9" x2="310" y2="111.9" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="84.0" x2="310" y2="84.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="56.0" x2="310" y2="56.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="28.1" x2="310" y2="28.1" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="18" x2="50" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="50" y1="122" x2="310" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="46" y1="111.9" x2="50" y2="111.9" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="114.9" text-anchor="end" font-size="8" fill="#555">4.616</text>
+<line x1="46" y1="84.0" x2="50" y2="84.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="87.0" text-anchor="end" font-size="8" fill="#555">5.058</text>
+<line x1="46" y1="56.0" x2="50" y2="56.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="59.0" text-anchor="end" font-size="8" fill="#555">5.501</text>
+<line x1="46" y1="28.1" x2="50" y2="28.1" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="31.1" text-anchor="end" font-size="8" fill="#555">5.943</text>
+<line x1="50.0" y1="122" x2="50.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="50.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 18</text>
+<line x1="107.8" y1="122" x2="107.8" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="107.8" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 20</text>
+<line x1="165.6" y1="122" x2="165.6" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="165.6" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 24</text>
+<line x1="223.3" y1="122" x2="223.3" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="223.3" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 26</text>
+<line x1="281.1" y1="122" x2="281.1" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="281.1" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 30</text>
+<line x1="310.0" y1="122" x2="310.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="310.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 31</text>
+<path d="M 50.0,111.9 L 78.9,105.6 L 107.8,99.3 L 136.7,89.8 L 165.6,76.1 L 194.4,63.5 L 223.3,56.1 L 252.2,53.4 L 281.1,41.8 L 310.0,28.1" fill="none" stroke="#C62828" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="50.0" cy="111.9" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="78.9" cy="105.6" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="107.8" cy="99.3" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="136.7" cy="89.8" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="165.6" cy="76.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="194.4" cy="63.5" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="223.3" cy="56.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="252.2" cy="53.4" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="281.1" cy="41.8" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<circle cx="310.0" cy="28.1" r="3" fill="#C62828" stroke="white" stroke-width="1.5"/>
+<text x="310.0" y="22.1" text-anchor="middle" font-size="8" fill="#C62828" font-weight="bold">5.943</text>
+<text x="50.0" y="124.9" text-anchor="middle" font-size="8" fill="#999">4.616</text>
+</svg></div>
+</div>
 
-    <!-- UREA -->
-    <div class="raw-card">
-      <div class="raw-card-top">
-        <div>
-          <div class="raw-name">🌿 Ureia</div>
-          <div class="raw-sub">Urea — Granular FOB</div>
-        </div>
-        <div>
-          <div class="raw-price">690,00</div>
-          <div class="raw-unit">USD/ton</div>
-        </div>
-      </div>
-      <div class="raw-bottom">
-        <span class="raw-change up" style="color:var(--alta)">▲ +2,2% vs D-7</span>
-        <span class="raw-source">TradingEconomics</span>
-      </div>
-      <div class="raw-chart">
-        <canvas id="chart-urea"></canvas>
-      </div>
-    </div>
+<div class="rc">
+<div class="rt"><div><div class="rn">💧 Amônia</div><div class="rsub">Ammonia — Mar 2026 (por região)</div></div></div>
+<div class="amm">
+<div class="ar"><div class="an">Or. Médio</div><div class="ap">$470</div></div>
+<div class="ar"><div class="an">NE Ásia</div><div class="ap">$290</div></div>
+<div class="ar"><div class="an">Am. Sul</div><div class="ap">$560</div></div>
+</div>
+<div class="rb" style="margin-top:6px"><span style="font-size:10px;color:var(--tl)">Dados mensais — março/26</span><span class="rsrc">BusinessAnalytiq</span></div>
+</div>
 
-    <!-- SULFUR -->
-    <div class="raw-card">
-      <div class="raw-card-top">
-        <div>
-          <div class="raw-name">🟡 Enxofre</div>
-          <div class="raw-sub">Sulfur — China Domestic</div>
-        </div>
-        <div>
-          <div class="raw-price">5.943</div>
-          <div class="raw-unit">CNY/ton ≈ US$859</div>
-        </div>
-      </div>
-      <div class="raw-bottom">
-        <span class="raw-change up" style="color:var(--alta)">▲ +14,7% vs D-7 &nbsp;|&nbsp; +144% YoY</span>
-        <span class="raw-source">TradingEconomics</span>
-      </div>
-      <div class="raw-chart">
-        <canvas id="chart-sulfur"></canvas>
-      </div>
-    </div>
+<div class="rc">
+<div class="rt"><div><div class="rn">🔵 Benzeno</div><div class="rsub">Benzene — China Domestic</div></div><div><div class="rp">8.530</div><div class="ru">CNY/mt ≈ US$1.234</div></div></div>
+<div class="rb"><span class="nt">➡ +0,8% vs D-7 (8.460)</span><span class="rsrc">ECHEMI</span></div>
+<div class="rg"><svg viewBox="0 0 320 150" style="width:100%;height:150px;display:block;">
+<path d="M 50.0,44.4 L 102.0,52.1 L 154.0,111.9 L 206.0,111.9 L 258.0,75.6 L 310.0,28.1 L 310.0,122.0 L 50.0,122.0 Z" fill="rgba(184,134,11,0.08)" stroke="none"/>
+<line x1="50" y1="111.9" x2="310" y2="111.9" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="84.0" x2="310" y2="84.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="56.0" x2="310" y2="56.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="28.1" x2="310" y2="28.1" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="18" x2="50" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="50" y1="122" x2="310" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="46" y1="111.9" x2="50" y2="111.9" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="114.9" text-anchor="end" font-size="8" fill="#555">8.170</text>
+<line x1="46" y1="84.0" x2="50" y2="84.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="87.0" text-anchor="end" font-size="8" fill="#555">8.290</text>
+<line x1="46" y1="56.0" x2="50" y2="56.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="59.0" text-anchor="end" font-size="8" fill="#555">8.410</text>
+<line x1="46" y1="28.1" x2="50" y2="28.1" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="31.1" text-anchor="end" font-size="8" fill="#555">8.530</text>
+<line x1="50.0" y1="122" x2="50.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="50.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 23</text>
+<line x1="102.0" y1="122" x2="102.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="102.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 24</text>
+<line x1="154.0" y1="122" x2="154.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="154.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 25</text>
+<line x1="206.0" y1="122" x2="206.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="206.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 26</text>
+<line x1="258.0" y1="122" x2="258.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="258.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 27</text>
+<line x1="310.0" y1="122" x2="310.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="310.0" y="135" text-anchor="middle" font-size="8" fill="#555">Mar 30</text>
+<path d="M 50.0,44.4 L 102.0,52.1 L 154.0,111.9 L 206.0,111.9 L 258.0,75.6 L 310.0,28.1" fill="none" stroke="#B8860B" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="50.0" cy="44.4" r="3" fill="#B8860B" stroke="white" stroke-width="1.5"/>
+<circle cx="102.0" cy="52.1" r="3" fill="#B8860B" stroke="white" stroke-width="1.5"/>
+<circle cx="154.0" cy="111.9" r="3" fill="#B8860B" stroke="white" stroke-width="1.5"/>
+<circle cx="206.0" cy="111.9" r="3" fill="#B8860B" stroke="white" stroke-width="1.5"/>
+<circle cx="258.0" cy="75.6" r="3" fill="#B8860B" stroke="white" stroke-width="1.5"/>
+<circle cx="310.0" cy="28.1" r="3" fill="#B8860B" stroke="white" stroke-width="1.5"/>
+<text x="310.0" y="22.1" text-anchor="middle" font-size="8" fill="#B8860B" font-weight="bold">8.530</text>
+<text x="154.0" y="124.9" text-anchor="middle" font-size="8" fill="#999">8.170</text>
+</svg></div>
+</div>
 
-    <!-- AMMONIA -->
-    <div class="raw-card">
-      <div class="raw-card-top">
-        <div>
-          <div class="raw-name">💧 Amônia</div>
-          <div class="raw-sub">Ammonia — Março 2026 (por região)</div>
-        </div>
-      </div>
-      <div class="ammonia-regions">
-        <div class="ammonia-region">
-          <div class="reg-name">Or. Médio</div>
-          <div class="reg-price">$470</div>
-        </div>
-        <div class="ammonia-region">
-          <div class="reg-name">NE Ásia</div>
-          <div class="reg-price">$290</div>
-        </div>
-        <div class="ammonia-region">
-          <div class="reg-name">Am. Sul</div>
-          <div class="reg-price">$560</div>
-        </div>
-      </div>
-      <div class="raw-bottom" style="margin-top:6px">
-        <span class="raw-change" style="color:var(--text-light)">Dados mensais — março 2026</span>
-        <span class="raw-source">BusinessAnalytiq</span>
-      </div>
-    </div>
+<div class="rc">
+<div class="rt"><div><div class="rn">⚪ Etileno</div><div class="rsub">Ethylene — China Domestic</div></div></div>
+<div class="una">Dado indisponível<br>Fonte inacessível em 31/03/2026</div>
+<div class="rb"><span style="font-size:10px;color:var(--tl)">ECHEMI / ChemAnalyst — acesso bloqueado</span><span class="rsrc">—</span></div>
+</div>
 
-    <!-- BENZENE -->
-    <div class="raw-card">
-      <div class="raw-card-top">
-        <div>
-          <div class="raw-name">🔵 Benzeno</div>
-          <div class="raw-sub">Benzene — China Domestic</div>
-        </div>
-        <div>
-          <div class="raw-price">8.530</div>
-          <div class="raw-unit">CNY/mt ≈ US$1.234</div>
-        </div>
-      </div>
-      <div class="raw-bottom">
-        <span class="raw-change" style="color:var(--estavel)">➡ +0,8% vs D-7</span>
-        <span class="raw-source">ECHEMI</span>
-      </div>
-      <div class="raw-chart">
-        <canvas id="chart-benzene"></canvas>
-      </div>
-    </div>
+</div>
 
-    <!-- ETHYLENE -->
-    <div class="raw-card">
-      <div class="raw-card-top">
-        <div>
-          <div class="raw-name">⚪ Etileno</div>
-          <div class="raw-sub">Ethylene — China Domestic</div>
-        </div>
-      </div>
-      <div class="unavailable-note">Dado indisponível<br>Fonte inacessível em 31/03/2026</div>
-      <div class="raw-bottom" style="margin-top:4px">
-        <span class="raw-change" style="color:var(--text-light)">—</span>
-        <span class="raw-source">ECHEMI / ChemAnalyst</span>
-      </div>
-    </div>
+<div class="sh" style="margin-top:24px"><h2>Câmbio</h2><div class="sl"></div><span class="sb">USD/CNY — TradingEconomics | Fev–Mar 2026</span></div>
+<div style="max-width:560px">
+<div class="ucc">
+<div class="uct">Dólar / Yuan Chinês — USD/CNY</div>
+<div style="display:flex;align-items:baseline;gap:10px;margin-top:4px">
+<span class="ucr">6,9151</span>
+<span class="ucs">em 31/03/2026 &nbsp;|&nbsp; Var. 30d: −0,04% (estável)</span>
+</div>
+<div class="ucg"><svg viewBox="0 0 320 150" style="width:100%;height:150px;display:block;">
+<path d="M 50.0,59.1 L 71.7,53.0 L 93.3,73.3 L 115.0,111.9 L 136.7,49.5 L 158.3,30.9 L 180.0,62.3 L 201.7,41.1 L 223.3,62.9 L 245.0,43.2 L 266.7,57.6 L 288.3,28.1 L 310.0,33.9 L 310.0,122.0 L 50.0,122.0 Z" fill="rgba(168,217,192,0.08)" stroke="none"/>
+<line x1="50" y1="111.9" x2="310" y2="111.9" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="84.0" x2="310" y2="84.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="56.0" x2="310" y2="56.0" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="28.1" x2="310" y2="28.1" stroke="#c8e6c9" stroke-width="0.5" opacity="0.6"/>
+<line x1="50" y1="18" x2="50" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="50" y1="122" x2="310" y2="122" stroke="#bbb" stroke-width="1"/>
+<line x1="46" y1="111.9" x2="50" y2="111.9" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="114.9" text-anchor="end" font-size="8" fill="#555">6.845</text>
+<line x1="46" y1="84.0" x2="50" y2="84.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="87.0" text-anchor="end" font-size="8" fill="#555">6.870</text>
+<line x1="46" y1="56.0" x2="50" y2="56.0" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="59.0" text-anchor="end" font-size="8" fill="#555">6.895</text>
+<line x1="46" y1="28.1" x2="50" y2="28.1" stroke="#bbb" stroke-width="1"/>
+<text x="44" y="31.1" text-anchor="end" font-size="8" fill="#555">6.920</text>
+<line x1="50.0" y1="122" x2="50.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="50.0" y="135" text-anchor="middle" font-size="8" fill="#555">18/02</text>
+<line x1="93.3" y1="122" x2="93.3" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="93.3" y="135" text-anchor="middle" font-size="8" fill="#555">24/02</text>
+<line x1="136.7" y1="122" x2="136.7" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="136.7" y="135" text-anchor="middle" font-size="8" fill="#555">02/03</text>
+<line x1="180.0" y1="122" x2="180.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="180.0" y="135" text-anchor="middle" font-size="8" fill="#555">09/03</text>
+<line x1="223.3" y1="122" x2="223.3" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="223.3" y="135" text-anchor="middle" font-size="8" fill="#555">16/03</text>
+<line x1="266.7" y1="122" x2="266.7" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="266.7" y="135" text-anchor="middle" font-size="8" fill="#555">24/03</text>
+<line x1="310.0" y1="122" x2="310.0" y2="126" stroke="#bbb" stroke-width="1"/>
+<text x="310.0" y="135" text-anchor="middle" font-size="8" fill="#555">31/03</text>
+<path d="M 50.0,59.1 L 71.7,53.0 L 93.3,73.3 L 115.0,111.9 L 136.7,49.5 L 158.3,30.9 L 180.0,62.3 L 201.7,41.1 L 223.3,62.9 L 245.0,43.2 L 266.7,57.6 L 288.3,28.1 L 310.0,33.9" fill="none" stroke="#A8D9C0" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="50.0" cy="59.1" r="3" fill="#A8D9C0" stroke="white" stroke-width="1.5"/>
+<circle cx="71.7" cy="53.0" r="3" fill="#A8D9C0" stroke="white" stroke-width="1.5"/>
+<circle cx="93.3" cy="73.3" r="3" fill="#A8D9C0" stroke="white" stroke-width="1.5"/>
+<circle cx="115.0" cy="111.9" r="3" fill="#A8D9C0" stroke="white" stroke-width="1.5"/>
+<circle cx="136.7" cy="49.5" r="3" fill="#A8D9C0" stroke="white" stroke-width="1.5"/>
+<circle cx="158.3" cy="30.9" r="3" fill="#A8D9C0" stroke="white" stroke-width="1.5"/>
+<circle cx="180.0" cy="62.3" r="3" fill="#A8D9C0" stroke="white" stroke-width="1.5"/>
+<circle cx="201.7" cy="41.1" r="3" fill="#A8D9C0" stroke="white" stroke-width="1.5"/>
+<circle cx="223.3" cy="62.9" r="3" fill="#A8D9C0" stroke="white" stroke-width="1.5"/>
+<circle cx="245.0" cy="43.2" r="3" fill="#A8D9C0" stroke="white" stroke-width="1.5"/>
+<circle cx="266.7" cy="57.6" r="3" fill="#A8D9C0" stroke="white" stroke-width="1.5"/>
+<circle cx="288.3" cy="28.1" r="3" fill="#A8D9C0" stroke="white" stroke-width="1.5"/>
+<circle cx="310.0" cy="33.9" r="3" fill="#A8D9C0" stroke="white" stroke-width="1.5"/>
+<text x="288.3" y="22.1" text-anchor="middle" font-size="8" fill="#A8D9C0" font-weight="bold">6.920</text>
+<text x="115.0" y="124.9" text-anchor="middle" font-size="8" fill="#999">6.845</text>
+</svg></div>
+</div>
+</div>
 
-  </div><!-- /cards-grid-4 -->
+<div class="sh" style="margin-top:30px"><h2>Outros Destaques</h2><div class="sl"></div><span class="sb">Notícias relevantes — Mar 2026</span></div>
+<div class="ng">
 
-  <!-- USD/CNY CARD (full width) -->
-  <div class="section-header" style="margin-top:24px">
-    <h2>Câmbio</h2>
-    <div class="section-line"></div>
-    <span class="section-badge">USD/CNY — TradingEconomics | Últimos 30 dias</span>
-  </div>
-  <div style="max-width:600px">
-    <div class="usdcny-card">
-      <div class="usdcny-title">Dólar / Yuan Chinês — USD/CNY</div>
-      <div style="display:flex;align-items:baseline;gap:10px;">
-        <div class="usdcny-rate">6,9151</div>
-        <div class="usdcny-sub">em 31/03/2026 &nbsp;|&nbsp; Variação 30 dias: −0,04% (estável)</div>
-      </div>
-      <div class="usdcny-chart">
-        <canvas id="chart-usdcny"></canvas>
-      </div>
-    </div>
-  </div>
+<div class="nc">
+<div class="ntag">🌊 Geopolítica</div>
+<div class="ntitle">Crise no Estreito de Ormuz remodela mercado global de metanol</div>
+<div class="nbody">Desde 28/fev/2026, ataques EUA-Israel ao Irã fecharam o Estreito de Ormuz, responsável por ~1/3 do comércio marítimo mundial de metanol. China importa &gt;50% do insumo do Irã. Preços internacionais subiram &gt;40% em março. Desvio pelo Cabo da Boa Esperança adiciona ~2 semanas de viagem, elevando fretes e criando escassez estrutural de curto prazo.</div>
+<div class="nsrc"><span>C&amp;EN, Al Jazeera, CNBC, Oxford Energy</span><span>Mar 2026</span></div>
+</div>
 
-  <!-- OUTROS DESTAQUES -->
-  <div class="section-header" style="margin-top:32px">
-    <h2>Outros Destaques</h2>
-    <div class="section-line"></div>
-    <span class="section-badge">Notícias relevantes — Mar 2026</span>
-  </div>
+<div class="nc">
+<div class="ntag">📈 Propilenoglicol</div>
+<div class="ntitle">Óxido de propileno em máximas históricas pressiona toda a cadeia de PG</div>
+<div class="nbody">O óxido de propileno atingiu máximas históricas em 2026, desencadeando reações em cascata no propilenoglicol (+41% em 2 semanas), epicloridrina, pigmentos e resinas poliéster. Múltiplas paradas de manutenção agravam a restrição de oferta. Forte demanda manufatureira da China eleva pressão compradora.</div>
+<div class="nsrc"><span>Achilles Chem, Procurement Resource, ECHEMI</span><span>Mar 2026</span></div>
+</div>
 
-  <div class="news-grid">
+<div class="nc">
+<div class="ntag">⚗️ Ácido Acético</div>
+<div class="ntitle">Alta volátil: rastreando metanol e disrupções logísticas</div>
+<div class="nbody">Preços na Ásia sobem rastreando a escalada do metanol e disrupções de frete. China opera &gt;80% de utilização com oferta ampla, mas fraca demanda de VAM (acetato de vinila) limita upside adicional. Mercado em modo volátil sem direção clara — atenção à curva de metanol como indicador antecedente.</div>
+<div class="nsrc"><span>Nexizo, Procurement Resource, ECHEMI</span><span>Mar 2026</span></div>
+</div>
 
-    <div class="news-card">
-      <div class="news-tag">🌊 Geopolítica</div>
-      <div class="news-title">Crise no Estreito de Ormuz remodela mercado global de metanol</div>
-      <div class="news-body">Desde 28/fev/2026, ataques dos EUA e Israel ao Irã fecharam o Estreito de Ormuz, responsável por ~1/3 do comércio marítimo mundial de metanol. China importa >50% do insumo do Irã. Preços internacionais subiram >40% em março. Navios precisam desviar pelo Cabo da Boa Esperança (+2 semanas de viagem).</div>
-      <div class="news-source">
-        <span>Fontes: C&amp;EN, Al Jazeera, CNBC, Oxford Energy</span>
-        <span>Mar 2026</span>
-      </div>
-    </div>
+<div class="nc">
+<div class="ntag">🟡 Enxofre</div>
+<div class="ntitle">+144% em 12 meses — crise de oferta com alta estrutural</div>
+<div class="nbody">Enxofre chinês atingiu 5.943 CNY/ton (+144% YoY, +14,7% na semana). Combinação de restrições geopolíticas no Golfo Pérsico com impacto em produção regional e forte demanda da indústria de fertilizantes. Sem catalisador de queda visível no curto prazo; tendência estrutural de alta.</div>
+<div class="nsrc"><span>TradingEconomics, SunSirs</span><span>31 Mar 2026</span></div>
+</div>
 
-    <div class="news-card">
-      <div class="news-tag">📈 Propilenoglicol</div>
-      <div class="news-title">Óxido de propileno em máximas históricas pressiona toda a cadeia de PG</div>
-      <div class="news-body">Em 2026, o óxido de propileno atingiu máximas históricas de preço, desencadeando reações em cascata no propilenoglicol, epicloridrina e resinas poliéster. Paradas de manutenção em múltiplas plantas acentuam restrição de oferta. PG acumula alta de +41% nas últimas 2 semanas na China.</div>
-      <div class="news-source">
-        <span>Fontes: Achilles Chem, Procurement Resource, ECHEMI</span>
-        <span>Mar 2026</span>
-      </div>
-    </div>
+<div class="nc">
+<div class="ntag">📊 Mercado China</div>
+<div class="ntitle">82 commodities químicas registraram alta YoY em 25/mar</div>
+<div class="nbody">Dos 132 produtos com variação positiva YoY no pregão de 24/mar/2026, 82 eram do setor químico — maior contingente entre todos os setores industriais monitorados pelo SunSirs. Sinaliza acúmulo de pressão generalizada no petroquímico chinês, alinhado com alta do Brent e disrupções logísticas.</div>
+<div class="nsrc"><span>SunSirs China Commodity Data</span><span>25 Mar 2026</span></div>
+</div>
 
-    <div class="news-card">
-      <div class="news-tag">⚗️ Ácido Acético</div>
-      <div class="news-title">Alta volátil do ácido acético impulsionada por metanol e fretes</div>
-      <div class="news-body">Preços na Ásia continuam subindo em março/26 rastreando a escalada do metanol e disrupções logísticas. China opera acima de 80% de taxa de utilização com oferta ampla. Demanda fraca de VAM (vinil acetato monômero) limita upside adicional. Mercado em modo range-bound volátil.</div>
-      <div class="news-source">
-        <span>Fontes: Nexizo, Procurement Resource, ECHEMI</span>
-        <span>Mar 2026</span>
-      </div>
-    </div>
+<div class="nc">
+<div class="ntag">🚢 Fretes</div>
+<div class="ntitle">XSICFESE −1,3% na semana — rota SAEC mantém estabilidade relativa</div>
+<div class="nbody">O índice Far East → América do Sul Costa Leste fechou mar/30 em US$2.915/FEU (−1,3% vs. D-7). Surcharges de emergência de US$75–150/TEU foram anunciados por CMA CGM e Hapag-Lloyd para rotas de longo curso. Rota SAEC mantém relativa estabilidade frente a corridores mais afetados pela crise do Mar Vermelho/Ormuz.</div>
+<div class="nsrc"><span>Compass FT, Drewry, Freightos</span><span>30 Mar 2026</span></div>
+</div>
 
-    <div class="news-card">
-      <div class="news-tag">🟡 Enxofre</div>
-      <div class="news-title">Enxofre acumula +144% em 12 meses — crise de oferta estrutural</div>
-      <div class="news-body">O enxofre chinês chegou a 5.943 CNY/ton em 31/mar (+144% YoY, +14,7% na semana). Combinação de restrições geopolíticas no Oriente Médio (com impacto em produções do Golfo) e forte demanda da indústria fertilizante. Mercado em tendência de alta estrutural sem catalisador de queda no curto prazo.</div>
-      <div class="news-source">
-        <span>Fonte: TradingEconomics, SunSirs</span>
-        <span>31 Mar 2026</span>
-      </div>
-    </div>
+</div>
 
-    <div class="news-card">
-      <div class="news-tag">📊 Mercado China</div>
-      <div class="news-title">82 produtos químicos na China registraram alta YoY em 25/mar</div>
-      <div class="news-body">Dos 132 produtos com variação positiva YoY registrados no pregão de 24/mar/2026, 82 eram do setor químico — o maior contingente entre todos os setores. Indicador de pressão acumulada de preços no setor petroquímico chinês, alinhado com alta do Brent e disrupções logísticas.</div>
-      <div class="news-source">
-        <span>Fonte: SunSirs China Commodity Data</span>
-        <span>25 Mar 2026</span>
-      </div>
-    </div>
-
-    <div class="news-card">
-      <div class="news-tag">🚢 Fretes</div>
-      <div class="news-title">XSICFESE recua −1,3% na semana — rota FA→SAEC mantém estabilidade relativa</div>
-      <div class="news-body">O índice Far East → América do Sul Costa Leste encerrou mar/30 em US$2.915/FEU (−1,3% vs. D-7). Apesar das pressões globais da crise de Ormuz e surcharges de emergência de US$150-75/TEU anunciados por CMA CGM e Hapag-Lloyd, esta rota mantém relativa estabilidade frente a outras trades afetadas pelo fechamento do Mar Vermelho.</div>
-      <div class="news-source">
-        <span>Fontes: Compass FT, Drewry, Freightos</span>
-        <span>30 Mar 2026</span>
-      </div>
-    </div>
-
-  </div><!-- /news-grid -->
-
-  <!-- DISCLAIMER -->
-  <div class="disclaimer">
-    <strong>Aviso:</strong> Este relatório é gerado automaticamente com base em dados publicamente disponíveis em ECHEMI, TradingEconomics, BusinessAnalytiq e Compass Financial Technologies. Os preços refletem cotações de mercado doméstico chinês (CNY/mt) convertidos à taxa USD/CNY de 6,9151 (31/03/2026). Não constituem cotação comercial. Variações intradía não estão contempladas. Para cotações vinculantes, consulte a equipe comercial Ekoquim. Ethylene: dado indisponível em 31/03/2026 — fonte inacessível.
-  </div>
-
+<div class="disc"><strong>Aviso:</strong> Relatório gerado automaticamente com base em dados de ECHEMI, TradingEconomics, BusinessAnalytiq e Compass FT. Preços refletem cotações do mercado doméstico chinês (CNY/mt) convertidos à taxa USD/CNY de 6,9151 (31/03/2026). Não constituem cotação comercial vinculante. Ethylene: dado indisponível — fonte inacessível em 31/03/2026. Variações intradía não contempladas.</div>
 </main>
-
-<footer>
-  <strong>Ekoquim</strong> — Análise de Mercado Químico &nbsp;|&nbsp; Gerado automaticamente em 31/03/2026 &nbsp;|&nbsp; Dados: ECHEMI · TradingEconomics · BusinessAnalytiq · Compass FT
-</footer>
-
-<!-- CHARTS -->
-<script>
-Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
-Chart.defaults.font.size = 10;
-Chart.defaults.color = '#6B8570';
-
-const makeLineChart = (id, labels, data, color, fill) => {
-  const ctx = document.getElementById(id);
-  if (!ctx) return;
-  return new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{
-        data,
-        borderColor: color,
-        backgroundColor: fill || 'transparent',
-        borderWidth: 2,
-        pointRadius: 2,
-        pointHoverRadius: 4,
-        tension: 0.3,
-        fill: fill ? true : false
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: {
-        callbacks: {
-          label: (ctx) => `${ctx.parsed.y.toLocaleString('pt-BR', {minimumFractionDigits:2,maximumFractionDigits:2})}`
-        }
-      }},
-      scales: {
-        x: { display: false },
-        y: { display: false }
-      }
-    }
-  });
-};
-
-const makeBarChart = (id, labels, data, color) => {
-  const ctx = document.getElementById(id);
-  if (!ctx) return;
-  return new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [{ data, backgroundColor: color, borderRadius: 2 }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => c.parsed.y.toLocaleString('pt-BR',{minimumFractionDigits:0}) }}},
-      scales: { x: { display: false }, y: { display: false } }
-    }
-  });
-};
-
-// ---- PRODUCT CHARTS ----
-
-// Propylene Glycol
-makeLineChart('chart-pg',
-  ['Mar 16','Mar 17','Mar 18','Mar 19','Mar 20','Mar 23','Mar 24','Mar 25','Mar 26','Mar 27','Mar 30'],
-  [7266.67,7266.67,7266.67,7150,7400,8200,8833.33,8833.33,9266.67,9500,10266.67],
-  '#D32F2F', 'rgba(211,47,47,0.08)'
-);
-
-// Acetic Acid
-makeLineChart('chart-aa',
-  ['Mar 16','Mar 17','Mar 18','Mar 19','Mar 20','Mar 23','Mar 24','Mar 25','Mar 26','Mar 27','Mar 30'],
-  [3093.33,3093,3143.33,3213.33,3256.67,3356.67,3443.33,3476.67,3540,3610,3983.33],
-  '#D32F2F', 'rgba(211,47,47,0.08)'
-);
-
-// Ethanolamine
-makeLineChart('chart-ea',
-  ['Mar 16','Mar 17','Mar 18','Mar 19','Mar 20','Mar 23','Mar 24','Mar 25','Mar 26','Mar 27','Mar 30'],
-  [8454.55,8573.53,8573.53,8573.53,8528.57,8607.14,8776.47,8878.57,8935.29,8935.29,9000],
-  '#D32F2F', 'rgba(211,47,47,0.08)'
-);
-
-// Sodium Carbonate
-makeLineChart('chart-sc',
-  ['Mar 16','Mar 17','Mar 18','Mar 19','Mar 20','Mar 23','Mar 24','Mar 25','Mar 26','Mar 27','Mar 30'],
-  [1250.71,1248.57,1248.57,1212,1247.14,1255,1256.43,1255,1249.29,1249.29,1246.43],
-  '#B8860B', 'rgba(184,134,11,0.08)'
-);
-
-// Phosphoric Acid
-makeLineChart('chart-pa',
-  ['Mar 16','Mar 17','Mar 18','Mar 19','Mar 20','Mar 23','Mar 24','Mar 25','Mar 26','Mar 27','Mar 30'],
-  [7500,7333.33,7333.33,7300,7300,7366.67,7533.33,7533.33,7783.33,8137.5,8137.5],
-  '#D32F2F', 'rgba(211,47,47,0.08)'
-);
-
-// NaOH (6 market insight points Mar 22-27 + current Mar 29)
-makeLineChart('chart-naoh',
-  ['Mar 22','Mar 23','Mar 24','Mar 25','Mar 26','Mar 27','Mar 29'],
-  [1406.95,1414.24,1464.30,1448.02,1499.90,1446.65,1446.64],
-  '#D32F2F', 'rgba(211,47,47,0.08)'
-);
-
-// Dichloromethane
-makeLineChart('chart-dcm',
-  ['Mar 16','Mar 17','Mar 18','Mar 19','Mar 20','Mar 23','Mar 24','Mar 25','Mar 26','Mar 27','Mar 30'],
-  [2575,2320,2320,2270,2175,2370,2385,2385,2420,2420,2495],
-  '#D32F2F', 'rgba(211,47,47,0.08)'
-);
-
-// ---- FREIGHT CHART ----
-const freightDates = ["2025-12-01","2025-12-02","2025-12-03","2025-12-04","2025-12-05","2025-12-08","2025-12-09","2025-12-10","2025-12-11","2025-12-12","2025-12-15","2025-12-16","2025-12-17","2025-12-18","2025-12-19","2025-12-22","2025-12-23","2025-12-29","2025-12-30","2026-01-02","2026-01-05","2026-01-06","2026-01-07","2026-01-08","2026-01-09","2026-01-12","2026-01-13","2026-01-14","2026-01-15","2026-01-16","2026-01-19","2026-01-20","2026-01-21","2026-01-22","2026-01-23","2026-01-26","2026-01-27","2026-01-28","2026-01-29","2026-01-30","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-30"];
-const freightVals = [2065,2289,2368,2368,2368,2246,2235,2211,2296,2117,2259,1889,2066,2093,2075,2077,2077,1825,1774,2069,1955,1951,1916,1951,1951,1962,1962,1903,1647,1588,1565,1696,1696,1713,1713,1705,1705,1798,1798,1798,1848,1848,1848,1922,1922,2037,2037,2037,2075,2075,2130,2130,2183,2183,2183,2250,2290,2290,2344,2344,2520,2590,2590,2650,2650,2720,2750,2750,2800,2800,2850,2870,2905,2905,2905,2920,2952,2952,2952,2952,2915];
-
-// Format dates for display
-const freightLabels = freightDates.map(d => {
-  const dt = new Date(d + 'T00:00:00');
-  return `${dt.getDate()}/${dt.getMonth()+1}`;
-});
-
-const ctxFreight = document.getElementById('chart-freight');
-if (ctxFreight) {
-  new Chart(ctxFreight, {
-    type: 'line',
-    data: {
-      labels: freightLabels,
-      datasets: [{
-        data: freightVals,
-        borderColor: '#00613A',
-        backgroundColor: 'rgba(0,97,58,0.08)',
-        borderWidth: 2,
-        pointRadius: 0,
-        tension: 0.3,
-        fill: true
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            title: (items) => freightDates[items[0].dataIndex],
-            label: (c) => `US$${c.parsed.y.toLocaleString('pt-BR')}/FEU`
-          }
-        }
-      },
-      scales: {
-        x: {
-          ticks: { maxTicksLimit: 8, maxRotation: 0, font: { size: 9 } },
-          grid: { display: false }
-        },
-        y: {
-          ticks: { maxTicksLimit: 5, font: { size: 9 }, callback: (v) => `$${v.toLocaleString('pt-BR')}` },
-          grid: { color: 'rgba(0,97,58,0.07)' }
-        }
-      }
-    }
-  });
-}
-
-// ---- RAW MATERIAL MINI CHARTS ----
-
-// Brent
-makeLineChart('chart-brent',
-  ['Mar 18','Mar 19','Mar 20','Mar 23','Mar 24','Mar 25','Mar 26','Mar 27','Mar 30','Mar 31'],
-  [107.38,108.65,112.19,99.94,104.49,102.22,101.89,105.32,107.39,107.92],
-  '#D32F2F', 'rgba(211,47,47,0.1)'
-);
-
-// Natural Gas
-makeLineChart('chart-gas',
-  ['Mar 18','Mar 19','Mar 20','Mar 23','Mar 24','Mar 25','Mar 26','Mar 27','Mar 30','Mar 31'],
-  [3.065,3.166,3.095,2.891,2.912,2.912,2.928,3.025,2.887,2.846],
-  '#1B6B1B', 'rgba(27,107,27,0.08)'
-);
-
-// Methanol
-makeLineChart('chart-methanol',
-  ['Mar 18','Mar 19','Mar 20','Mar 23','Mar 24','Mar 25','Mar 26','Mar 27','Mar 30','Mar 31'],
-  [2926,3163,3102,3313,3096,3064,3209,3286,3296,3159],
-  '#D32F2F', 'rgba(211,47,47,0.08)'
-);
-
-// Urea
-makeLineChart('chart-urea',
-  ['Mar 17','Mar 18','Mar 19','Mar 20','Mar 23','Mar 24','Mar 25','Mar 26','Mar 27','Mar 30'],
-  [610.5,610,684,684,672.5,675,677.5,695,687.5,690],
-  '#D32F2F', 'rgba(211,47,47,0.08)'
-);
-
-// Sulfur
-makeLineChart('chart-sulfur',
-  ['Mar 18','Mar 19','Mar 20','Mar 23','Mar 24','Mar 25','Mar 26','Mar 27','Mar 30','Mar 31'],
-  [4616.67,4716.67,4816.67,4966.67,5183.33,5383.33,5500,5543.33,5726.67,5943.33],
-  '#D32F2F', 'rgba(211,47,47,0.08)'
-);
-
-// Benzene
-makeLineChart('chart-benzene',
-  ['Mar 23','Mar 24','Mar 25','Mar 26','Mar 27','Mar 30'],
-  [8460,8426.67,8170,8170,8326,8530],
-  '#B8860B', 'rgba(184,134,11,0.08)'
-);
-
-// USD/CNY
-const usdcnyDates = ['18/02','19/02','20/02','23/02','24/02','25/02','26/02','27/02','02/03','03/03','04/03','05/03','06/03','09/03','10/03','11/03','12/03','13/03','16/03','17/03','18/03','19/03','20/03','23/03','24/03','25/03','26/03','27/03','30/03','31/03'];
-const usdcnyVals = [6.89228,6.90103,6.89776,6.88982,6.87945,6.85398,6.84455,6.8634,6.90099,6.91867,6.89501,6.9178,6.90958,6.8894,6.87862,6.87672,6.88134,6.90851,6.88887,6.88285,6.90157,6.87843,6.90667,6.88475,6.89368,6.90208,6.92044,6.92033,6.91655,6.91509];
-
-const ctxUsdcny = document.getElementById('chart-usdcny');
-if (ctxUsdcny) {
-  new Chart(ctxUsdcny, {
-    type: 'line',
-    data: {
-      labels: usdcnyDates,
-      datasets: [{
-        data: usdcnyVals,
-        borderColor: 'rgba(168,217,192,0.9)',
-        backgroundColor: 'rgba(0,97,58,0.2)',
-        borderWidth: 1.5,
-        pointRadius: 0,
-        tension: 0.3,
-        fill: true
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => `${c.parsed.y.toFixed(5)}` }}},
-      scales: {
-        x: { display: false },
-        y: { display: false }
-      }
-    }
-  });
-}
-
-</script>
+<footer><strong>Ekoquim</strong> — Análise de Mercado Químico &nbsp;|&nbsp; Gerado automaticamente em 31/03/2026 &nbsp;|&nbsp; ECHEMI · TradingEconomics · BusinessAnalytiq · Compass FT</footer>
 </body>
 </html>
