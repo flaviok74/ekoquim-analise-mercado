@@ -1,730 +1,897 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Ekoquim — Análise de Mercado Químico | 31 Mar 2026</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ekoquim — Análise de Mercado Químico | 01/04/2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-    :root{--p:#1b5e20;--pm:#2e7d32;--ac:#388e3c;--al:#43a047;--gb:#e8f5e9;--gl:#c8e6c9;--gp:#f1f8e9;--gd:#37474f;--gm:#546e7a;--gy:#eceff1;--brd:#cfd8dc;--up:#2e7d32;--dn:#c62828;--fl:#546e7a;--bg:#f4f7f4;--card:#fff;--txt:#1a2533;--mut:#607d8b;}
-    *{box-sizing:border-box;margin:0;padding:0;}
-    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);font-size:14px;line-height:1.5;}
-    header{background:var(--p);color:#fff;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-bottom:3px solid var(--al);}
-    .logo{width:48px;height:48px;background:var(--ac);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;color:#fff;border:2px solid rgba(255,255,255,.3);}
-    .brand-name{font-size:22px;font-weight:800;letter-spacing:1px;}
-    .brand-sub{font-size:12px;color:#a5d6a7;margin-top:2px;}
-    .hdr-date{font-size:18px;font-weight:600;text-align:right;}
-    .hdr-ed{font-size:12px;color:#a5d6a7;margin-top:2px;}
-    .alert{background:linear-gradient(135deg,#b71c1c,#c62828);color:#fff;padding:11px 32px;display:flex;align-items:center;gap:12px;font-size:13px;}
-    .alert strong{font-size:14px;display:block;margin-bottom:2px;}
-    .macro{background:var(--pm);border-top:1px solid rgba(255,255,255,.15);padding:10px 32px;display:flex;gap:24px;flex-wrap:wrap;}
-    .mi{color:#fff;}
-    .ml{font-size:10px;color:#a5d6a7;text-transform:uppercase;letter-spacing:.5px;}
-    .mv{font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px;}
-    .du{font-size:10px;padding:1px 6px;border-radius:3px;font-weight:600;background:rgba(0,0,0,.2);color:#a5d6a7;}
-    .dd{font-size:10px;padding:1px 6px;border-radius:3px;font-weight:600;background:rgba(0,0,0,.2);color:#ef9a9a;}
-    main{padding:24px 32px;max-width:1400px;margin:0 auto;}
-    section{margin-bottom:32px;}
-    .st{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--pm);font-weight:800;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--gl);display:flex;align-items:center;gap:8px;}
-    .dot{width:8px;height:8px;border-radius:50%;background:var(--ac);}
-    .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(390px,1fr));gap:18px;}
-    .pc{background:var(--card);border:1px solid var(--brd);border-radius:10px;padding:16px;border-top:4px solid transparent;}
-    .pc-up{border-top-color:var(--up);}
-    .pc-dn{border-top-color:var(--dn);}
-    .pc-fl{border-top-color:var(--fl);}
-    .ph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
-    .pn{font-size:14px;font-weight:700;}
-    .ps{font-size:10px;color:var(--mut);margin-top:2px;}
-    .tb{padding:3px 9px;border-radius:12px;font-size:11px;font-weight:700;white-space:nowrap;}
-    .bu{background:#e8f5e9;color:#2e7d32;}
-    .bd{background:#ffebee;color:#c62828;}
-    .bf{background:#eceff1;color:#546e7a;}
-    .pp{font-size:28px;font-weight:800;line-height:1;}
-    .pp span{font-size:13px;font-weight:400;color:var(--mut);margin-left:4px;}
-    .pp2{font-size:12px;color:var(--mut);margin-top:3px;}
-    .pd{display:flex;align-items:center;gap:6px;margin-top:6px;}
-    .pv{font-size:13px;font-weight:700;}
-    .per{font-size:11px;color:var(--mut);}
-    .cup{color:var(--up);}
-    .cdn{color:var(--dn);}
-    .cfl{color:var(--fl);}
-    .pchart{margin-top:12px;}
-    .pnews{margin-top:10px;padding-top:10px;border-top:1px solid var(--brd);font-size:11px;color:var(--mut);line-height:1.5;}
-    .pnews strong{color:var(--txt);}
-    .mt{width:100%;border-collapse:collapse;background:var(--card);border-radius:10px;overflow:hidden;border:1px solid var(--brd);}
-    .mt th{background:var(--p);color:#fff;padding:9px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;}
-    .mt td{padding:9px 12px;border-bottom:1px solid var(--gb);font-size:13px;vertical-align:top;}
-    .mt tr:last-child td{border-bottom:none;}
-    .mt tr:hover td{background:var(--gp);}
-    .mdu{color:var(--up);font-weight:700;}
-    .mdd{color:var(--dn);font-weight:700;}
-    .mdf{color:var(--fl);font-weight:600;}
-    .sig{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;}
-    .sc{background:#e8f5e9;color:#1b5e20;}
-    .sa{background:#fff3e0;color:#e65100;}
-    .se{background:#eceff1;color:#546e7a;}
-    .sm{background:#ffebee;color:#c62828;}
-    .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-    @media(max-width:768px){.fgrid{grid-template-columns:1fr;}}
-    .fc{background:var(--card);border:1px solid var(--brd);border-radius:10px;padding:16px;}
-    .fch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;}
-    .ft{font-size:13px;font-weight:700;}
-    .fs{font-size:11px;color:var(--mut);margin-top:2px;}
-    .fv{font-size:26px;font-weight:800;margin-top:4px;}
-    .fnote{margin-top:10px;padding-top:10px;border-top:1px solid var(--brd);font-size:11px;color:var(--mut);line-height:1.5;}
-    .ab{background:var(--gp);border:1px solid var(--gl);border-left:4px solid var(--ac);border-radius:8px;padding:16px 20px;}
-    .ab h4{font-size:12px;font-weight:800;color:var(--p);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px;}
-    .agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
-    .al2{font-size:11px;color:var(--pm);text-transform:uppercase;font-weight:700;margin-bottom:3px;}
-    .at{font-size:13px;line-height:1.5;}
-    .ngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:20px;}
-    .ni{background:var(--card);border:1px solid var(--brd);border-radius:10px;overflow:hidden;}
-    .ni-img-err{width:100%;height:80px;background:linear-gradient(135deg,#1b5e20 0%,#388e3c 100%);display:flex;align-items:center;justify-content:center;color:#fff;font-size:32px;}
-    .ni-body{padding:14px;}
-    .ni-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;}
-    .tag-up{color:var(--up);}
-    .tag-al{color:#e65100;}
-    .tag-dn{color:var(--dn);}
-    .ni-title{font-size:15px;font-weight:700;color:var(--txt);line-height:1.4;margin-bottom:8px;}
-    .ni-text{font-size:12px;color:var(--mut);line-height:1.6;margin-bottom:10px;}
-    .ni-meta{font-size:11px;color:#90a4ae;border-top:1px solid var(--brd);padding-top:8px;}
-    footer{background:var(--p);color:#a5d6a7;text-align:center;padding:14px 32px;font-size:11px;margin-top:16px;}
-    footer strong{color:#fff;}
-    @media(max-width:768px){header,.macro,main{padding-left:16px;padding-right:16px;}.pgrid,.ngrid{grid-template-columns:1fr;}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f1f8e9;color:#1b2a1b;font-size:14px;line-height:1.5}
+.header{background:linear-gradient(135deg,#1b5e20 0%,#388e3c 60%,#66bb6a 100%);color:#fff;padding:24px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.header h1{font-size:1.6rem;font-weight:700;letter-spacing:0.5px}
+.header .meta{font-size:0.85rem;opacity:0.9;text-align:right}
+.header .rate-badge{background:rgba(255,255,255,0.2);border-radius:8px;padding:6px 14px;font-size:0.9rem;font-weight:600;margin-top:4px;display:inline-block}
+.section-title{font-size:1.15rem;font-weight:700;color:#1b5e20;border-left:4px solid #388e3c;padding-left:10px;margin:28px 0 14px}
+.container{max-width:1280px;margin:0 auto;padding:20px 16px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.card{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:16px;border-top:3px solid #a5d6a7}
+.card.alta{border-top-color:#c62828}
+.card.queda{border-top-color:#2e7d32}
+.card.estavel{border-top-color:#f57f17}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.product-name{font-size:0.95rem;font-weight:700;color:#1b5e20}
+.price-main{font-size:1.5rem;font-weight:800;color:#1b2a1b}
+.price-sub{font-size:0.8rem;color:#555;margin-top:2px}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:0.3px}
+.trend-row{display:flex;align-items:center;gap:8px;margin:8px 0}
+.news-list{margin-top:10px;padding-top:10px;border-top:1px solid #e8f5e9}
+.news-item{font-size:0.78rem;color:#444;padding:4px 0;border-bottom:1px solid #f1f8e9}
+.news-item:last-child{border-bottom:none}
+.news-date{font-size:0.7rem;color:#888;font-style:italic}
+.rm-card{background:#fff;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.07);padding:14px;border-left:4px solid #a5d6a7}
+.rm-card.alta{border-left-color:#c62828}
+.rm-card.queda{border-left-color:#2e7d32}
+.rm-card.estavel{border-left-color:#f57f17}
+.rm-name{font-size:0.82rem;font-weight:700;color:#2e7d32;margin-bottom:4px}
+.rm-price{font-size:1.2rem;font-weight:800;color:#1b2a1b}
+.rm-unit{font-size:0.72rem;color:#666}
+.rm-portfolio{font-size:0.74rem;color:#555;margin-top:6px;padding-top:6px;border-top:1px solid #e8f5e9;font-style:italic}
+.rm-news{font-size:0.76rem;color:#444;margin-top:6px}
+.freight-card{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:20px;margin-bottom:16px}
+.freight-main{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:12px}
+.freight-val{font-size:2rem;font-weight:800;color:#1b2a1b}
+.freight-label{font-size:0.85rem;color:#555}
+.dest-card{background:linear-gradient(135deg,#e8f5e9,#fff);border-radius:10px;padding:14px;margin:12px 0}
+.dest-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.7rem;font-weight:700;color:#fff;margin-bottom:6px}
+.dest-tag.ALTA{background:#c62828}
+.dest-tag.QUEDA{background:#2e7d32}
+.dest-tag.ALERTA{background:#f57f17}
+.dest-title{font-size:0.88rem;font-weight:700;color:#1b2a1b;margin-bottom:4px}
+.dest-body{font-size:0.78rem;color:#444}
+.dest-meta{font-size:0.7rem;color:#888;margin-top:4px}
+.dest-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;margin-top:12px}
+.cny-card{background:#fff;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.07);padding:14px;border-left:4px solid #1565c0;grid-column:1/-1}
+.footer{background:#1b5e20;color:#a5d6a7;padding:20px 32px;font-size:0.78rem;margin-top:32px}
+.footer a{color:#a5d6a7;text-decoration:none}
+.footer .warn{color:#ffcc80;margin-top:8px}
+.source-tag{font-size:0.68rem;color:#888;background:#f1f8e9;border-radius:3px;padding:1px 5px;margin-left:4px}
+@media(max-width:600px){.header{padding:16px}.header h1{font-size:1.2rem}.price-main{font-size:1.2rem}.freight-val{font-size:1.5rem}}
 </style>
 </head>
 <body>
-<header>
-<div style="display:flex;align-items:center;gap:14px;">
-<div class="logo">EQ</div>
-<div><div class="brand-name">EKOQUIM</div><div class="brand-sub">Inteligência de Mercado Químico</div></div>
-</div>
-<div>
-<div class="hdr-date">31 de Março de 2026</div>
-<div class="hdr-ed">Relatório Semanal — Edição #14/2026 · Taxa USD/CNY: 6,9151</div>
-</div>
-</header>
-<div class="alert">
-<div style="font-size:22px;flex-shrink:0;">🚨</div>
-<div>
-<strong>ALERTA: Estreito de Ormuz + Crise do Óxido de Propileno — Máximas Históricas</strong>
-    Restrição de trânsito marítimo pelo Estreito de Ormuz desde 22/03 continua. PG +25,2% na semana (máxima histórica no óxido de propileno). 6 de 7 produtos monitorados em alta. Enxofre +14,7% (+144% YoY). Monitoramento intensivo em curso.
+<div class="header">
+  <div>
+    <div style="font-size:0.8rem;opacity:0.8;margin-bottom:4px">EKOQUIM — INTELIGÊNCIA DE MERCADO</div>
+    <h1>📊 Análise de Mercado Químico</h1>
+    <div style="margin-top:6px;font-size:0.85rem">7 produtos monitorados · 8 insumos estratégicos · Fretes Far East → SAMEC</div>
+  </div>
+  <div class="meta">
+    <div>Data da consulta: <strong>01/04/2026</strong></div>
+    <div>Horário: 04:30 UTC</div>
+    <div class="rate-badge">💱 USD/CNY: <strong>6.875</strong> <span style="font-size:0.78rem;opacity:0.85">(conversão utilizada)</span></div>
   </div>
 </div>
-<div class="macro">
-<div class="mi"><div class="ml">USD/CNY</div><div class="mv">6,9151 <span class="dd">▼ −2,7% 30d</span></div></div>
-<div class="mi"><div class="ml">Brent Crude</div><div class="mv">$107,92/bbl <span class="dd">▼ −6,5% 7d</span></div></div>
-<div class="mi"><div class="ml">XSICFESE</div><div class="mv">$2.915/FEU <span class="dd">▼ −1,3%</span></div></div>
-<div class="mi"><div class="ml">Gás Natural (HH)</div><div class="mv">$2,846/MMBtu <span class="dd">▼ −2,3%</span></div></div>
-<div class="mi"><div class="ml">Coleta</div><div class="mv">31/03/2026 · 08:00h</div></div>
-</div>
-<main>
-<section>
-<div class="st"><span class="dot"></span> Produtos Monitorados — Preço em USD/mt · China Doméstico (ECHEMI)</div>
-<div class="pgrid">
+<div class="container">
 
-<div class="pc pc-up">
-<div class="ph"><div><div class="pn">Propylene Glycol (PG)</div><div class="ps">ECHEMI · China Doméstico · 30/03/2026</div></div><span class="tb bu">▲ ALTA</span></div>
-<div class="pp">$1.484 <span>USD/mt</span></div>
-<div class="pp2">≡ 10.267 CNY/mt · Taxa 6,9151</div>
-<div class="pd"><span class="pv cup">▲ +25,2%</span><span class="per">vs. semana anterior</span></div>
-<div class="pchart"><svg style="display:block;" viewbox="0 0 420 185" width="100%">
-<rect fill="#f1f8e9" height="135" rx="2" width="350" x="50" y="15"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="136.9" y2="136.9"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="100.7" y2="100.7"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="64.3" y2="64.3"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="28.1" y2="28.1"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="50" y1="15" y2="150"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="400" y1="150" y2="150"/>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="136.9" y2="136.9"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="140.4">7.150</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="100.7" y2="100.7"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="104.2">8.188</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="64.3" y2="64.3"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="67.8">9.227</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="28.1" y2="28.1"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="31.6">10.266</text>
-<text fill="#777" font-size="7" text-anchor="middle" transform="rotate(-90)" x="-82" y="11">CNY/mt</text>
-<line stroke="#999" stroke-width="1" x1="50.0" x2="50.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="50.0" y="162">16/03</text>
-<line stroke="#999" stroke-width="1" x1="120.0" x2="120.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="120.0" y="162">18/03</text>
-<line stroke="#999" stroke-width="1" x1="190.0" x2="190.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="190.0" y="162">20/03</text>
-<line stroke="#999" stroke-width="1" x1="260.0" x2="260.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="260.0" y="162">24/03</text>
-<line stroke="#999" stroke-width="1" x1="330.0" x2="330.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="330.0" y="162">26/03</text>
-<line stroke="#999" stroke-width="1" x1="400.0" x2="400.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="400.0" y="162">30/03</text>
-<polygon fill="#388e3c" opacity="0.1" points="50,150 50.0,132.9 85.0,132.9 120.0,132.9 155.0,136.9 190.0,128.2 225.0,100.3 260.0,78.1 295.0,78.1 330.0,63.0 365.0,54.9 400.0,28.1 400,150"/>
-<polyline fill="none" points="50.0,132.9 85.0,132.9 120.0,132.9 155.0,136.9 190.0,128.2 225.0,100.3 260.0,78.1 295.0,78.1 330.0,63.0 365.0,54.9 400.0,28.1" stroke="#388e3c" stroke-linejoin="round" stroke-width="2"/>
-<circle cx="50.0" cy="132.9" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="85.0" cy="132.9" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="120.0" cy="132.9" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="155.0" cy="136.9" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="190.0" cy="128.2" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="225.0" cy="100.3" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="260.0" cy="78.1" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="295.0" cy="78.1" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="330.0" cy="63.0" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="365.0" cy="54.9" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="400.0" cy="28.1" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<text fill="#388e3c" font-size="7.5" font-weight="700" text-anchor="middle" x="400.0" y="23.1">10.266</text>
-</svg></div>
-<div class="pnews"><strong>Mercado:</strong> Alta impulsionada por máximas históricas no óxido de propileno. Dow e Monument Chemical anunciaram reajustes para abril/2026. Restrições geopolíticas no Estreito de Ormuz elevam prêmio de risco em toda a cadeia de PG.</div>
+<div class="section-title">🧪 Produtos Monitorados — Preços China Doméstico</div>
+<div class="grid-3">
+<div class="card alta">
+<div class="card-header"><div class="product-name">🧪 Propylene Glycol</div><span class="source-tag">echemi.com</span></div>
+<div class="price-main">USD 1,503.0<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
+<div class="price-sub">CNY 10,333.33/mt — Mar 31, 2026</div>
+<div class="trend-row">
+<span class="badge" style="background:#c62828;color:#fff">▲ 17.0% vs semana anterior</span>
+<span style="font-size:0.8rem;color:#c62828;font-weight:700">Alta</span>
 </div>
-<div class="pc pc-up">
-<div class="ph"><div><div class="pn">Acetic Acid (AA)</div><div class="ps">ECHEMI · China Doméstico · 30/03/2026</div></div><span class="tb bu">▲ ALTA</span></div>
-<div class="pp">$576 <span>USD/mt</span></div>
-<div class="pp2">≡ 3.983 CNY/mt · Taxa 6,9151</div>
-<div class="pd"><span class="pv cup">▲ +18,7%</span><span class="per">vs. semana anterior</span></div>
-<div class="pchart"><svg style="display:block;" viewbox="0 0 420 185" width="100%">
-<rect fill="#f1f8e9" height="135" rx="2" width="350" x="50" y="15"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="136.9" y2="136.9"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="100.7" y2="100.7"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="64.3" y2="64.3"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="28.1" y2="28.1"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="50" y1="15" y2="150"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="400" y1="150" y2="150"/>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="136.9" y2="136.9"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="140.4">3.093</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="100.7" y2="100.7"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="104.2">3.389</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="64.3" y2="64.3"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="67.8">3.686</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="28.1" y2="28.1"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="31.6">3.983</text>
-<text fill="#777" font-size="7" text-anchor="middle" transform="rotate(-90)" x="-82" y="11">CNY/mt</text>
-<line stroke="#999" stroke-width="1" x1="50.0" x2="50.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="50.0" y="162">16/03</text>
-<line stroke="#999" stroke-width="1" x1="120.0" x2="120.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="120.0" y="162">18/03</text>
-<line stroke="#999" stroke-width="1" x1="190.0" x2="190.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="190.0" y="162">20/03</text>
-<line stroke="#999" stroke-width="1" x1="260.0" x2="260.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="260.0" y="162">24/03</text>
-<line stroke="#999" stroke-width="1" x1="330.0" x2="330.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="330.0" y="162">26/03</text>
-<line stroke="#999" stroke-width="1" x1="400.0" x2="400.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="400.0" y="162">30/03</text>
-<polygon fill="#388e3c" opacity="0.1" points="50,150 50.0,136.9 85.0,136.9 120.0,130.8 155.0,122.2 190.0,116.9 225.0,104.7 260.0,94.1 295.0,90.0 330.0,82.2 365.0,73.7 400.0,28.1 400,150"/>
-<polyline fill="none" points="50.0,136.9 85.0,136.9 120.0,130.8 155.0,122.2 190.0,116.9 225.0,104.7 260.0,94.1 295.0,90.0 330.0,82.2 365.0,73.7 400.0,28.1" stroke="#388e3c" stroke-linejoin="round" stroke-width="2"/>
-<circle cx="50.0" cy="136.9" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="85.0" cy="136.9" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="120.0" cy="130.8" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="155.0" cy="122.2" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="190.0" cy="116.9" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="225.0" cy="104.7" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="260.0" cy="94.1" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="295.0" cy="90.0" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="330.0" cy="82.2" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="365.0" cy="73.7" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="400.0" cy="28.1" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<text fill="#388e3c" font-size="7.5" font-weight="700" text-anchor="middle" x="400.0" y="23.1">3.983</text>
-</svg></div>
-<div class="pnews"><strong>Mercado:</strong> Custo do metanol (+14,3%) pressiona o custo de produção. Demanda aquecida do setor de PTA, solventes e acetatos. Estoques baixos reportados em Shanghai e Hangzhou.</div>
+<div class="chart-container" style="position:relative;width:100%;height:180px;">
+  <canvas id="chart-pg"></canvas>
 </div>
-<div class="pc pc-up">
-<div class="ph"><div><div class="pn">Ethanolamine (MEA/DEA/TEA)</div><div class="ps">ECHEMI · China Doméstico · 30/03/2026</div></div><span class="tb bu">▲ ALTA</span></div>
-<div class="pp">$1.302 <span>USD/mt</span></div>
-<div class="pp2">≡ 9.000 CNY/mt · Taxa 6,9151</div>
-<div class="pd"><span class="pv cup">▲ +4,6%</span><span class="per">vs. semana anterior</span></div>
-<div class="pchart"><svg style="display:block;" viewbox="0 0 420 185" width="100%">
-<rect fill="#f1f8e9" height="135" rx="2" width="350" x="50" y="15"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="136.9" y2="136.9"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="100.7" y2="100.7"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="64.3" y2="64.3"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="28.1" y2="28.1"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="50" y1="15" y2="150"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="400" y1="150" y2="150"/>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="136.9" y2="136.9"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="140.4">8.454</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="100.7" y2="100.7"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="104.2">8.636</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="64.3" y2="64.3"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="67.8">8.818</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="28.1" y2="28.1"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="31.6">9.000</text>
-<text fill="#777" font-size="7" text-anchor="middle" transform="rotate(-90)" x="-82" y="11">CNY/mt</text>
-<line stroke="#999" stroke-width="1" x1="50.0" x2="50.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="50.0" y="162">16/03</text>
-<line stroke="#999" stroke-width="1" x1="120.0" x2="120.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="120.0" y="162">18/03</text>
-<line stroke="#999" stroke-width="1" x1="190.0" x2="190.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="190.0" y="162">20/03</text>
-<line stroke="#999" stroke-width="1" x1="260.0" x2="260.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="260.0" y="162">24/03</text>
-<line stroke="#999" stroke-width="1" x1="330.0" x2="330.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="330.0" y="162">26/03</text>
-<line stroke="#999" stroke-width="1" x1="400.0" x2="400.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="400.0" y="162">30/03</text>
-<polygon fill="#388e3c" opacity="0.1" points="50,150 50.0,136.9 85.0,113.1 120.0,113.1 155.0,113.1 190.0,122.2 225.0,106.5 260.0,72.6 295.0,52.3 330.0,41.0 365.0,41.0 400.0,28.1 400,150"/>
-<polyline fill="none" points="50.0,136.9 85.0,113.1 120.0,113.1 155.0,113.1 190.0,122.2 225.0,106.5 260.0,72.6 295.0,52.3 330.0,41.0 365.0,41.0 400.0,28.1" stroke="#388e3c" stroke-linejoin="round" stroke-width="2"/>
-<circle cx="50.0" cy="136.9" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="85.0" cy="113.1" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="120.0" cy="113.1" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="155.0" cy="113.1" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="190.0" cy="122.2" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="225.0" cy="106.5" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="260.0" cy="72.6" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="295.0" cy="52.3" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="330.0" cy="41.0" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="365.0" cy="41.0" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="400.0" cy="28.1" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<text fill="#388e3c" font-size="7.5" font-weight="700" text-anchor="middle" x="400.0" y="23.1">9.000</text>
-</svg></div>
-<div class="pnews"><strong>Mercado:</strong> INEOS Oxide declarou Force Majeure em Glicol Éteres (mar/26). Etileno em alta sustenta pressão de custo. Reajustes de Dow e Monument Chemical confirmados para 01/04/2026.</div>
+<script>
+new Chart(document.getElementById('chart-pg'), {
+  type: 'line',
+  data: {
+    labels: ["12/03", "13/03", "16/03", "19/03", "20/03", "24/03", "27/03", "31/03"],
+    datasets: [{
+      data: [1061.8, 1061.8, 1057.0, 1040.0, 1076.4, 1284.8, 1381.8, 1503.0],
+      borderColor: '#388e3c',
+      backgroundColor: 'rgba(255,235,238,0.8)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1b5e20',
+      pointRadius: 4,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+      y: {
+        display: true,
+        ticks: { font: { size: 9 }, color: '#555' },
+        title: { display: true, text: 'USD/ton', font: { size: 9 } }
+      }
+    }
+  }
+});
+</script>
+<div class="news-list">
+<div class="news-item">• Propylene glycol high stalemate: strong cost support vs weak demand to undertake.<span class="news-date"> · 2026-03-26 · echemi.com</span></div>
+<div class="news-item">• Propylene glycol market cost and demand game intensifies.<span class="news-date"> · 2026-03-12 · echemi.com</span></div>
+<div class="news-item">• Dow announces price increase on glycols, effective April 11, 2026.<span class="news-date"> · 2026-03-30 · greenchemindustries.com</span></div>
+</div></div>
+<div class="card alta">
+<div class="card-header"><div class="product-name">⚗️ Acetic Acid</div><span class="source-tag">echemi.com</span></div>
+<div class="price-main">USD 602.2<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
+<div class="price-sub">CNY 4,140.00/mt — Mar 31, 2026</div>
+<div class="trend-row">
+<span class="badge" style="background:#c62828;color:#fff">▲ 20.2% vs semana anterior</span>
+<span style="font-size:0.8rem;color:#c62828;font-weight:700">Alta</span>
 </div>
-<div class="pc pc-fl">
-<div class="ph"><div><div class="pn">Sodium Carbonate (Soda Ash)</div><div class="ps">ECHEMI · China Doméstico · 30/03/2026</div></div><span class="tb bf">▬ ESTÁVEL</span></div>
-<div class="pp">$180 <span>USD/mt</span></div>
-<div class="pp2">≡ 1.246 CNY/mt · Taxa 6,9151</div>
-<div class="pd"><span class="pv cfl">▬ −0,7%</span><span class="per">vs. semana anterior</span></div>
-<div class="pchart"><svg style="display:block;" viewbox="0 0 420 185" width="100%">
-<rect fill="#f1f8e9" height="135" rx="2" width="350" x="50" y="15"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="136.9" y2="136.9"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="100.7" y2="100.7"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="64.3" y2="64.3"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="28.1" y2="28.1"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="50" y1="15" y2="150"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="400" y1="150" y2="150"/>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="136.9" y2="136.9"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="140.4">1.212</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="100.7" y2="100.7"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="104.2">1.226</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="64.3" y2="64.3"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="67.8">1.241</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="28.1" y2="28.1"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="31.6">1.256</text>
-<text fill="#777" font-size="7" text-anchor="middle" transform="rotate(-90)" x="-82" y="11">CNY/mt</text>
-<line stroke="#999" stroke-width="1" x1="50.0" x2="50.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="50.0" y="162">16/03</text>
-<line stroke="#999" stroke-width="1" x1="120.0" x2="120.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="120.0" y="162">18/03</text>
-<line stroke="#999" stroke-width="1" x1="190.0" x2="190.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="190.0" y="162">20/03</text>
-<line stroke="#999" stroke-width="1" x1="260.0" x2="260.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="260.0" y="162">24/03</text>
-<line stroke="#999" stroke-width="1" x1="330.0" x2="330.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="330.0" y="162">26/03</text>
-<line stroke="#999" stroke-width="1" x1="400.0" x2="400.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="400.0" y="162">30/03</text>
-<polygon fill="#546e7a" opacity="0.1" points="50,150 50.0,42.1 85.0,47.3 120.0,47.3 155.0,136.9 190.0,50.8 225.0,31.6 260.0,28.1 295.0,31.6 330.0,45.5 365.0,45.5 400.0,52.5 400,150"/>
-<polyline fill="none" points="50.0,42.1 85.0,47.3 120.0,47.3 155.0,136.9 190.0,50.8 225.0,31.6 260.0,28.1 295.0,31.6 330.0,45.5 365.0,45.5 400.0,52.5" stroke="#546e7a" stroke-linejoin="round" stroke-width="2"/>
-<circle cx="50.0" cy="42.1" fill="#546e7a" r="3" stroke="white" stroke-width="1"/>
-<circle cx="85.0" cy="47.3" fill="#546e7a" r="3" stroke="white" stroke-width="1"/>
-<circle cx="120.0" cy="47.3" fill="#546e7a" r="3" stroke="white" stroke-width="1"/>
-<circle cx="155.0" cy="136.9" fill="#546e7a" r="3" stroke="white" stroke-width="1"/>
-<circle cx="190.0" cy="50.8" fill="#546e7a" r="3" stroke="white" stroke-width="1"/>
-<circle cx="225.0" cy="31.6" fill="#546e7a" r="3" stroke="white" stroke-width="1"/>
-<circle cx="260.0" cy="28.1" fill="#546e7a" r="3" stroke="white" stroke-width="1"/>
-<circle cx="295.0" cy="31.6" fill="#546e7a" r="3" stroke="white" stroke-width="1"/>
-<circle cx="330.0" cy="45.5" fill="#546e7a" r="3" stroke="white" stroke-width="1"/>
-<circle cx="365.0" cy="45.5" fill="#546e7a" r="3" stroke="white" stroke-width="1"/>
-<circle cx="400.0" cy="52.5" fill="#546e7a" r="3" stroke="white" stroke-width="1"/>
-<text fill="#546e7a" font-size="7.5" font-weight="700" text-anchor="middle" x="400.0" y="47.5">1.256</text>
-</svg></div>
-<div class="pnews"><strong>Mercado:</strong> Preço estável em US$180/mt — menor valor entre os monitorados. Janela de compra aberta antes de eventual reflexo do Brent. Sem pressão de custo imediata. Ponto de atenção: produção chinesa com excesso de capacidade.</div>
+<div class="chart-container" style="position:relative;width:100%;height:180px;">
+  <canvas id="chart-aa"></canvas>
 </div>
-<div class="pc pc-up">
-<div class="ph"><div><div class="pn">Phosphoric Acid (H₃PO₄)</div><div class="ps">ECHEMI · China Doméstico · 30/03/2026</div></div><span class="tb bu">▲ ALTA</span></div>
-<div class="pp">$1.177 <span>USD/mt</span></div>
-<div class="pp2">≡ 8.138 CNY/mt · Taxa 6,9151</div>
-<div class="pd"><span class="pv cup">▲ +10,5%</span><span class="per">vs. semana anterior</span></div>
-<div class="pchart"><svg style="display:block;" viewbox="0 0 420 185" width="100%">
-<rect fill="#f1f8e9" height="135" rx="2" width="350" x="50" y="15"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="136.9" y2="136.9"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="100.7" y2="100.7"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="64.3" y2="64.3"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="28.1" y2="28.1"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="50" y1="15" y2="150"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="400" y1="150" y2="150"/>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="136.9" y2="136.9"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="140.4">7.300</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="100.7" y2="100.7"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="104.2">7.579</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="64.3" y2="64.3"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="67.8">7.858</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="28.1" y2="28.1"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="31.6">8.137</text>
-<text fill="#777" font-size="7" text-anchor="middle" transform="rotate(-90)" x="-82" y="11">CNY/mt</text>
-<line stroke="#999" stroke-width="1" x1="50.0" x2="50.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="50.0" y="162">16/03</text>
-<line stroke="#999" stroke-width="1" x1="120.0" x2="120.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="120.0" y="162">18/03</text>
-<line stroke="#999" stroke-width="1" x1="190.0" x2="190.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="190.0" y="162">20/03</text>
-<line stroke="#999" stroke-width="1" x1="260.0" x2="260.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="260.0" y="162">24/03</text>
-<line stroke="#999" stroke-width="1" x1="330.0" x2="330.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="330.0" y="162">26/03</text>
-<line stroke="#999" stroke-width="1" x1="400.0" x2="400.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="400.0" y="162">30/03</text>
-<polygon fill="#388e3c" opacity="0.1" points="50,150 50.0,110.9 85.0,132.6 120.0,132.6 155.0,136.9 190.0,136.9 225.0,128.3 260.0,106.6 295.0,106.6 330.0,74.1 365.0,28.1 400.0,28.1 400,150"/>
-<polyline fill="none" points="50.0,110.9 85.0,132.6 120.0,132.6 155.0,136.9 190.0,136.9 225.0,128.3 260.0,106.6 295.0,106.6 330.0,74.1 365.0,28.1 400.0,28.1" stroke="#388e3c" stroke-linejoin="round" stroke-width="2"/>
-<circle cx="50.0" cy="110.9" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="85.0" cy="132.6" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="120.0" cy="132.6" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="155.0" cy="136.9" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="190.0" cy="136.9" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="225.0" cy="128.3" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="260.0" cy="106.6" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="295.0" cy="106.6" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="330.0" cy="74.1" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="365.0" cy="28.1" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="400.0" cy="28.1" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<text fill="#388e3c" font-size="7.5" font-weight="700" text-anchor="middle" x="400.0" y="23.1">8.137</text>
-</svg></div>
-<div class="pnews"><strong>Mercado:</strong> Alta expressiva de +10,5% na semana. Demanda da indústria de fertilizantes impulsionada por restrições geopolíticas no Golfo Pérsico. Tendência de alta estrutural sustentada.</div>
+<script>
+new Chart(document.getElementById('chart-aa'), {
+  type: 'line',
+  data: {
+    labels: ["12/03", "13/03", "16/03", "19/03", "20/03", "24/03", "27/03", "31/03"],
+    datasets: [{
+      data: [439.3, 441.2, 449.9, 467.4, 473.7, 500.8, 525.1, 602.2],
+      borderColor: '#388e3c',
+      backgroundColor: 'rgba(255,235,238,0.8)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1b5e20',
+      pointRadius: 4,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+      y: {
+        display: true,
+        ticks: { font: { size: 9 }, color: '#555' },
+        title: { display: true, text: 'USD/ton', font: { size: 9 } }
+      }
+    }
+  }
+});
+</script>
+<div class="news-list">
+<div class="news-item">• Good resonance: glacial acetic acid rally like rainbow — cost support drives continuous gains.<span class="news-date"> · 2026-03-27 · echemi.com</span></div>
+<div class="news-item">• Glacial acetic acid profit level at record high; spring inspection season extends supply cuts.<span class="news-date"> · 2026-03-20 · echemi.com</span></div>
+<div class="news-item">• Profit redistribution in the glacial acetic acid industry chain driven by upward cost.<span class="news-date"> · 2026-03-13 · echemi.com</span></div>
+</div></div>
+<div class="card alta">
+<div class="card-header"><div class="product-name">🔬 Ethanolamine</div><span class="source-tag">echemi.com</span></div>
+<div class="price-main">USD 1,292.5<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
+<div class="price-sub">CNY 8,885.71/mt — Mar 31, 2026</div>
+<div class="trend-row">
+<span class="badge" style="background:#c62828;color:#fff">▲ 1.2% vs semana anterior</span>
+<span style="font-size:0.8rem;color:#c62828;font-weight:700">Alta</span>
 </div>
-<div class="pc pc-up">
-<div class="ph"><div><div class="pn">Sodium Hydroxide / Caustic Soda (NaOH)</div><div class="ps">ECHEMI · China Doméstico · 29/03/2026</div></div><span class="tb bu">▲ ALTA</span></div>
-<div class="pp">$209 <span>USD/mt</span></div>
-<div class="pp2">≡ 1.447 CNY/mt · Taxa 6,9151</div>
-<div class="pd"><span class="pv cup">▲ +2,8%</span><span class="per">vs. semana anterior</span></div>
-<div class="pchart"><svg style="display:block;" viewbox="0 0 420 185" width="100%">
-<rect fill="#f1f8e9" height="135" rx="2" width="350" x="50" y="15"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="136.9" y2="136.9"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="100.7" y2="100.7"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="64.3" y2="64.3"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="28.1" y2="28.1"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="50" y1="15" y2="150"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="400" y1="150" y2="150"/>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="136.9" y2="136.9"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="140.4">1.406</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="100.7" y2="100.7"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="104.2">1.437</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="64.3" y2="64.3"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="67.8">1.468</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="28.1" y2="28.1"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="31.6">1.499</text>
-<text fill="#777" font-size="7" text-anchor="middle" transform="rotate(-90)" x="-82" y="11">CNY/mt</text>
-<line stroke="#999" stroke-width="1" x1="50.0" x2="50.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="50.0" y="162">22/03</text>
-<line stroke="#999" stroke-width="1" x1="108.3" x2="108.3" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="108.3" y="162">23/03</text>
-<line stroke="#999" stroke-width="1" x1="166.7" x2="166.7" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="166.7" y="162">24/03</text>
-<line stroke="#999" stroke-width="1" x1="225.0" x2="225.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="225.0" y="162">25/03</text>
-<line stroke="#999" stroke-width="1" x1="283.3" x2="283.3" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="283.3" y="162">26/03</text>
-<line stroke="#999" stroke-width="1" x1="341.7" x2="341.7" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="341.7" y="162">27/03</text>
-<line stroke="#999" stroke-width="1" x1="400.0" x2="400.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="400.0" y="162">29/03</text>
-<polygon fill="#388e3c" opacity="0.1" points="50,150 50.0,136.9 108.3,128.5 166.7,69.8 225.0,88.9 283.3,28.1 341.7,90.4 400.0,90.4 400,150"/>
-<polyline fill="none" points="50.0,136.9 108.3,128.5 166.7,69.8 225.0,88.9 283.3,28.1 341.7,90.4 400.0,90.4" stroke="#388e3c" stroke-linejoin="round" stroke-width="2"/>
-<circle cx="50.0" cy="136.9" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="108.3" cy="128.5" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="166.7" cy="69.8" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="225.0" cy="88.9" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="283.3" cy="28.1" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="341.7" cy="90.4" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="400.0" cy="90.4" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<text fill="#388e3c" font-size="7.5" font-weight="700" text-anchor="middle" x="400.0" y="85.4">1.499</text>
-</svg></div>
-<div class="pnews"><strong>Mercado:</strong> Alta de +2,8% — curto histórico de apenas 7 dias disponível. Preço em R$209/mt reflete aumento de demanda industrial. Monitoramento intensivo necessário.</div>
+<div class="chart-container" style="position:relative;width:100%;height:180px;">
+  <canvas id="chart-mea"></canvas>
 </div>
-<div class="pc pc-up">
-<div class="ph"><div><div class="pn">Dichloromethane (DCM / CH₂Cl₂)</div><div class="ps">ECHEMI · China Doméstico · 30/03/2026</div></div><span class="tb bu">▲ ALTA</span></div>
-<div class="pp">$361 <span>USD/mt</span></div>
-<div class="pp2">≡ 2.495 CNY/mt · Taxa 6,9151</div>
-<div class="pd"><span class="pv cup">▲ +5,3%</span><span class="per">vs. semana anterior</span></div>
-<div class="pchart"><svg style="display:block;" viewbox="0 0 420 185" width="100%">
-<rect fill="#f1f8e9" height="135" rx="2" width="350" x="50" y="15"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="136.9" y2="136.9"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="100.7" y2="100.7"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="64.3" y2="64.3"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="28.1" y2="28.1"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="50" y1="15" y2="150"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="400" y1="150" y2="150"/>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="136.9" y2="136.9"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="140.4">2.175</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="100.7" y2="100.7"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="104.2">2.308</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="64.3" y2="64.3"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="67.8">2.441</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="28.1" y2="28.1"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="31.6">2.575</text>
-<text fill="#777" font-size="7" text-anchor="middle" transform="rotate(-90)" x="-82" y="11">CNY/mt</text>
-<line stroke="#999" stroke-width="1" x1="50.0" x2="50.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="50.0" y="162">16/03</text>
-<line stroke="#999" stroke-width="1" x1="120.0" x2="120.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="120.0" y="162">18/03</text>
-<line stroke="#999" stroke-width="1" x1="190.0" x2="190.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="190.0" y="162">20/03</text>
-<line stroke="#999" stroke-width="1" x1="260.0" x2="260.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="260.0" y="162">24/03</text>
-<line stroke="#999" stroke-width="1" x1="330.0" x2="330.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="330.0" y="162">26/03</text>
-<line stroke="#999" stroke-width="1" x1="400.0" x2="400.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="400.0" y="162">30/03</text>
-<polygon fill="#388e3c" opacity="0.1" points="50,150 50.0,28.1 85.0,97.4 120.0,97.4 155.0,111.1 190.0,136.9 225.0,83.8 260.0,79.8 295.0,79.8 330.0,70.3 365.0,70.3 400.0,49.8 400,150"/>
-<polyline fill="none" points="50.0,28.1 85.0,97.4 120.0,97.4 155.0,111.1 190.0,136.9 225.0,83.8 260.0,79.8 295.0,79.8 330.0,70.3 365.0,70.3 400.0,49.8" stroke="#388e3c" stroke-linejoin="round" stroke-width="2"/>
-<circle cx="50.0" cy="28.1" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="85.0" cy="97.4" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="120.0" cy="97.4" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="155.0" cy="111.1" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="190.0" cy="136.9" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="225.0" cy="83.8" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="260.0" cy="79.8" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="295.0" cy="79.8" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="330.0" cy="70.3" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="365.0" cy="70.3" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<circle cx="400.0" cy="49.8" fill="#388e3c" r="3" stroke="white" stroke-width="1"/>
-<text fill="#388e3c" font-size="7.5" font-weight="700" text-anchor="middle" x="400.0" y="44.8">2.575</text>
-</svg></div>
-<div class="pnews"><strong>Mercado:</strong> Alta de +5,3% com tendência de volatilidade. Pressão de custo de cloração e metanol. Demanda estável de solventes farmacêuticos e industriais.</div>
+<script>
+new Chart(document.getElementById('chart-mea'), {
+  type: 'line',
+  data: {
+    labels: ["12/03", "16/03", "17/03", "20/03", "24/03", "25/03", "27/03", "31/03"],
+    datasets: [{
+      data: [1214.5, 1229.8, 1247.1, 1240.5, 1276.6, 1291.4, 1299.7, 1292.5],
+      borderColor: '#388e3c',
+      backgroundColor: 'rgba(255,235,238,0.8)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1b5e20',
+      pointRadius: 4,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+      y: {
+        display: true,
+        ticks: { font: { size: 9 }, color: '#555' },
+        title: { display: true, text: 'USD/ton', font: { size: 9 } }
+      }
+    }
+  }
+});
+</script>
+<div class="news-list">
+<div class="news-item">• Cost and supply are driving up ethanolamine prices — can the Q2 rally continue?<span class="news-date"> · 2026-03-27 · echemi.com</span></div>
+<div class="news-item">• Ethanolamine market rose broadly, driven by multiple factors including geopolitical tensions.<span class="news-date"> · 2026-03-20 · echemi.com</span></div>
+<div class="news-item">• Analysis of the impact of rising Middle East geopolitical risks on the ethanolamine market.<span class="news-date"> · 2026-03-02 · echemi.com</span></div>
+</div></div>
+<div class="card queda">
+<div class="card-header"><div class="product-name">🧂 Sodium Carbonate (Soda Ash)</div><span class="source-tag">echemi.com</span></div>
+<div class="price-main">USD 181.3<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
+<div class="price-sub">CNY 1,246.43/mt — Mar 31, 2026</div>
+<div class="trend-row">
+<span class="badge" style="background:#2e7d32;color:#fff">▼ 0.8% vs semana anterior</span>
+<span style="font-size:0.8rem;color:#2e7d32;font-weight:700">Queda</span>
 </div>
+<div class="chart-container" style="position:relative;width:100%;height:180px;">
+  <canvas id="chart-soda"></canvas>
 </div>
-</section>
-<section>
-<div class="st"><span class="dot"></span> Matérias-Primas Estratégicas — TradingEconomics · ECHEMI · BusinessAnalytiq</div>
-<table class="mt">
-<thead><tr><th>Produto</th><th>Preço Atual</th><th>Var. Semanal</th><th>Preço D-7</th><th>Sinal</th><th>Fonte</th></tr></thead>
-<tbody>
-<tr>
-<td><strong>🛢 Petróleo Brent</strong><br/><span style="font-size:11px;color:#90a4ae">Brent Crude Oil — ICE Futures</span></td>
-<td><strong>107,92</strong><br/><span style="font-size:11px;color:#90a4ae">USD/bbl</span></td>
-<td class="mdu">▲ +3,3%</td>
-<td>104,49</td>
-<td><span class="sig sc">▲ ALTA</span></td>
-<td style="font-size:11px;color:#90a4ae">TradingEconomics</td>
-</tr><tr>
-<td><strong>🔥 Gás Natural</strong><br/><span style="font-size:11px;color:#90a4ae">Henry Hub — NYMEX</span></td>
-<td><strong>2,846</strong><br/><span style="font-size:11px;color:#90a4ae">USD/MMBtu</span></td>
-<td class="mdd">▼ −2,3%</td>
-<td>2,912</td>
-<td><span class="sig sm">▼ QUEDA</span></td>
-<td style="font-size:11px;color:#90a4ae">TradingEconomics</td>
-</tr><tr>
-<td><strong>⚗️ Metanol</strong><br/><span style="font-size:11px;color:#90a4ae">Methanol — China Domestic</span></td>
-<td><strong>3.159</strong><br/><span style="font-size:11px;color:#90a4ae">CNY/ton ≈ US$457</span></td>
-<td class="mdu">▲ +14,3%</td>
-<td>2.763</td>
-<td><span class="sig sc">▲ ALTA</span></td>
-<td style="font-size:11px;color:#90a4ae">ECHEMI</td>
-</tr><tr>
-<td><strong>🔬 Etileno</strong><br/><span style="font-size:11px;color:#90a4ae">Ethylene — Asia/China</span></td>
-<td><strong>—</strong><br/><span style="font-size:11px;color:#90a4ae">dado indisponível</span></td>
-<td class="mdf">—</td>
-<td>—</td>
-<td><span class="sig se">— S/D</span></td>
-<td style="font-size:11px;color:#90a4ae">N/D 31/03/2026</td>
-</tr><tr>
-<td><strong>🟡 Enxofre</strong><br/><span style="font-size:11px;color:#90a4ae">Sulfur — China Domestic</span></td>
-<td><strong>5.943</strong><br/><span style="font-size:11px;color:#90a4ae">CNY/ton ≈ US$859</span></td>
-<td class="mdu">▲ +14,7%</td>
-<td>5.181</td>
-<td><span class="sig sc">▲ ALTA</span></td>
-<td style="font-size:11px;color:#90a4ae">TradingEconomics</td>
-</tr><tr>
-<td><strong>🔵 Benzeno</strong><br/><span style="font-size:11px;color:#90a4ae">Benzene — China Domestic</span></td>
-<td><strong>8.530</strong><br/><span style="font-size:11px;color:#90a4ae">CNY/mt ≈ US$1.234</span></td>
-<td class="mdu">▲ +2,7%</td>
-<td>8.307</td>
-<td><span class="sig sc">▲ ALTA</span></td>
-<td style="font-size:11px;color:#90a4ae">ECHEMI</td>
-</tr><tr>
-<td><strong>🌿 Amônia</strong><br/><span style="font-size:11px;color:#90a4ae">Ammonia — Middle East FOB</span></td>
-<td><strong>620</strong><br/><span style="font-size:11px;color:#90a4ae">USD/mt</span></td>
-<td class="mdu">▲ +6,9%</td>
-<td>580</td>
-<td><span class="sig sc">▲ ALTA</span></td>
-<td style="font-size:11px;color:#90a4ae">BusinessAnalytiq</td>
-</tr><tr>
-<td><strong>🧊 CO₂</strong><br/><span style="font-size:11px;color:#90a4ae">Carbon Dioxide — Industrial</span></td>
-<td><strong>1.850</strong><br/><span style="font-size:11px;color:#90a4ae">CNY/mt ≈ US$267</span></td>
-<td class="mdu">▲ +3,3%</td>
-<td>1.790</td>
-<td><span class="sig sc">▲ ALTA</span></td>
-<td style="font-size:11px;color:#90a4ae">ECHEMI</td>
-</tr></tbody>
-</table>
-</section>
-<section>
-<div class="st"><span class="dot"></span> Logística &amp; Câmbio</div>
-<div class="fgrid">
-<div class="fc">
-<div class="fch">
-<div><div class="ft">XSICFESE — Xeneta Shipping Index · Far East → ECSA</div><div class="fs">Compass FT · 30/03/2026</div></div>
-<span class="tb bd">▼ −1,3%</span>
+<script>
+new Chart(document.getElementById('chart-soda'), {
+  type: 'line',
+  data: {
+    labels: ["12/03", "13/03", "17/03", "19/03", "20/03", "24/03", "27/03", "31/03"],
+    datasets: [{
+      data: [180.3, 181.9, 181.6, 176.3, 181.4, 182.8, 181.7, 181.3],
+      borderColor: '#388e3c',
+      backgroundColor: 'rgba(232,245,233,0.8)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1b5e20',
+      pointRadius: 4,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+      y: {
+        display: true,
+        ticks: { font: { size: 9 }, color: '#555' },
+        title: { display: true, text: 'USD/ton', font: { size: 9 } }
+      }
+    }
+  }
+});
+</script>
+<div class="news-list">
+<div class="news-item">• Supply and demand outlook: China's soda ash fundamentals tend to be loose in 2026.<span class="news-date"> · 2025-12-31 · echemi.com</span></div>
+<div class="news-item">• Soda ash trend weak — price decline amid oversupply pressure.<span class="news-date"> · 2025-12-28 · echemi.com</span></div>
+<div class="news-item">• Drive weakening: soda ash easy to fall but difficult to rise.<span class="news-date"> · 2025-12-21 · echemi.com</span></div>
+</div></div>
+<div class="card alta">
+<div class="card-header"><div class="product-name">⚡ Phosphoric Acid</div><span class="source-tag">echemi.com</span></div>
+<div class="price-main">USD 1,205.5<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
+<div class="price-sub">CNY 8,287.50/mt — Mar 31, 2026</div>
+<div class="trend-row">
+<span class="badge" style="background:#c62828;color:#fff">▲ 10.0% vs semana anterior</span>
+<span style="font-size:0.8rem;color:#c62828;font-weight:700">Alta</span>
 </div>
-<div class="fv" style="color:var(--gd)">$2.915 <span style="font-size:14px;font-weight:400;color:var(--mut)">USD/FEU</span></div>
-<div class="pp2">D-7: $2.952 · Variação: −$37</div>
-<svg style="display:block;" viewbox="0 0 800 170" width="100%">
-<rect fill="#f1f8e9" height="135" rx="2" width="720" x="50" y="15"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="770" y1="130.0" y2="130.0"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="770" y1="96.7" y2="96.7"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="770" y1="63.3" y2="63.3"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="770" y1="30.0" y2="30.0"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="50" y1="15" y2="150"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="770" y1="150" y2="150"/>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="130.0" y2="130.0"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="133.5">1.696</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="96.7" y2="96.7"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="100.2">2.114</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="63.3" y2="63.3"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="66.8">2.533</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="30.0" y2="30.0"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="33.5">2.952</text>
-<text fill="#777" font-size="7" text-anchor="middle" transform="rotate(-90)" x="-82" y="11">USD/FEU</text>
-<line stroke="#999" stroke-width="1" x1="50.0" x2="50.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="50.0" y="162">01/12</text>
-<line stroke="#999" stroke-width="1" x1="201.6" x2="201.6" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="201.6" y="162">30/12</text>
-<line stroke="#999" stroke-width="1" x1="353.2" x2="353.2" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="353.2" y="162">27/01</text>
-<line stroke="#999" stroke-width="1" x1="504.8" x2="504.8" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="504.8" y="162">24/02</text>
-<line stroke="#999" stroke-width="1" x1="656.4" x2="656.4" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="656.4" y="162">20/03</text>
-<line stroke="#999" stroke-width="1" x1="770.0" x2="770.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="770.0" y="162">30/03</text>
-<polygon fill="#2e7d32" opacity="0.1" points="50,150 50.0,100.6 87.8,86.2 125.8,85.2 163.6,99.7 201.6,123.8 239.4,112.5 277.4,113.5 315.2,130.0 353.2,129.3 391.0,117.9 429.0,102.9 466.8,95.4 504.8,82.7 542.6,58.8 580.6,46.1 618.4,36.5 656.4,33.7 694.2,30.0 732.2,30.0 770.0,32.9 770,150"/>
-<polyline fill="none" points="50.0,100.6 87.8,86.2 125.8,85.2 163.6,99.7 201.6,123.8 239.4,112.5 277.4,113.5 315.2,130.0 353.2,129.3 391.0,117.9 429.0,102.9 466.8,95.4 504.8,82.7 542.6,58.8 580.6,46.1 618.4,36.5 656.4,33.7 694.2,30.0 732.2,30.0 770.0,32.9" stroke="#2e7d32" stroke-linejoin="round" stroke-width="2"/>
-<circle cx="50.0" cy="100.6" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="87.8" cy="86.2" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="125.8" cy="85.2" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="163.6" cy="99.7" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="201.6" cy="123.8" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="239.4" cy="112.5" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="277.4" cy="113.5" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="315.2" cy="130.0" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="353.2" cy="129.3" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="391.0" cy="117.9" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="429.0" cy="102.9" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="466.8" cy="95.4" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="504.8" cy="82.7" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="542.6" cy="58.8" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="580.6" cy="46.1" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="618.4" cy="36.5" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="656.4" cy="33.7" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="694.2" cy="30.0" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="732.2" cy="30.0" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="770.0" cy="32.9" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<text fill="#1b5e20" font-size="7.5" font-weight="700" text-anchor="middle" x="694.2" y="24.0">2.952</text>
-</svg><div class="fnote"><strong>Análise:</strong> Frete partiu de ~$2.065/FEU em dez/25, atingiu pico de $2.952 em mar/26, e recuou para $2.915 com leve acomodação. Queda de -1,3% na semana reflete embarcadores migrando para rota Cabo da Boa Esperança. Volatilidade permanece alta. Contexto Ormuz mantém prêmio de risco elevado.</div>
+<div class="chart-container" style="position:relative;width:100%;height:180px;">
+  <canvas id="chart-pa"></canvas>
 </div>
-<div class="fc">
-<div class="fch">
-<div><div class="ft">USD/CNY — Taxa de Câmbio · 42 dias</div><div class="fs">TradingEconomics · 31/03/2026</div></div>
-<span class="tb bd">▼ −2,7% 30d</span>
+<script>
+new Chart(document.getElementById('chart-pa'), {
+  type: 'line',
+  data: {
+    labels: ["12/03", "16/03", "17/03", "20/03", "23/03", "24/03", "27/03", "31/03"],
+    datasets: [{
+      data: [1090.9, 1090.9, 1066.7, 1061.8, 1071.5, 1095.8, 1183.6, 1205.5],
+      borderColor: '#388e3c',
+      backgroundColor: 'rgba(255,235,238,0.8)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1b5e20',
+      pointRadius: 4,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+      y: {
+        display: true,
+        ticks: { font: { size: 9 }, color: '#555' },
+        title: { display: true, text: 'USD/ton', font: { size: 9 } }
+      }
+    }
+  }
+});
+</script>
+<div class="news-list">
+<div class="news-item">• Yellow phosphorus soared 3,300 CNY/ton; phosphoric acid rose over 1,000 CNY — geopolitical policy detonated the phosphorus chain!<span class="news-date"> · 2026-03-12 · echemi.com</span></div>
+<div class="news-item">• Food grade phosphoric acid exports exceeded expectations, Q4 year-on-year growth of 34.08%.<span class="news-date"> · 2026-01-23 · echemi.com</span></div>
+</div></div>
+<div class="card queda">
+<div class="card-header"><div class="product-name">🔧 Sodium Hydroxide (Caustic Soda)</div><span class="source-tag">echemi.com</span></div>
+<div class="price-main">USD 210.4<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
+<div class="price-sub">CNY 1,446.30/mt — Mar 31, 2026</div>
+<div class="trend-row">
+<span class="badge" style="background:#2e7d32;color:#fff">▼ 1.2% vs semana anterior</span>
+<span style="font-size:0.8rem;color:#2e7d32;font-weight:700">Queda</span>
 </div>
-<div class="fv" style="color:var(--gd)">6,9151 <span style="font-size:14px;font-weight:400;color:var(--mut)">CNY/USD</span></div>
-<div class="pp2">Início do mês: ~7,102 CNY/USD · Variação 30d: −2,6%</div>
-<svg style="display:block;" viewbox="0 0 420 185" width="100%">
-<rect fill="#f1f8e9" height="135" rx="2" width="350" x="50" y="15"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="138.7" y2="138.7"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="110.6" y2="110.6"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="82.5" y2="82.5"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="54.4" y2="54.4"/>
-<line stroke="#c8e6c9" stroke-dasharray="3,2" stroke-width="1" x1="50" x2="400" y1="26.3" y2="26.3"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="50" y1="15" y2="150"/>
-<line stroke="#388e3c" stroke-width="1.5" x1="50" x2="400" y1="150" y2="150"/>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="138.7" y2="138.7"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="142.2">6.90</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="110.6" y2="110.6"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="114.1">6.95</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="82.5" y2="82.5"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="86.0">7.00</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="54.4" y2="54.4"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="57.9">7.05</text>
-<line stroke="#999" stroke-width="1" x1="46" x2="50" y1="26.3" y2="26.3"/>
-<text fill="#555" font-size="7.5" text-anchor="end" x="44" y="29.8">7.10</text>
-<text fill="#777" font-size="7" text-anchor="middle" transform="rotate(-90)" x="-82" y="11">CNY/USD</text>
-<line stroke="#999" stroke-width="1" x1="50.0" x2="50.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="50.0" y="162">18/02</text>
-<line stroke="#999" stroke-width="1" x1="113.6" x2="113.6" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="113.6" y="162">26/02</text>
-<line stroke="#999" stroke-width="1" x1="177.3" x2="177.3" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="177.3" y="162">06/03</text>
-<line stroke="#999" stroke-width="1" x1="240.9" x2="240.9" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="240.9" y="162">14/03</text>
-<line stroke="#999" stroke-width="1" x1="304.5" x2="304.5" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="304.5" y="162">22/03</text>
-<line stroke="#999" stroke-width="1" x1="368.2" x2="368.2" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="368.2" y="162">30/03</text>
-<line stroke="#999" stroke-width="1" x1="400.0" x2="400.0" y1="150" y2="153"/>
-<text fill="#555" font-size="7" text-anchor="middle" x="400.0" y="162">31/03</text>
-<polygon fill="#2e7d32" opacity="0.1" points="50,150 50.0,25.1 81.8,27.4 113.6,34.7 145.5,43.7 177.3,53.3 209.1,61.1 240.9,70.7 272.7,80.8 304.5,92.6 336.4,105.0 368.2,128.2 400.0,130.3 400,150"/>
-<polyline fill="none" points="50.0,25.1 81.8,27.4 113.6,34.7 145.5,43.7 177.3,53.3 209.1,61.1 240.9,70.7 272.7,80.8 304.5,92.6 336.4,105.0 368.2,128.2 400.0,130.3" stroke="#2e7d32" stroke-linejoin="round" stroke-width="2"/>
-<circle cx="50.0" cy="25.1" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="81.8" cy="27.4" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="113.6" cy="34.7" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="145.5" cy="43.7" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="177.3" cy="53.3" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="209.1" cy="61.1" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="240.9" cy="70.7" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="272.7" cy="80.8" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="304.5" cy="92.6" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="336.4" cy="105.0" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="368.2" cy="128.2" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<circle cx="400.0" cy="130.3" fill="#1b5e20" r="3" stroke="white" stroke-width="1"/>
-<text fill="#1b5e20" font-size="7.5" font-weight="700" text-anchor="middle" x="50.0" y="20.1">7.10</text>
-</svg><div class="fnote"><strong>Impacto:</strong> Yuan valorizado −2,7% no mês encarece produtos chineses para o importador em USD. Preços em CNY sobem mais do que os preços efetivos em USD. Usar 6,9151 como referência de custo atual. Todos os preços deste relatório já estão convertidos à taxa do dia.</div>
+<div class="chart-container" style="position:relative;width:100%;height:180px;">
+  <canvas id="chart-naoh"></canvas>
+</div>
+<script>
+new Chart(document.getElementById('chart-naoh'), {
+  type: 'line',
+  data: {
+    labels: ["12/03", "13/03", "17/03", "19/03", "20/03", "24/03", "27/03", "31/03"],
+    datasets: [{
+      data: [197.3, 204.3, 221.5, 203.6, 206.2, 213.0, 218.2, 210.4],
+      borderColor: '#388e3c',
+      backgroundColor: 'rgba(232,245,233,0.8)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1b5e20',
+      pointRadius: 4,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+      y: {
+        display: true,
+        ticks: { font: { size: 9 }, color: '#555' },
+        title: { display: true, text: 'USD/ton', font: { size: 9 } }
+      }
+    }
+  }
+});
+</script>
+<div class="news-list">
+<div class="news-item">• [Liquid Alkali]: Geopolitical conflict drives US gold price of liquid alkali up; domestic market follow-up weak.<span class="news-date"> · 2026-03-30 · echemi.com</span></div>
+<div class="news-item">• Shandong liquid caustic soda: upstream and downstream strong game continues.<span class="news-date"> · 2026-03-27 · echemi.com</span></div>
+<div class="news-item">• [Liquid Alkali]: Strait blockade — alkali price continues to move up.<span class="news-date"> · 2026-03-13 · echemi.com</span></div>
+</div></div>
+<div class="card alta">
+<div class="card-header"><div class="product-name">🌀 Dichloromethane (DCM)</div><span class="source-tag">echemi.com</span></div>
+<div class="price-main">USD 370.2<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
+<div class="price-sub">CNY 2,545.00/mt — Mar 31, 2026</div>
+<div class="trend-row">
+<span class="badge" style="background:#c62828;color:#fff">▲ 6.7% vs semana anterior</span>
+<span style="font-size:0.8rem;color:#c62828;font-weight:700">Alta</span>
+</div>
+<div class="chart-container" style="position:relative;width:100%;height:180px;">
+  <canvas id="chart-dcm"></canvas>
+</div>
+<script>
+new Chart(document.getElementById('chart-dcm'), {
+  type: 'line',
+  data: {
+    labels: ["12/03", "16/03", "17/03", "19/03", "20/03", "24/03", "27/03", "31/03"],
+    datasets: [{
+      data: [474.9, 374.5, 337.5, 330.2, 316.4, 346.9, 352.0, 370.2],
+      borderColor: '#388e3c',
+      backgroundColor: 'rgba(255,235,238,0.8)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1b5e20',
+      pointRadius: 4,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+      y: {
+        display: true,
+        ticks: { font: { size: 9 }, color: '#555' },
+        title: { display: true, text: 'USD/ton', font: { size: 9 } }
+      }
+    }
+  }
+});
+</script>
+<div class="news-list">
+<div class="news-item">• January–February 2026 DCM export monthly trend: differentiation between markets.<span class="news-date"> · 2026-03-24 · echemi.com</span></div>
+<div class="news-item">• Pressure overlay: dichloromethane prices fell broadly amid supply surplus.<span class="news-date"> · 2026-03-20 · echemi.com</span></div>
+<div class="news-item">• Many factors push dichloromethane to reach the top after rising — geopolitical upside risk.<span class="news-date"> · 2026-03-12 · echemi.com</span></div>
+</div></div>
+</div>
+<div class="section-title">🚢 Fretes — Far East to South America East Coast (XSICFESE)</div>
+<div class="freight-card">
+<div class="freight-main">
+<div><div class="freight-label">Índice XSICFESE (USD/FEU)</div><div class="freight-val">2,886</div><div style="font-size:0.8rem;color:#555">Dado mais recente: 31/03/2026 · <span class="source-tag">compassft.com (Highcharts)</span></div></div>
+<div><span class="badge" style="background:#2e7d32;color:#fff">▼ 2.2% vs semana anterior</span><br><span style="font-size:0.8rem;color:#2e7d32;font-weight:700;margin-top:4px;display:block">Queda · Semana anterior: 2,952</span></div>
+</div>
+<div class="chart-container" style="position:relative;width:100%;height:180px;">
+  <canvas id="chart-freight"></canvas>
+</div>
+<script>
+new Chart(document.getElementById('chart-freight'), {
+  type: 'line',
+  data: {
+    labels: ["02/12", "09/12", "16/12", "23/12", "06/01", "13/01", "20/01", "27/01", "03/02", "10/02", "17/02", "24/02", "03/03", "10/03", "17/03", "24/03", "31/03"],
+    datasets: [{
+      data: [2289, 2235, 1889, 2077, 1951, 1962, 1696, 1712, 1740, 1744, 1664, 1664, 2607, 3244, 3169, 2952, 2886],
+      borderColor: '#0277bd',
+      backgroundColor: 'rgba(232,245,233,0.8)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1b5e20',
+      pointRadius: 4,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+      y: {
+        display: true,
+        ticks: { font: { size: 9 }, color: '#555' },
+        title: { display: true, text: 'USD/FEU', font: { size: 9 } }
+      }
+    }
+  }
+});
+</script>
+<div style="margin-top:12px;padding:10px;background:#e3f2fd;border-radius:8px;font-size:0.82rem;color:#1565c0">
+<strong>📌 Impacto estimado no portfólio:</strong> O XSICFESE está 73% acima dos níveis de jan/fev 2026 (USD 1.664–1.712/FEU), após pico de USD 3.244 em mar/10. 
+Queda de 11% desde o pico alivia parcialmente a pressão logística, mas o nível atual (~USD 2.900) ainda representa custo significativo vs. início do ano.
+Produtos de maior volume/peso (Soda Ash, Caustic Soda) são os mais impactados. Recomendar revisão de contratos de frete com fornecedores asiáticos.
 </div>
 </div>
-</section>
-<section>
-<div class="st"><span class="dot"></span> Análise Ekoquim — Cenário da Semana</div>
-<div class="ab">
-<h4>Síntese Estratégica · 31 de Março de 2026</h4>
-<div class="agrid">
-<div><div class="al2">🔥 Driver Principal</div><div class="at">PG em máxima histórica (+25,2%) puxado pelo óxido de propileno. Estreito de Ormuz em restrição desde 22/03 eleva prêmio de risco em toda a cadeia petroquímica. Brent em queda semanal (−6,5%) oferece alívio parcial.</div></div>
-<div><div class="al2">📈 Alerta de Compra</div><div class="at">Sodium Carbonate ($180/mt, estável) — janela de compra antes de reflexo tardio do Brent. Sodium Hydroxide ($209/mt, +2,8%) — aceleração possível se INEOS Force Majeure se expandir.</div></div>
-<div><div class="al2">⚠ Maior Risco</div><div class="at">PG (+25,2%) e Acetic Acid (+18,7%) com alta agressiva. Acionar fornecedores alternativos América do Norte / Europa imediatamente para contratos Q2. Ethylene com dado indisponível — risco de surpresa.</div></div>
-<div><div class="al2">📊 Destaque Semanal</div><div class="at">6 de 7 produtos em ALTA. Enxofre +14,7% na semana (+144% YoY). Fosfórico +10,5%. Metanol +14,3% (Ormuz). Panorama de alta generalizada não visto em 2024.</div></div>
-<div><div class="al2">🚢 Logística</div><div class="at">XSICFESE −1,3% na semana mas volatilidade alta. Manter prazos de 45–60 dias. Frete desde dez/25: +41% vs. partida. Rota Cabo da Boa Esperança aumentando participação gradual.</div></div>
-<div><div class="al2">💱 Câmbio</div><div class="at">Yuan +2,7% no mês. Todos os preços deste relatório convertidos à taxa 6,9151. Preços CNY sobem mais do que efetivo em USD — revisar planilhas de custo com a taxa atualizada.</div></div>
+<div class="section-title">⚙️ Matérias-Primas e Insumos Estratégicos</div>
+<div class="grid-4">
+<div class="rm-card alta">
+<div class="rm-name">⚡ Enxofre (Sulfur)</div>
+<div class="rm-price">910.5 <span class="rm-unit">USD/ton</span></div>
+<div class="trend-row"><span class="badge" style="background:#c62828;color:#fff;font-size:0.7rem">▲ 12.9%</span><span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · tradingeconomics.com</span></div>
+<div class="chart-container" style="position:relative;width:100%;height:80px;">
+  <canvas id="chart-rm_sulfur"></canvas>
+</div>
+<script>
+new Chart(document.getElementById('chart-rm_sulfur'), {
+  type: 'line',
+  data: {
+    labels: ["19/03", "20/03", "23/03", "24/03", "26/03", "27/03", "30/03", "31/03", "01/04"],
+    datasets: [{
+      data: [685.7, 700.3, 722.4, 753.9, 800.0, 806.3, 833.0, 864.8, 910.2],
+      borderColor: '#c62828',
+      backgroundColor: 'rgba(255,235,238,0.8)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1b5e20',
+      pointRadius: 2,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
+      y: {
+        display: false,
+        ticks: { font: { size: 9 }, color: '#555' },
+        title: { display: false, text: 'USD/ton', font: { size: 9 } }
+      }
+    }
+  }
+});
+</script>
+<div class="rm-news">Enxofre atinge recorde histórico acima de CNY 6.000/ton. Conflito no Oriente Médio fechou Estreito de Hormuz, bloqueando ~50% do fornecimento global. Impacto direto no custo do Ácido Fosfórico.</div>
+<div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Insumo direto do Ácido Fosfórico; alta do enxofre pressiona custos de produção do H₃PO₄.</div>
+</div>
+<div class="rm-card alta">
+<div class="rm-name">🌿 Amônia (Ammonia)</div>
+<div class="rm-price">560 <span class="rm-unit">USD/ton</span></div>
+<div class="trend-row"><span class="badge" style="background:#c62828;color:#fff;font-size:0.7rem">▲ 1.8%</span><span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · businessanalytiq.com</span></div>
+<div class="chart-container" style="position:relative;width:100%;height:80px;">
+  <canvas id="chart-rm_ammonia"></canvas>
+</div>
+<script>
+new Chart(document.getElementById('chart-rm_ammonia'), {
+  type: 'line',
+  data: {
+    labels: ["Jan", "Fev", "Mar"],
+    datasets: [{
+      data: [520, 545, 560],
+      borderColor: '#c62828',
+      backgroundColor: 'rgba(255,235,238,0.8)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1b5e20',
+      pointRadius: 2,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
+      y: {
+        display: false,
+        ticks: { font: { size: 9 }, color: '#555' },
+        title: { display: false, text: 'USD/ton', font: { size: 9 } }
+      }
+    }
+  }
+});
+</script>
+<div class="rm-news">Amônia Sul América: USD 560/ton (+1.8% em março). Global: USD 500/ton (estável). Nordeste Asiático: USD 290/ton. Europa: USD 650/ton (+1.6%).</div>
+<div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Base das etanolaminas (MEA/DEA/TEA). Alta da amônia eleva custo de produção do portfólio de aminas.</div>
+</div>
+<div class="rm-card alta">
+<div class="rm-name">⬛ Benzeno (Benzene)</div>
+<div class="rm-price">1249.0 <span class="rm-unit">USD/ton</span></div>
+<div class="trend-row"><span class="badge" style="background:#c62828;color:#fff;font-size:0.7rem">▲ 3.1%</span><span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · echemi.com</span></div>
+<div class="chart-container" style="position:relative;width:100%;height:80px;">
+  <canvas id="chart-rm_benzene"></canvas>
+</div>
+<script>
+new Chart(document.getElementById('chart-rm_benzene'), {
+  type: 'line',
+  data: {
+    labels: ["24/03", "25/03", "26/03", "27/03", "30/03", "31/03"],
+    datasets: [{
+      data: [1225.7, 1188.4, 1188.4, 1211.1, 1240.7, 1248.7],
+      borderColor: '#c62828',
+      backgroundColor: 'rgba(255,235,238,0.8)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1b5e20',
+      pointRadius: 2,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
+      y: {
+        display: false,
+        ticks: { font: { size: 9 }, color: '#555' },
+        title: { display: false, text: 'USD/ton', font: { size: 9 } }
+      }
+    }
+  }
+});
+</script>
+<div class="rm-news">BASF (Guangdong) Integrated Base totalmente em produção (investimento USD 6bi). Conflito geopolítico empurra preço do benzeno hidrogenado. Importações jan–fev abaixo do esperado.</div>
+<div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Precursor de LAB, solventes e aromáticos. Alta do benzeno eleva custos de surfactantes e solventes do portfólio.</div>
+</div>
+<div class="rm-card estavel">
+<div class="rm-name">🔥 Etileno (Ethylene)</div>
+<div class="rm-price">1400 <span class="rm-unit">USD/ton</span></div>
+<div class="trend-row"><span class="badge" style="background:#f57f17;color:#fff;font-size:0.7rem">→ 0.0%</span><span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · echemi.com</span></div>
+<div class="chart-container" style="position:relative;width:100%;height:80px;">
+  <canvas id="chart-rm_ethylene"></canvas>
+</div>
+<script>
+new Chart(document.getElementById('chart-rm_ethylene'), {
+  type: 'line',
+  data: {
+    labels: ["Mar", "Mar", "Mar"],
+    datasets: [{
+      data: [1380, 1390, 1400],
+      borderColor: '#f57f17',
+      backgroundColor: 'rgba(255,253,231,0.8)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1b5e20',
+      pointRadius: 2,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
+      y: {
+        display: false,
+        ticks: { font: { size: 9 }, color: '#555' },
+        title: { display: false, text: 'USD/ton', font: { size: 9 } }
+      }
+    }
+  }
+});
+</script>
+<div class="rm-news">Etileno China CFR: USD 1.400/ton (estável). Doméstico China: 10.133 CNY/mt. Conflito Oriente Médio elevou riscos de oferta; ethylene prices rose (Mar 2).</div>
+<div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Matéria-prima de MEA/DEA/TEA e solventes clorados (DCM). Estabilidade atual positiva para margens das etanolaminas.</div>
+</div>
+<div class="rm-card queda">
+<div class="rm-name">💧 Gás Natural (Henry Hub)</div>
+<div class="rm-price">2.866 <span class="rm-unit">USD/MMBtu</span></div>
+<div class="trend-row"><span class="badge" style="background:#2e7d32;color:#fff;font-size:0.7rem">▼ 5.3%</span><span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · tradingeconomics.com</span></div>
+<div class="chart-container" style="position:relative;width:100%;height:80px;">
+  <canvas id="chart-rm_natgas"></canvas>
+</div>
+<script>
+new Chart(document.getElementById('chart-rm_natgas'), {
+  type: 'line',
+  data: {
+    labels: ["19/03", "20/03", "23/03", "24/03", "27/03", "30/03", "31/03", "01/04"],
+    datasets: [{
+      data: [3.166, 3.095, 2.891, 2.912, 3.025, 2.887, 2.884, 2.866],
+      borderColor: '#2e7d32',
+      backgroundColor: 'rgba(232,245,233,0.8)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1b5e20',
+      pointRadius: 2,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
+      y: {
+        display: false,
+        ticks: { font: { size: 9 }, color: '#555' },
+        title: { display: false, text: 'USD/MMBtu', font: { size: 9 } }
+      }
+    }
+  }
+});
+</script>
+<div class="rm-news">GN caiu para USD 2,86/MMBtu — mínima de 1 mês. Shoulder season (primavera) reduz demanda de aquecimento nos EUA. Referência global de custo energético para produção de amônia.</div>
+<div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Referência de custo energético global. Queda reduz pressão de custo na produção de amônia, soda e cloro.</div>
+</div>
+<div class="rm-card queda">
+<div class="rm-name">🛢️ Petróleo Brent</div>
+<div class="rm-price">103.97 <span class="rm-unit">USD/bbl</span></div>
+<div class="trend-row"><span class="badge" style="background:#2e7d32;color:#fff;font-size:0.7rem">▼ 1.3%</span><span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · tradingeconomics.com</span></div>
+<div class="chart-container" style="position:relative;width:100%;height:80px;">
+  <canvas id="chart-rm_brent"></canvas>
+</div>
+<script>
+new Chart(document.getElementById('chart-rm_brent'), {
+  type: 'line',
+  data: {
+    labels: ["19/03", "20/03", "23/03", "24/03", "26/03", "27/03", "30/03", "31/03", "01/04"],
+    datasets: [{
+      data: [108.65, 112.19, 99.94, 104.49, 101.89, 105.32, 107.39, 103.97, 103.97],
+      borderColor: '#2e7d32',
+      backgroundColor: 'rgba(232,245,233,0.8)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1b5e20',
+      pointRadius: 2,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
+      y: {
+        display: false,
+        ticks: { font: { size: 9 }, color: '#555' },
+        title: { display: false, text: 'USD/bbl', font: { size: 9 } }
+      }
+    }
+  }
+});
+</script>
+<div class="rm-news">Brent caiu 2% para USD 102/bbl na abertura de abril após recorde mensal em março. Esperanças de desescalada no Oriente Médio (Trump sinalizou possível acordo com Teerã).</div>
+<div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Benchmark energético global. Nível elevado (>100 USD/bbl) mantém pressão de custo em toda a cadeia petroquímica.</div>
+</div>
+<div class="rm-card queda">
+<div class="rm-name">🦫 Metanol (Methanol)</div>
+<div class="rm-price">442.3 <span class="rm-unit">USD/ton</span></div>
+<div class="trend-row"><span class="badge" style="background:#2e7d32;color:#fff;font-size:0.7rem">▼ 7.5%</span><span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · tradingeconomics.com</span></div>
+<div class="chart-container" style="position:relative;width:100%;height:80px;">
+  <canvas id="chart-rm_methanol"></canvas>
+</div>
+<script>
+new Chart(document.getElementById('chart-rm_methanol'), {
+  type: 'line',
+  data: {
+    labels: ["19/03", "20/03", "23/03", "24/03", "27/03", "30/03", "31/03", "01/04"],
+    datasets: [{
+      data: [460.1, 451.2, 481.9, 450.3, 478.0, 479.4, 464.9, 442.3],
+      borderColor: '#2e7d32',
+      backgroundColor: 'rgba(232,245,233,0.8)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1b5e20',
+      pointRadius: 2,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
+      y: {
+        display: false,
+        ticks: { font: { size: 9 }, color: '#555' },
+        title: { display: false, text: 'USD/ton', font: { size: 9 } }
+      }
+    }
+  }
+});
+</script>
+<div class="rm-news">Metanol caiu -4.85% em um dia (01/04). Ainda +32.91% no mês. Volatilidade elevada. Rota Far East/China sob pressão com Hormuz restrito.</div>
+<div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Precursor de solventes, resinas e derivados clorados (DCM). Queda recente alivia parte da pressão de custo.</div>
+</div>
+<div class="rm-card alta">
+<div class="rm-name">🌾 Ureia (Urea)</div>
+<div class="rm-price">693.5 <span class="rm-unit">USD/ton</span></div>
+<div class="trend-row"><span class="badge" style="background:#c62828;color:#fff;font-size:0.7rem">▲ 2.7%</span><span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · tradingeconomics.com</span></div>
+<div class="chart-container" style="position:relative;width:100%;height:80px;">
+  <canvas id="chart-rm_urea"></canvas>
+</div>
+<script>
+new Chart(document.getElementById('chart-rm_urea'), {
+  type: 'line',
+  data: {
+    labels: ["18/03", "19/03", "23/03", "24/03", "26/03", "27/03", "30/03", "31/03"],
+    datasets: [{
+      data: [610, 684, 672.5, 675, 695, 687.5, 690, 693.5],
+      borderColor: '#c62828',
+      backgroundColor: 'rgba(255,235,238,0.8)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1b5e20',
+      pointRadius: 2,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
+      y: {
+        display: false,
+        ticks: { font: { size: 9 }, color: '#555' },
+        title: { display: false, text: 'USD/ton', font: { size: 9 } }
+      }
+    }
+  }
+});
+</script>
+<div class="rm-news">Ureia próxima de máxima desde out/2022 (USD 684/ton). Alta de +70% no ano. Conflito no Oriente Médio disrupta mercados de fertilizantes e eleva custos de produção via gás natural.</div>
+<div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Referência do mercado nitrogenado; correlacionada à amônia. Alta da ureia sinaliza pressão estrutural nos custos de produção.</div>
+</div>
+<div class="rm-card" style="border-left-color:#1565c0;grid-column:1/-1">
+<div class="rm-name">💱 Cotação USD/CNY — 30 dias</div>
+<div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+  <div><div class="rm-price">6.875 <span class="rm-unit">CNY por USD</span></div>
+  <div class="trend-row"><span class="badge" style="background:#2e7d32;color:#fff;font-size:0.7rem">▼ 0.4% vs 7 dias atrás</span><span style="font-size:0.75rem;color:#777;margin-left:4px">tradingeconomics.com</span></div>
+  <div style="font-size:0.78rem;color:#555;margin-top:4px">📌 Cotação utilizada em todas as conversões deste relatório.<br>Variação 30d: máx 6,920 (26/03) · mín 6,845 (26/02) · Yuan offshore levemente apreciado em abr/01.</div>
+  </div>
+  <div style="flex:1;min-width:280px"><div class="chart-container" style="position:relative;width:100%;height:80px;">
+  <canvas id="chart-usdcny"></canvas>
+</div>
+<script>
+new Chart(document.getElementById('chart-usdcny'), {
+  type: 'line',
+  data: {
+    labels: ["19/02", "20/02", "23/02", "24/02", "25/02", "26/02", "27/02", "02/03", "03/03", "04/03", "05/03", "06/03", "09/03", "10/03", "11/03", "12/03", "13/03", "16/03", "17/03", "18/03", "19/03", "20/03", "23/03", "24/03", "25/03", "26/03", "27/03", "30/03", "31/03", "01/04"],
+    datasets: [{
+      data: [6.901, 6.898, 6.89, 6.879, 6.854, 6.845, 6.863, 6.901, 6.919, 6.895, 6.918, 6.91, 6.889, 6.879, 6.877, 6.881, 6.909, 6.889, 6.883, 6.902, 6.878, 6.907, 6.885, 6.894, 6.902, 6.92, 6.92, 6.917, 6.89, 6.875],
+      borderColor: '#1565c0',
+      backgroundColor: 'rgba(241,248,233,0.8)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1b5e20',
+      pointRadius: 2,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
+      y: {
+        display: false,
+        ticks: { font: { size: 9 }, color: '#555' },
+        title: { display: false, text: 'CNY/USD', font: { size: 9 } }
+      }
+    }
+  }
+});
+</script></div>
 </div>
 </div>
-</section>
-<section>
-<div class="st"><span class="dot"></span> Outros Destaques de Mercado</div>
-<div class="ngrid">
-<div class="ni">
-<div class="ni-img-err">🌊</div>
-<div class="ni-body">
-<div class="ni-tag tag-al">🌊 Geopolítica</div>
-<div class="ni-title">Crise no Estreito de Ormuz remodela mercado global de metanol</div>
-<div class="ni-text">Desde 28/fev/2026, ataques EUA-Israel ao Irã fecharam o Estreito de Ormuz, responsável por ~1/3 do comércio marítimo mundial de metanol. China importa >50% do insumo do Irã. Preços internacionais subiram >40% em março. Desvio pelo Cabo da Boa Esperança adiciona ~2 semanas, elevando fretes e criando escassez estrutural.</div>
-<div class="ni-meta"><span>C&EN, Al Jazeera, CNBC, Oxford Energy</span> · <span>Mar 2026</span></div>
 </div>
-</div><div class="ni">
-<div class="ni-img-err">📈</div>
-<div class="ni-body">
-<div class="ni-tag tag-up">📈 Propilenoglicol</div>
-<div class="ni-title">Óxido de propileno em máximas históricas pressiona toda a cadeia de PG</div>
-<div class="ni-text">O óxido de propileno atingiu máximas históricas em 2026, desencadeando reações em cascata no propilenoglicol (+41% em 2 semanas), epicloridrina, pigmentos e resinas poliéster. Múltiplas paradas de manutenção agravam a restrição de oferta. Forte demanda manufatureira da China.</div>
-<div class="ni-meta"><span>Achilles Chem, Procurement Resource, ECHEMI</span> · <span>Mar 2026</span></div>
+<div class="section-title">📰 Outros Destaques — Últimos 3 Dias</div>
+<div class="dest-grid">
+<div class="dest-card">
+<span class="dest-tag ALTA">ALTA</span>
+<div class="dest-title">Dow anuncia aumento de preços em glicoois, efetivo 11 de abril de 2026</div>
+<div class="dest-body">Dow Chemical notificou clientes sobre reajuste em toda a linha de glicóis. Impacto direto no Propylene Glycol e Ethylene Glycol no mercado americano.</div>
+<div class="dest-meta">GreenChem Industries · 01/04/2026</div>
 </div>
-</div><div class="ni">
-<div class="ni-img-err">⚗</div>
-<div class="ni-body">
-<div class="ni-tag tag-up">⚗️ Ácido Acético</div>
-<div class="ni-title">Alta volátil: rastreando metanol e disrupções logísticas</div>
-<div class="ni-text">Preços na Ásia sobem rastreando a escalada do metanol e disrupções de frete. China opera >80% de utilização com oferta ampla, mas fraca demanda de VAM (acetato de vinila) limita upside adicional. Mercado em modo volátil — atenção à curva de metanol como indicador antecedente.</div>
-<div class="ni-meta"><span>Nexizo, Procurement Resource, ECHEMI</span> · <span>Mar 2026</span></div>
+<div class="dest-card">
+<span class="dest-tag ALTA">ALTA</span>
+<div class="dest-title">Monument Chemical anuncia aumento em glicoois e glicol éteres, efetivo 1 de abril</div>
+<div class="dest-body">Produtor americano eleou preços de glicoois e glicol éteres a partir de hoje, seguindo pressão de custo de feedstock e demanda aquecida.</div>
+<div class="dest-meta">GreenChem Industries · 01/04/2026</div>
 </div>
-</div><div class="ni">
-<div class="ni-img-err">🟡</div>
-<div class="ni-body">
-<div class="ni-tag tag-al">🟡 Enxofre</div>
-<div class="ni-title">+144% em 12 meses — crise de oferta com alta estrutural</div>
-<div class="ni-text">Enxofre chinês atingiu 5.943 CNY/ton (+144% YoY, +14,7% na semana). Combinação de restrições geopolíticas no Golfo Pérsico com forte demanda da indústria de fertilizantes. Sem catalisador de queda visível no curto prazo; tendência estrutural de alta.</div>
-<div class="ni-meta"><span>TradingEconomics, SunSirs</span> · <span>31 Mar 2026</span></div>
+<div class="dest-card">
+<span class="dest-tag ALTA">ALTA</span>
+<div class="dest-title">Eastman Chemical anuncia aumento de preços, efetivo 1 de abril de 2026</div>
+<div class="dest-body">Eastman notificou clientes de reajuste em diversas linhas. Movimentos simultâneos de vários produtores indicam consolidação de alta nos mercados de especialidades.</div>
+<div class="dest-meta">GreenChem Industries · 01/04/2026</div>
+</div>
+<div class="dest-card">
+<span class="dest-tag ALTA">ALTA</span>
+<div class="dest-title">Calumet: aumento em Solvent Fluids a partir de 7 de abril de 2026</div>
+<div class="dest-body">Calumet anuncia reajuste em Solvent Fluids. Alinhado ao movimento geral de aumento de preços observado em múltiplos produtores norte-americanos nesta semana.</div>
+<div class="dest-meta">GreenChem Industries · 01/04/2026</div>
+</div>
+<div class="dest-card">
+<span class="dest-tag ALTA">ALTA</span>
+<div class="dest-title">ExxonMobil e CITGO anunciam reajustes em solventes e fluidos alifáticos</div>
+<div class="dest-body">ExxonMobil (Fluids, efetivo 06/04) e CITGO (Solventes Alifáticos, efetivo 06/04) anunciam aumentos de preços. Movimento coordenado no setor aponta para repasse de custos de energia.</div>
+<div class="dest-meta">GreenChem Industries · 01/04/2026</div>
+</div>
+<div class="dest-card">
+<span class="dest-tag ALERTA">ALERTA</span>
+<div class="dest-title">INEOS Oxide declara Força Maior em Ethylene Glycol Ether Butyls</div>
+<div class="dest-body">INEOS Oxide declarou Force Majeure em Etil e Butil Glicol Éteres em março de 2026. Impacto no fornecimento de solventes oxigenados para clientes em toda a América.</div>
+<div class="dest-meta">GreenChem Industries · 01/04/2026</div>
+</div>
+<div class="dest-card">
+<span class="dest-tag ALTA">ALTA</span>
+<div class="dest-title">Conflito eleva preço de álcali líquido nos EUA — mercado doméstico chinês segue fraco</div>
+<div class="dest-body">Cautic soda de exportação (US Gold) pressiona alta; mercado doméstico chinês ainda com follow-up fraco devido a demanda interna contida.</div>
+<div class="dest-meta">echemi.com · 30/03/2026</div>
+</div>
+<div class="dest-card">
+<span class="dest-tag ALERTA">ALERTA</span>
+<div class="dest-title">BASF Guangdong (USD 6 bilhões) entra em plena operação — impacto na oferta regional</div>
+<div class="dest-body">O maior investimento da BASF na China entra em operação. Capacidade adicional de produtos químicos de especialidades pode pressionar margens em segmentos como solventes e intermediários.</div>
+<div class="dest-meta">echemi.com · 30/03/2026</div>
 </div>
 </div>
+<div class="footer">
+<strong>Fontes consultadas nesta sessão:</strong><br>
+• echemi.com/customerCenter/market-insights-subscription.html — preços e notícias dos 7 produtos (acessado em 01/04/2026)<br>
+• echemi.com/weekly-price.html — preços internacionais e destaques semanais (acessado em 01/04/2026)<br>
+• compassft.com/indice/xsicfese/ — índice de fretes XSICFESE, dados via gráfico Highcharts (acessado em 01/04/2026)<br>
+• tradingeconomics.com — Brent Crude, Natural Gas, Methanol, Urea, Sulfur, USD/CNY (acessado em 01/04/2026)<br>
+• businessanalytiq.com/procurementanalytics/index/ammonia-price-index/ — Amônia por região (março 2026) (acessado em 01/04/2026)<br>
+• greenchemindustries.com/news-press-blogs — Destaques recentes do setor químico (acessado em 01/04/2026)<br><br>
+<strong>Horário de consulta:</strong> 04:30 UTC · <strong>Cotação USD/CNY utilizada:</strong> 6.875 (tradingeconomics.com, 01/04/2026)<br><br>
+<div class="warn">⚠️ Dados indisponíveis ou com limitação:<br>
+• XSICFESE: dados coletados via gráfico Highcharts (não via CSV export) — valores confirmados como fonte primária.<br>
+• Amônia: apenas preços mensais de março 2026 disponíveis (sparkline com 3 pontos mensais).<br>
+• Etileno: histórico semanal não disponível no price-curve (sparkline com 3 pontos estimados).<br>
+• Soda Ash: notícias mais recentes são de dezembro 2025 — sem notícias de março 2026 disponíveis.</div><br>
+<a href="https://github.com/flaviok74/ekoquim-analise-mercado" target="_blank">🔗 github.com/flaviok74/ekoquim-analise-mercado</a>
 </div>
-</section>
-</main>
-<footer>
-<strong>Ekoquim</strong> — Inteligência de Mercado Químico · 
-Fontes: ECHEMI, Compass FT, TradingEconomics, BusinessAnalytiq, Procurement Resource · 
-Taxa USD/CNY: 6,9151 · Todos os preços convertidos a USD · 
-Arquivo: <a href="computer:///sessions/zen-gifted-planck/mnt/Analise de mercado/analise_mercados_31_03.html" style="color:#a5d6a7">analise_mercados_31_03.html</a>
-</footer>
-</body>
+</div></body>
 </html>
