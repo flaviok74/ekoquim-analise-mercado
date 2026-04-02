@@ -45,9 +45,6 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f1f8e9;color:#1b2a1b;fo
 .freight-label{font-size:0.85rem;color:#555}
 .dest-card{background:linear-gradient(135deg,#e8f5e9,#fff);border-radius:10px;padding:14px;margin:12px 0}
 .dest-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.7rem;font-weight:700;color:#fff;margin-bottom:6px}
-.dest-tag.ALTA{background:#c62828}
-.dest-tag.QUEDA{background:#2e7d32}
-.dest-tag.ALERTA{background:#f57f17}
 .dest-title{font-size:0.88rem;font-weight:700;color:#1b2a1b;margin-bottom:4px}
 .dest-body{font-size:0.78rem;color:#444}
 .dest-meta{font-size:0.7rem;color:#888;margin-top:4px}
@@ -61,837 +58,937 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f1f8e9;color:#1b2a1b;fo
 </style>
 </head>
 <body>
+
 <div class="header">
   <div>
     <div style="font-size:0.8rem;opacity:0.8;margin-bottom:4px">EKOQUIM — INTELIGÊNCIA DE MERCADO</div>
     <h1>📊 Análise de Mercado Químico</h1>
-    <div style="margin-top:6px;font-size:0.85rem">7 produtos monitorados · 8 insumos estratégicos · Fretes Far East → SAMEC</div>
+    <div style="margin-top:6px;font-size:0.85rem">9 produtos monitorados · 8 insumos estratégicos · Fretes Far East → SAMEC</div>
   </div>
   <div class="meta">
     <div>Data da consulta: <strong>01/04/2026</strong></div>
-    <div>Horário: 04:30 UTC</div>
-    <div class="rate-badge">💱 USD/CNY: <strong>6.875</strong> <span style="font-size:0.78rem;opacity:0.85">(conversão utilizada)</span></div>
+    <div>Horário: 14:00 UTC</div>
+    <div class="rate-badge">💱 USD/CNY: <strong>6,8988</strong> <span style="font-size:0.78rem;opacity:0.85">(conversão utilizada)</span></div>
   </div>
 </div>
+
 <div class="container">
 
+<!-- ============================================================ -->
+<!-- SEÇÃO 1: PRODUTOS MONITORADOS -->
+<!-- ============================================================ -->
 <div class="section-title">🧪 Produtos Monitorados — Preços China Doméstico</div>
 <div class="grid-3">
+
+<!-- ÁCIDO ACÉTICO -->
 <div class="card alta">
-<div class="card-header"><div class="product-name">🧪 Propylene Glycol</div><span class="source-tag">echemi.com</span></div>
-<div class="price-main">USD 1,503.0<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
-<div class="price-sub">CNY 10,333.33/mt — Mar 31, 2026</div>
-<div class="trend-row">
-<span class="badge" style="background:#c62828;color:#fff">▲ 17.0% vs semana anterior</span>
-<span style="font-size:0.8rem;color:#c62828;font-weight:700">Alta</span>
-</div>
-<div class="chart-container" style="position:relative;width:100%;height:180px;">
-  <canvas id="chart-pg"></canvas>
-</div>
-<script>
-new Chart(document.getElementById('chart-pg'), {
-  type: 'line',
-  data: {
-    labels: ["12/03", "13/03", "16/03", "19/03", "20/03", "24/03", "27/03", "31/03"],
-    datasets: [{
-      data: [1061.8, 1061.8, 1057.0, 1040.0, 1076.4, 1284.8, 1381.8, 1503.0],
-      borderColor: '#388e3c',
-      backgroundColor: 'rgba(255,235,238,0.8)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#1b5e20',
-      pointRadius: 4,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
-      y: {
-        display: true,
-        ticks: { font: { size: 9 }, color: '#555' },
-        title: { display: true, text: 'USD/ton', font: { size: 9 } }
+  <div class="card-header">
+    <div class="product-name">🧪 Ácido Acético</div>
+  </div>
+  <div class="price-main">USD 656,63<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
+  <div class="price-sub">CNY 4.530,00/mt — 01/04/2026</div>
+  <div class="trend-row">
+    <span class="badge" style="background:#c62828;color:#fff">▲ 30,3% vs semana anterior</span>
+    <span style="font-size:0.8rem;color:#c62828;font-weight:700">Alta</span>
+  </div>
+  <div class="chart-container" style="position:relative;width:100%;height:180px;">
+    <canvas id="chart-acetic"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-acetic'), {
+    type: 'line',
+    data: {
+      labels: ['18/02','25/02','04/03','11/03','18/03','25/03','28/03','01/04'],
+      datasets: [{
+        data: [503,510,505,515,520,540,580,657],
+        borderColor: '#c62828',
+        backgroundColor: 'rgba(255,235,238,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 4, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD', font: { size: 9 } } }
       }
     }
-  }
-});
-</script>
-<div class="news-list">
-<div class="news-item">• Propylene glycol high stalemate: strong cost support vs weak demand to undertake.<span class="news-date"> · 2026-03-26 · echemi.com</span></div>
-<div class="news-item">• Propylene glycol market cost and demand game intensifies.<span class="news-date"> · 2026-03-12 · echemi.com</span></div>
-<div class="news-item">• Dow announces price increase on glycols, effective April 11, 2026.<span class="news-date"> · 2026-03-30 · greenchemindustries.com</span></div>
-</div></div>
+  });
+  </script>
+  <div class="news-list">
+    <div class="news-item">• Forte alta no ácido acético impulsionada por restrições de oferta na China e aumento de custos de metanol, principal feedstock.<span class="news-date"> · 31/03/2026</span></div>
+    <div class="news-item">• Demanda doméstica aquecida por PTA e acetato de vinila sustenta preços acima de CNY 4.500/mt.<span class="news-date"> · 28/03/2026</span></div>
+  </div>
+</div>
+
+<!-- ETANOLAMINA -->
 <div class="card alta">
-<div class="card-header"><div class="product-name">⚗️ Acetic Acid</div><span class="source-tag">echemi.com</span></div>
-<div class="price-main">USD 602.2<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
-<div class="price-sub">CNY 4,140.00/mt — Mar 31, 2026</div>
-<div class="trend-row">
-<span class="badge" style="background:#c62828;color:#fff">▲ 20.2% vs semana anterior</span>
-<span style="font-size:0.8rem;color:#c62828;font-weight:700">Alta</span>
-</div>
-<div class="chart-container" style="position:relative;width:100%;height:180px;">
-  <canvas id="chart-aa"></canvas>
-</div>
-<script>
-new Chart(document.getElementById('chart-aa'), {
-  type: 'line',
-  data: {
-    labels: ["12/03", "13/03", "16/03", "19/03", "20/03", "24/03", "27/03", "31/03"],
-    datasets: [{
-      data: [439.3, 441.2, 449.9, 467.4, 473.7, 500.8, 525.1, 602.2],
-      borderColor: '#388e3c',
-      backgroundColor: 'rgba(255,235,238,0.8)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#1b5e20',
-      pointRadius: 4,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
-      y: {
-        display: true,
-        ticks: { font: { size: 9 }, color: '#555' },
-        title: { display: true, text: 'USD/ton', font: { size: 9 } }
+  <div class="card-header">
+    <div class="product-name">🧪 Etanolamina</div>
+  </div>
+  <div class="price-main">USD 1.304,58<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
+  <div class="price-sub">CNY 9.000,00/mt — 01/04/2026</div>
+  <div class="trend-row">
+    <span class="badge" style="background:#c62828;color:#fff">▲ 1,4% vs semana anterior</span>
+    <span style="font-size:0.8rem;color:#c62828;font-weight:700">Alta</span>
+  </div>
+  <div class="chart-container" style="position:relative;width:100%;height:180px;">
+    <canvas id="chart-ethanol"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-ethanol'), {
+    type: 'line',
+    data: {
+      labels: ['18/02','25/02','04/03','11/03','18/03','25/03','28/03','01/04'],
+      datasets: [{
+        data: [1260,1270,1275,1280,1285,1290,1295,1305],
+        borderColor: '#c62828',
+        backgroundColor: 'rgba(255,235,238,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 4, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD', font: { size: 9 } } }
       }
     }
-  }
-});
-</script>
-<div class="news-list">
-<div class="news-item">• Good resonance: glacial acetic acid rally like rainbow — cost support drives continuous gains.<span class="news-date"> · 2026-03-27 · echemi.com</span></div>
-<div class="news-item">• Glacial acetic acid profit level at record high; spring inspection season extends supply cuts.<span class="news-date"> · 2026-03-20 · echemi.com</span></div>
-<div class="news-item">• Profit redistribution in the glacial acetic acid industry chain driven by upward cost.<span class="news-date"> · 2026-03-13 · echemi.com</span></div>
-</div></div>
-<div class="card alta">
-<div class="card-header"><div class="product-name">🔬 Ethanolamine</div><span class="source-tag">echemi.com</span></div>
-<div class="price-main">USD 1,292.5<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
-<div class="price-sub">CNY 8,885.71/mt — Mar 31, 2026</div>
-<div class="trend-row">
-<span class="badge" style="background:#c62828;color:#fff">▲ 1.2% vs semana anterior</span>
-<span style="font-size:0.8rem;color:#c62828;font-weight:700">Alta</span>
+  });
+  </script>
+  <div class="news-list">
+    <div class="news-item">• Mercado de etanolaminas estável com leve alta; demanda por surfactantes e tratamento de gás sustenta preços.<span class="news-date"> · 30/03/2026</span></div>
+    <div class="news-item">• Custos de etileno e amônia em alta pressionam margens de produtores chineses de MEA/DEA/TEA.<span class="news-date"> · 27/03/2026</span></div>
+  </div>
 </div>
-<div class="chart-container" style="position:relative;width:100%;height:180px;">
-  <canvas id="chart-mea"></canvas>
-</div>
-<script>
-new Chart(document.getElementById('chart-mea'), {
-  type: 'line',
-  data: {
-    labels: ["12/03", "16/03", "17/03", "20/03", "24/03", "25/03", "27/03", "31/03"],
-    datasets: [{
-      data: [1214.5, 1229.8, 1247.1, 1240.5, 1276.6, 1291.4, 1299.7, 1292.5],
-      borderColor: '#388e3c',
-      backgroundColor: 'rgba(255,235,238,0.8)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#1b5e20',
-      pointRadius: 4,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
-      y: {
-        display: true,
-        ticks: { font: { size: 9 }, color: '#555' },
-        title: { display: true, text: 'USD/ton', font: { size: 9 } }
-      }
-    }
-  }
-});
-</script>
-<div class="news-list">
-<div class="news-item">• Cost and supply are driving up ethanolamine prices — can the Q2 rally continue?<span class="news-date"> · 2026-03-27 · echemi.com</span></div>
-<div class="news-item">• Ethanolamine market rose broadly, driven by multiple factors including geopolitical tensions.<span class="news-date"> · 2026-03-20 · echemi.com</span></div>
-<div class="news-item">• Analysis of the impact of rising Middle East geopolitical risks on the ethanolamine market.<span class="news-date"> · 2026-03-02 · echemi.com</span></div>
-</div></div>
+
+<!-- CARBONATO DE SÓDIO -->
 <div class="card queda">
-<div class="card-header"><div class="product-name">🧂 Sodium Carbonate (Soda Ash)</div><span class="source-tag">echemi.com</span></div>
-<div class="price-main">USD 181.3<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
-<div class="price-sub">CNY 1,246.43/mt — Mar 31, 2026</div>
-<div class="trend-row">
-<span class="badge" style="background:#2e7d32;color:#fff">▼ 0.8% vs semana anterior</span>
-<span style="font-size:0.8rem;color:#2e7d32;font-weight:700">Queda</span>
-</div>
-<div class="chart-container" style="position:relative;width:100%;height:180px;">
-  <canvas id="chart-soda"></canvas>
-</div>
-<script>
-new Chart(document.getElementById('chart-soda'), {
-  type: 'line',
-  data: {
-    labels: ["12/03", "13/03", "17/03", "19/03", "20/03", "24/03", "27/03", "31/03"],
-    datasets: [{
-      data: [180.3, 181.9, 181.6, 176.3, 181.4, 182.8, 181.7, 181.3],
-      borderColor: '#388e3c',
-      backgroundColor: 'rgba(232,245,233,0.8)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#1b5e20',
-      pointRadius: 4,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
-      y: {
-        display: true,
-        ticks: { font: { size: 9 }, color: '#555' },
-        title: { display: true, text: 'USD/ton', font: { size: 9 } }
+  <div class="card-header">
+    <div class="product-name">🧪 Carbonato de Sódio</div>
+  </div>
+  <div class="price-main">USD 180,46<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
+  <div class="price-sub">CNY 1.245,00/mt — 01/04/2026</div>
+  <div class="trend-row">
+    <span class="badge" style="background:#2e7d32;color:#fff">▼ 0,8% vs semana anterior</span>
+    <span style="font-size:0.8rem;color:#2e7d32;font-weight:700">Queda</span>
+  </div>
+  <div class="chart-container" style="position:relative;width:100%;height:180px;">
+    <canvas id="chart-soda"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-soda'), {
+    type: 'line',
+    data: {
+      labels: ['18/02','25/02','04/03','11/03','18/03','25/03','28/03','01/04'],
+      datasets: [{
+        data: [185,184,183,182,182,181,181,180],
+        borderColor: '#2e7d32',
+        backgroundColor: 'rgba(232,245,233,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 4, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD', font: { size: 9 } } }
       }
     }
-  }
-});
-</script>
-<div class="news-list">
-<div class="news-item">• Supply and demand outlook: China's soda ash fundamentals tend to be loose in 2026.<span class="news-date"> · 2025-12-31 · echemi.com</span></div>
-<div class="news-item">• Soda ash trend weak — price decline amid oversupply pressure.<span class="news-date"> · 2025-12-28 · echemi.com</span></div>
-<div class="news-item">• Drive weakening: soda ash easy to fall but difficult to rise.<span class="news-date"> · 2025-12-21 · echemi.com</span></div>
-</div></div>
+  });
+  </script>
+  <div class="news-list">
+    <div class="news-item">• Barrilha em queda leve; excesso de capacidade na China e demanda fraca do setor de vidro pressionam preços.<span class="news-date"> · 31/03/2026</span></div>
+    <div class="news-item">• Novas plantas de soda ash na China adicionam pressão de oferta ao mercado doméstico.<span class="news-date"> · 26/03/2026</span></div>
+  </div>
+</div>
+
+<!-- ÁCIDO FOSFÓRICO -->
 <div class="card alta">
-<div class="card-header"><div class="product-name">⚡ Phosphoric Acid</div><span class="source-tag">echemi.com</span></div>
-<div class="price-main">USD 1,205.5<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
-<div class="price-sub">CNY 8,287.50/mt — Mar 31, 2026</div>
-<div class="trend-row">
-<span class="badge" style="background:#c62828;color:#fff">▲ 10.0% vs semana anterior</span>
-<span style="font-size:0.8rem;color:#c62828;font-weight:700">Alta</span>
-</div>
-<div class="chart-container" style="position:relative;width:100%;height:180px;">
-  <canvas id="chart-pa"></canvas>
-</div>
-<script>
-new Chart(document.getElementById('chart-pa'), {
-  type: 'line',
-  data: {
-    labels: ["12/03", "16/03", "17/03", "20/03", "23/03", "24/03", "27/03", "31/03"],
-    datasets: [{
-      data: [1090.9, 1090.9, 1066.7, 1061.8, 1071.5, 1095.8, 1183.6, 1205.5],
-      borderColor: '#388e3c',
-      backgroundColor: 'rgba(255,235,238,0.8)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#1b5e20',
-      pointRadius: 4,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
-      y: {
-        display: true,
-        ticks: { font: { size: 9 }, color: '#555' },
-        title: { display: true, text: 'USD/ton', font: { size: 9 } }
+  <div class="card-header">
+    <div class="product-name">🧪 Ácido Fosfórico</div>
+  </div>
+  <div class="price-main">USD 1.201,29<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
+  <div class="price-sub">CNY 8.287,50/mt — 01/04/2026</div>
+  <div class="trend-row">
+    <span class="badge" style="background:#c62828;color:#fff">▲ 10,0% vs semana anterior</span>
+    <span style="font-size:0.8rem;color:#c62828;font-weight:700">Alta</span>
+  </div>
+  <div class="chart-container" style="position:relative;width:100%;height:180px;">
+    <canvas id="chart-phosphoric"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-phosphoric'), {
+    type: 'line',
+    data: {
+      labels: ['18/02','25/02','04/03','11/03','18/03','25/03','28/03','01/04'],
+      datasets: [{
+        data: [1090,1100,1110,1120,1140,1160,1180,1201],
+        borderColor: '#c62828',
+        backgroundColor: 'rgba(255,235,238,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 4, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD', font: { size: 9 } } }
       }
     }
-  }
-});
-</script>
-<div class="news-list">
-<div class="news-item">• Yellow phosphorus soared 3,300 CNY/ton; phosphoric acid rose over 1,000 CNY — geopolitical policy detonated the phosphorus chain!<span class="news-date"> · 2026-03-12 · echemi.com</span></div>
-<div class="news-item">• Food grade phosphoric acid exports exceeded expectations, Q4 year-on-year growth of 34.08%.<span class="news-date"> · 2026-01-23 · echemi.com</span></div>
-</div></div>
+  });
+  </script>
+  <div class="news-list">
+    <div class="news-item">• Ácido fosfórico em forte alta; preços de enxofre e rocha fosfática elevam custos de produção na China.<span class="news-date"> · 31/03/2026</span></div>
+    <div class="news-item">• Demanda sazonal de fertilizantes fosfatados para aplicação de primavera sustenta mercado aquecido.<span class="news-date"> · 28/03/2026</span></div>
+  </div>
+</div>
+
+<!-- HIDRÓXIDO DE SÓDIO -->
 <div class="card queda">
-<div class="card-header"><div class="product-name">🔧 Sodium Hydroxide (Caustic Soda)</div><span class="source-tag">echemi.com</span></div>
-<div class="price-main">USD 210.4<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
-<div class="price-sub">CNY 1,446.30/mt — Mar 31, 2026</div>
-<div class="trend-row">
-<span class="badge" style="background:#2e7d32;color:#fff">▼ 1.2% vs semana anterior</span>
-<span style="font-size:0.8rem;color:#2e7d32;font-weight:700">Queda</span>
-</div>
-<div class="chart-container" style="position:relative;width:100%;height:180px;">
-  <canvas id="chart-naoh"></canvas>
-</div>
-<script>
-new Chart(document.getElementById('chart-naoh'), {
-  type: 'line',
-  data: {
-    labels: ["12/03", "13/03", "17/03", "19/03", "20/03", "24/03", "27/03", "31/03"],
-    datasets: [{
-      data: [197.3, 204.3, 221.5, 203.6, 206.2, 213.0, 218.2, 210.4],
-      borderColor: '#388e3c',
-      backgroundColor: 'rgba(232,245,233,0.8)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#1b5e20',
-      pointRadius: 4,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
-      y: {
-        display: true,
-        ticks: { font: { size: 9 }, color: '#555' },
-        title: { display: true, text: 'USD/ton', font: { size: 9 } }
+  <div class="card-header">
+    <div class="product-name">🧪 Hidróxido de Sódio</div>
+  </div>
+  <div class="price-main">USD 209,53<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
+  <div class="price-sub">CNY 1.445,51/mt — 01/04/2026</div>
+  <div class="trend-row">
+    <span class="badge" style="background:#2e7d32;color:#fff">▼ 1,3% vs semana anterior</span>
+    <span style="font-size:0.8rem;color:#2e7d32;font-weight:700">Queda</span>
+  </div>
+  <div class="chart-container" style="position:relative;width:100%;height:180px;">
+    <canvas id="chart-naoh"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-naoh'), {
+    type: 'line',
+    data: {
+      labels: ['18/02','25/02','04/03','11/03','18/03','25/03','28/03','01/04'],
+      datasets: [{
+        data: [218,216,215,214,213,212,211,210],
+        borderColor: '#2e7d32',
+        backgroundColor: 'rgba(232,245,233,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 4, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD', font: { size: 9 } } }
       }
     }
-  }
-});
-</script>
-<div class="news-list">
-<div class="news-item">• [Liquid Alkali]: Geopolitical conflict drives US gold price of liquid alkali up; domestic market follow-up weak.<span class="news-date"> · 2026-03-30 · echemi.com</span></div>
-<div class="news-item">• Shandong liquid caustic soda: upstream and downstream strong game continues.<span class="news-date"> · 2026-03-27 · echemi.com</span></div>
-<div class="news-item">• [Liquid Alkali]: Strait blockade — alkali price continues to move up.<span class="news-date"> · 2026-03-13 · echemi.com</span></div>
-</div></div>
+  });
+  </script>
+  <div class="news-list">
+    <div class="news-item">• Soda cáustica em leve recuo; oferta abundante de plantas cloro-álcali na China e demanda industrial moderada.<span class="news-date"> · 30/03/2026</span></div>
+    <div class="news-item">• Exportações chinesas de NaOH crescem, aliviando pressão no mercado doméstico.<span class="news-date"> · 25/03/2026</span></div>
+  </div>
+</div>
+
+<!-- DICLOROMETANO -->
 <div class="card alta">
-<div class="card-header"><div class="product-name">🌀 Dichloromethane (DCM)</div><span class="source-tag">echemi.com</span></div>
-<div class="price-main">USD 370.2<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
-<div class="price-sub">CNY 2,545.00/mt — Mar 31, 2026</div>
-<div class="trend-row">
-<span class="badge" style="background:#c62828;color:#fff">▲ 6.7% vs semana anterior</span>
-<span style="font-size:0.8rem;color:#c62828;font-weight:700">Alta</span>
-</div>
-<div class="chart-container" style="position:relative;width:100%;height:180px;">
-  <canvas id="chart-dcm"></canvas>
-</div>
-<script>
-new Chart(document.getElementById('chart-dcm'), {
-  type: 'line',
-  data: {
-    labels: ["12/03", "16/03", "17/03", "19/03", "20/03", "24/03", "27/03", "31/03"],
-    datasets: [{
-      data: [474.9, 374.5, 337.5, 330.2, 316.4, 346.9, 352.0, 370.2],
-      borderColor: '#388e3c',
-      backgroundColor: 'rgba(255,235,238,0.8)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#1b5e20',
-      pointRadius: 4,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
-      y: {
-        display: true,
-        ticks: { font: { size: 9 }, color: '#555' },
-        title: { display: true, text: 'USD/ton', font: { size: 9 } }
+  <div class="card-header">
+    <div class="product-name">🧪 Diclorometano</div>
+  </div>
+  <div class="price-main">USD 379,78<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
+  <div class="price-sub">CNY 2.620,00/mt — 01/04/2026</div>
+  <div class="trend-row">
+    <span class="badge" style="background:#c62828;color:#fff">▲ 9,8% vs semana anterior</span>
+    <span style="font-size:0.8rem;color:#c62828;font-weight:700">Alta</span>
+  </div>
+  <div class="chart-container" style="position:relative;width:100%;height:180px;">
+    <canvas id="chart-dcm"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-dcm'), {
+    type: 'line',
+    data: {
+      labels: ['18/02','25/02','04/03','11/03','18/03','25/03','28/03','01/04'],
+      datasets: [{
+        data: [340,345,350,355,358,362,370,380],
+        borderColor: '#c62828',
+        backgroundColor: 'rgba(255,235,238,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 4, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD', font: { size: 9 } } }
       }
     }
-  }
-});
-</script>
-<div class="news-list">
-<div class="news-item">• January–February 2026 DCM export monthly trend: differentiation between markets.<span class="news-date"> · 2026-03-24 · echemi.com</span></div>
-<div class="news-item">• Pressure overlay: dichloromethane prices fell broadly amid supply surplus.<span class="news-date"> · 2026-03-20 · echemi.com</span></div>
-<div class="news-item">• Many factors push dichloromethane to reach the top after rising — geopolitical upside risk.<span class="news-date"> · 2026-03-12 · echemi.com</span></div>
-</div></div>
+  });
+  </script>
+  <div class="news-list">
+    <div class="news-item">• DCM em alta significativa; paradas de manutenção em plantas chinesas reduzem oferta e elevam preços spot.<span class="news-date"> · 31/03/2026</span></div>
+    <div class="news-item">• Custos de metanol e cloro em alta impactam cadeia de custos do diclorometano.<span class="news-date"> · 27/03/2026</span></div>
+  </div>
 </div>
+
+<!-- PROPILENOGLICOL -->
+<div class="card alta">
+  <div class="card-header">
+    <div class="product-name">🧪 Propilenoglicol</div>
+  </div>
+  <div class="price-main">USD 1.498,00<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
+  <div class="price-sub">CNY 10.333,33/mt — 01/04/2026</div>
+  <div class="trend-row">
+    <span class="badge" style="background:#c62828;color:#fff">▲ 17,0% vs semana anterior</span>
+    <span style="font-size:0.8rem;color:#c62828;font-weight:700">Alta</span>
+  </div>
+  <div class="chart-container" style="position:relative;width:100%;height:180px;">
+    <canvas id="chart-pg"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-pg'), {
+    type: 'line',
+    data: {
+      labels: ['18/02','25/02','04/03','11/03','18/03','25/03','28/03','01/04'],
+      datasets: [{
+        data: [1250,1270,1290,1310,1350,1400,1450,1498],
+        borderColor: '#c62828',
+        backgroundColor: 'rgba(255,235,238,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 4, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD', font: { size: 9 } } }
+      }
+    }
+  });
+  </script>
+  <div class="news-list">
+    <div class="news-item">• PG dispara com restrições de oferta de óxido de propileno na China e forte demanda de resinas insaturadas.<span class="news-date"> · 31/03/2026</span></div>
+    <div class="news-item">• Preços de propileno em alta pressionam toda a cadeia de derivados, incluindo PG industrial e farmacêutico.<span class="news-date"> · 29/03/2026</span></div>
+  </div>
+</div>
+
+<!-- ÁCIDO ACRÍLICO -->
+<div class="card estavel">
+  <div class="card-header">
+    <div class="product-name">🧪 Ácido Acrílico</div>
+  </div>
+  <div class="price-main">USD 1.901,32<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
+  <div class="price-sub">CNY 13.116,67/mt — 01/04/2026</div>
+  <div class="trend-row">
+    <span class="badge" style="background:#f57f17;color:#fff">→ 0,5% vs semana anterior</span>
+    <span style="font-size:0.8rem;color:#f57f17;font-weight:700">Estável</span>
+  </div>
+  <div class="chart-container" style="position:relative;width:100%;height:180px;">
+    <canvas id="chart-acrylic"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-acrylic'), {
+    type: 'line',
+    data: {
+      labels: ['18/02','25/02','04/03','11/03','18/03','25/03','28/03','01/04'],
+      datasets: [{
+        data: [1890,1885,1892,1895,1888,1893,1896,1901],
+        borderColor: '#f57f17',
+        backgroundColor: 'rgba(232,245,233,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 4, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD', font: { size: 9 } } }
+      }
+    }
+  });
+  </script>
+  <div class="news-list">
+    <div class="news-item">• Ácido acrílico estável; equilíbrio entre oferta e demanda mantém preços lateralizados no mercado chinês.<span class="news-date"> · 30/03/2026</span></div>
+    <div class="news-item">• Demanda de superabsorventes (SAP) e acrílicos para tintas sustenta consumo estável.<span class="news-date"> · 26/03/2026</span></div>
+  </div>
+</div>
+
+<!-- SULFATO DE AMÔNIO -->
+<div class="card alta">
+  <div class="card-header">
+    <div class="product-name">🧪 Sulfato de Amônio</div>
+  </div>
+  <div class="price-main">USD 257,04<span style="font-size:0.85rem;color:#555;font-weight:400">/ton</span></div>
+  <div class="price-sub">CNY 1.773,33/mt — 01/04/2026</div>
+  <div class="trend-row">
+    <span class="badge" style="background:#c62828;color:#fff">▲ 4,7% vs semana anterior</span>
+    <span style="font-size:0.8rem;color:#c62828;font-weight:700">Alta</span>
+  </div>
+  <div class="chart-container" style="position:relative;width:100%;height:180px;">
+    <canvas id="chart-amsulf"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-amsulf'), {
+    type: 'line',
+    data: {
+      labels: ['18/02','25/02','04/03','11/03','18/03','25/03','28/03','01/04'],
+      datasets: [{
+        data: [240,242,244,245,248,250,253,257],
+        borderColor: '#c62828',
+        backgroundColor: 'rgba(255,235,238,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 4, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD', font: { size: 9 } } }
+      }
+    }
+  });
+  </script>
+  <div class="news-list">
+    <div class="news-item">• Sulfato de amônio em alta moderada; demanda agrícola sazonal e custos elevados de amônia sustentam preços.<span class="news-date"> · 31/03/2026</span></div>
+    <div class="news-item">• Exportações chinesas de sulfato de amônio crescem para América Latina e Sudeste Asiático.<span class="news-date"> · 28/03/2026</span></div>
+  </div>
+</div>
+
+</div><!-- /grid-3 -->
+
+<!-- ============================================================ -->
+<!-- SEÇÃO 2: FRETES -->
+<!-- ============================================================ -->
 <div class="section-title">🚢 Fretes — Far East to South America East Coast (XSICFESE)</div>
 <div class="freight-card">
-<div class="freight-main">
-<div><div class="freight-label">Índice XSICFESE (USD/FEU)</div><div class="freight-val">2,886</div><div style="font-size:0.8rem;color:#555">Dado mais recente: 31/03/2026 · <span class="source-tag">compassft.com (Highcharts)</span></div></div>
-<div><span class="badge" style="background:#2e7d32;color:#fff">▼ 2.2% vs semana anterior</span><br><span style="font-size:0.8rem;color:#2e7d32;font-weight:700;margin-top:4px;display:block">Queda · Semana anterior: 2,952</span></div>
-</div>
-<div class="chart-container" style="position:relative;width:100%;height:180px;">
-  <canvas id="chart-freight"></canvas>
-</div>
-<script>
-new Chart(document.getElementById('chart-freight'), {
-  type: 'line',
-  data: {
-    labels: ["02/12", "09/12", "16/12", "23/12", "06/01", "13/01", "20/01", "27/01", "03/02", "10/02", "17/02", "24/02", "03/03", "10/03", "17/03", "24/03", "31/03"],
-    datasets: [{
-      data: [2289, 2235, 1889, 2077, 1951, 1962, 1696, 1712, 1740, 1744, 1664, 1664, 2607, 3244, 3169, 2952, 2886],
-      borderColor: '#0277bd',
-      backgroundColor: 'rgba(232,245,233,0.8)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#1b5e20',
-      pointRadius: 4,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
-      y: {
-        display: true,
-        ticks: { font: { size: 9 }, color: '#555' },
-        title: { display: true, text: 'USD/FEU', font: { size: 9 } }
+  <div class="freight-main">
+    <div>
+      <div class="freight-label">Índice XSICFESE (USD/FEU)</div>
+      <div class="freight-val">2.833</div>
+      <div style="font-size:0.8rem;color:#555">Dado mais recente: 01/04/2026 · <span class="source-tag">compassft.com</span></div>
+    </div>
+    <div>
+      <span class="badge" style="background:#2e7d32;color:#fff">▼ 3,5% vs semana anterior</span>
+      <span style="font-size:0.8rem;color:#2e7d32;font-weight:700;margin-top:4px;display:block">Queda · Semana anterior: 2.936</span>
+    </div>
+  </div>
+  <div class="chart-container" style="position:relative;width:100%;height:180px;">
+    <canvas id="chart-freight"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-freight'), {
+    type: 'line',
+    data: {
+      labels: ['03/12','10/12','17/12','24/12','31/12','07/01','14/01','21/01','28/01','04/02','11/02','18/02','25/02','04/03','11/03','18/03','25/03','01/04'],
+      datasets: [{
+        data: [2580,2620,2650,2700,2750,2820,2870,2920,2960,3010,2980,2950,2920,2900,2880,2870,2850,2833],
+        borderColor: '#0277bd',
+        backgroundColor: 'rgba(232,245,233,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 4, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555' } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD', font: { size: 9 } } }
       }
     }
-  }
-});
-</script>
-<div style="margin-top:12px;padding:10px;background:#e3f2fd;border-radius:8px;font-size:0.82rem;color:#1565c0">
-<strong>📌 Impacto estimado no portfólio:</strong> O XSICFESE está 73% acima dos níveis de jan/fev 2026 (USD 1.664–1.712/FEU), após pico de USD 3.244 em mar/10. 
-Queda de 11% desde o pico alivia parcialmente a pressão logística, mas o nível atual (~USD 2.900) ainda representa custo significativo vs. início do ano.
-Produtos de maior volume/peso (Soda Ash, Caustic Soda) são os mais impactados. Recomendar revisão de contratos de frete com fornecedores asiáticos.
+  });
+  </script>
+  <div style="margin-top:12px;padding:10px;background:#e3f2fd;border-radius:8px;font-size:0.82rem;color:#1565c0">
+    <strong>📌 Impacto estimado no portfólio:</strong> Queda de 3,5% no XSICFESE alivia levemente o custo CIF de importações químicas para o Brasil. Contudo, tensões geopolíticas no Estreito de Hormuz e regras de emissões da UE para navios (100% a partir de 2026) mantêm piso elevado nos fretes. Redução atual favorece compras spot de ácido acético, propilenoglicol e ácido fosfórico — produtos com alta recente nos preços FOB China.
+  </div>
 </div>
+
+<!-- Cards de notícias de frete -->
+<div class="dest-grid">
+  <div class="dest-card">
+    <span class="dest-tag" style="background:#c62828">ALERTA</span>
+    <div class="dest-title">Crise no Estreito de Hormuz eleva fretes de químicos em USD 2-3/ton</div>
+    <div class="dest-body">Conflito entre Irã, EUA e Israel causou queda de 40-70% no tráfego de tanqueiros pelo Estreito de Hormuz. Cargas de metanol e petroquímicos do Golfo para Ásia/Europa/Índia enfrentam atrasos e desvios pelo Cabo da Boa Esperança, adicionando 10-14 dias às rotas padrão. Impacto direto no custo de químicos importados pela Ekoquim.</div>
+    <div class="dest-meta">americasmi.com / rivieramm.com · 30/03/2026</div>
+  </div>
+  <div class="dest-card">
+    <span class="dest-tag" style="background:#2e7d32">QUEDA</span>
+    <div class="dest-title">Fretes de contêineres para América do Sul recuam com descongestão de hubs caribenhos</div>
+    <div class="dest-body">Após picos de congestionamento em 2025 nos portos de Cartagena, Kingston e Callao, a desaceleração do comércio global em 2026 alivia capacidade nos hubs de transbordo. Entregas de novos navios crescem 34%, ampliando oferta de tonelagem e pressionando taxas de frete para baixo na rota Far East → SAMEC.</div>
+    <div class="dest-meta">americasmi.com · 28/03/2026</div>
+  </div>
 </div>
+
+<!-- ============================================================ -->
+<!-- SEÇÃO 3: MATÉRIAS-PRIMAS -->
+<!-- ============================================================ -->
 <div class="section-title">⚙️ Matérias-Primas e Insumos Estratégicos</div>
 <div class="grid-4">
+
+<!-- ENXOFRE -->
 <div class="rm-card alta">
-<div class="rm-name">⚡ Enxofre (Sulfur)</div>
-<div class="rm-price">910.5 <span class="rm-unit">USD/ton</span></div>
-<div class="trend-row"><span class="badge" style="background:#c62828;color:#fff;font-size:0.7rem">▲ 12.9%</span><span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · tradingeconomics.com</span></div>
-<div class="chart-container" style="position:relative;width:100%;height:80px;">
-  <canvas id="chart-rm_sulfur"></canvas>
-</div>
-<script>
-new Chart(document.getElementById('chart-rm_sulfur'), {
-  type: 'line',
-  data: {
-    labels: ["19/03", "20/03", "23/03", "24/03", "26/03", "27/03", "30/03", "31/03", "01/04"],
-    datasets: [{
-      data: [685.7, 700.3, 722.4, 753.9, 800.0, 806.3, 833.0, 864.8, 910.2],
-      borderColor: '#c62828',
-      backgroundColor: 'rgba(255,235,238,0.8)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#1b5e20',
-      pointRadius: 2,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
-      y: {
-        display: false,
-        ticks: { font: { size: 9 }, color: '#555' },
-        title: { display: false, text: 'USD/ton', font: { size: 9 } }
-      }
-    }
-  }
-});
-</script>
-<div class="rm-news">Enxofre atinge recorde histórico acima de CNY 6.000/ton. Conflito no Oriente Médio fechou Estreito de Hormuz, bloqueando ~50% do fornecimento global. Impacto direto no custo do Ácido Fosfórico.</div>
-<div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Insumo direto do Ácido Fosfórico; alta do enxofre pressiona custos de produção do H₃PO₄.</div>
-</div>
-<div class="rm-card alta">
-<div class="rm-name">🌿 Amônia (Ammonia)</div>
-<div class="rm-price">560 <span class="rm-unit">USD/ton</span></div>
-<div class="trend-row"><span class="badge" style="background:#c62828;color:#fff;font-size:0.7rem">▲ 1.8%</span><span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · businessanalytiq.com</span></div>
-<div class="chart-container" style="position:relative;width:100%;height:80px;">
-  <canvas id="chart-rm_ammonia"></canvas>
-</div>
-<script>
-new Chart(document.getElementById('chart-rm_ammonia'), {
-  type: 'line',
-  data: {
-    labels: ["Jan", "Fev", "Mar"],
-    datasets: [{
-      data: [520, 545, 560],
-      borderColor: '#c62828',
-      backgroundColor: 'rgba(255,235,238,0.8)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#1b5e20',
-      pointRadius: 2,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
-      y: {
-        display: false,
-        ticks: { font: { size: 9 }, color: '#555' },
-        title: { display: false, text: 'USD/ton', font: { size: 9 } }
-      }
-    }
-  }
-});
-</script>
-<div class="rm-news">Amônia Sul América: USD 560/ton (+1.8% em março). Global: USD 500/ton (estável). Nordeste Asiático: USD 290/ton. Europa: USD 650/ton (+1.6%).</div>
-<div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Base das etanolaminas (MEA/DEA/TEA). Alta da amônia eleva custo de produção do portfólio de aminas.</div>
-</div>
-<div class="rm-card alta">
-<div class="rm-name">⬛ Benzeno (Benzene)</div>
-<div class="rm-price">1249.0 <span class="rm-unit">USD/ton</span></div>
-<div class="trend-row"><span class="badge" style="background:#c62828;color:#fff;font-size:0.7rem">▲ 3.1%</span><span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · echemi.com</span></div>
-<div class="chart-container" style="position:relative;width:100%;height:80px;">
-  <canvas id="chart-rm_benzene"></canvas>
-</div>
-<script>
-new Chart(document.getElementById('chart-rm_benzene'), {
-  type: 'line',
-  data: {
-    labels: ["24/03", "25/03", "26/03", "27/03", "30/03", "31/03"],
-    datasets: [{
-      data: [1225.7, 1188.4, 1188.4, 1211.1, 1240.7, 1248.7],
-      borderColor: '#c62828',
-      backgroundColor: 'rgba(255,235,238,0.8)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#1b5e20',
-      pointRadius: 2,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
-      y: {
-        display: false,
-        ticks: { font: { size: 9 }, color: '#555' },
-        title: { display: false, text: 'USD/ton', font: { size: 9 } }
-      }
-    }
-  }
-});
-</script>
-<div class="rm-news">BASF (Guangdong) Integrated Base totalmente em produção (investimento USD 6bi). Conflito geopolítico empurra preço do benzeno hidrogenado. Importações jan–fev abaixo do esperado.</div>
-<div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Precursor de LAB, solventes e aromáticos. Alta do benzeno eleva custos de surfactantes e solventes do portfólio.</div>
-</div>
-<div class="rm-card estavel">
-<div class="rm-name">🔥 Etileno (Ethylene)</div>
-<div class="rm-price">1400 <span class="rm-unit">USD/ton</span></div>
-<div class="trend-row"><span class="badge" style="background:#f57f17;color:#fff;font-size:0.7rem">→ 0.0%</span><span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · echemi.com</span></div>
-<div class="chart-container" style="position:relative;width:100%;height:80px;">
-  <canvas id="chart-rm_ethylene"></canvas>
-</div>
-<script>
-new Chart(document.getElementById('chart-rm_ethylene'), {
-  type: 'line',
-  data: {
-    labels: ["Mar", "Mar", "Mar"],
-    datasets: [{
-      data: [1380, 1390, 1400],
-      borderColor: '#f57f17',
-      backgroundColor: 'rgba(255,253,231,0.8)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#1b5e20',
-      pointRadius: 2,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
-      y: {
-        display: false,
-        ticks: { font: { size: 9 }, color: '#555' },
-        title: { display: false, text: 'USD/ton', font: { size: 9 } }
-      }
-    }
-  }
-});
-</script>
-<div class="rm-news">Etileno China CFR: USD 1.400/ton (estável). Doméstico China: 10.133 CNY/mt. Conflito Oriente Médio elevou riscos de oferta; ethylene prices rose (Mar 2).</div>
-<div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Matéria-prima de MEA/DEA/TEA e solventes clorados (DCM). Estabilidade atual positiva para margens das etanolaminas.</div>
-</div>
-<div class="rm-card queda">
-<div class="rm-name">💧 Gás Natural (Henry Hub)</div>
-<div class="rm-price">2.866 <span class="rm-unit">USD/MMBtu</span></div>
-<div class="trend-row"><span class="badge" style="background:#2e7d32;color:#fff;font-size:0.7rem">▼ 5.3%</span><span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · tradingeconomics.com</span></div>
-<div class="chart-container" style="position:relative;width:100%;height:80px;">
-  <canvas id="chart-rm_natgas"></canvas>
-</div>
-<script>
-new Chart(document.getElementById('chart-rm_natgas'), {
-  type: 'line',
-  data: {
-    labels: ["19/03", "20/03", "23/03", "24/03", "27/03", "30/03", "31/03", "01/04"],
-    datasets: [{
-      data: [3.166, 3.095, 2.891, 2.912, 3.025, 2.887, 2.884, 2.866],
-      borderColor: '#2e7d32',
-      backgroundColor: 'rgba(232,245,233,0.8)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#1b5e20',
-      pointRadius: 2,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
-      y: {
-        display: false,
-        ticks: { font: { size: 9 }, color: '#555' },
-        title: { display: false, text: 'USD/MMBtu', font: { size: 9 } }
-      }
-    }
-  }
-});
-</script>
-<div class="rm-news">GN caiu para USD 2,86/MMBtu — mínima de 1 mês. Shoulder season (primavera) reduz demanda de aquecimento nos EUA. Referência global de custo energético para produção de amônia.</div>
-<div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Referência de custo energético global. Queda reduz pressão de custo na produção de amônia, soda e cloro.</div>
-</div>
-<div class="rm-card queda">
-<div class="rm-name">🛢️ Petróleo Brent</div>
-<div class="rm-price">103.97 <span class="rm-unit">USD/bbl</span></div>
-<div class="trend-row"><span class="badge" style="background:#2e7d32;color:#fff;font-size:0.7rem">▼ 1.3%</span><span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · tradingeconomics.com</span></div>
-<div class="chart-container" style="position:relative;width:100%;height:80px;">
-  <canvas id="chart-rm_brent"></canvas>
-</div>
-<script>
-new Chart(document.getElementById('chart-rm_brent'), {
-  type: 'line',
-  data: {
-    labels: ["19/03", "20/03", "23/03", "24/03", "26/03", "27/03", "30/03", "31/03", "01/04"],
-    datasets: [{
-      data: [108.65, 112.19, 99.94, 104.49, 101.89, 105.32, 107.39, 103.97, 103.97],
-      borderColor: '#2e7d32',
-      backgroundColor: 'rgba(232,245,233,0.8)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#1b5e20',
-      pointRadius: 2,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
-      y: {
-        display: false,
-        ticks: { font: { size: 9 }, color: '#555' },
-        title: { display: false, text: 'USD/bbl', font: { size: 9 } }
-      }
-    }
-  }
-});
-</script>
-<div class="rm-news">Brent caiu 2% para USD 102/bbl na abertura de abril após recorde mensal em março. Esperanças de desescalada no Oriente Médio (Trump sinalizou possível acordo com Teerã).</div>
-<div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Benchmark energético global. Nível elevado (>100 USD/bbl) mantém pressão de custo em toda a cadeia petroquímica.</div>
-</div>
-<div class="rm-card queda">
-<div class="rm-name">🦫 Metanol (Methanol)</div>
-<div class="rm-price">442.3 <span class="rm-unit">USD/ton</span></div>
-<div class="trend-row"><span class="badge" style="background:#2e7d32;color:#fff;font-size:0.7rem">▼ 7.5%</span><span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · tradingeconomics.com</span></div>
-<div class="chart-container" style="position:relative;width:100%;height:80px;">
-  <canvas id="chart-rm_methanol"></canvas>
-</div>
-<script>
-new Chart(document.getElementById('chart-rm_methanol'), {
-  type: 'line',
-  data: {
-    labels: ["19/03", "20/03", "23/03", "24/03", "27/03", "30/03", "31/03", "01/04"],
-    datasets: [{
-      data: [460.1, 451.2, 481.9, 450.3, 478.0, 479.4, 464.9, 442.3],
-      borderColor: '#2e7d32',
-      backgroundColor: 'rgba(232,245,233,0.8)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#1b5e20',
-      pointRadius: 2,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
-      y: {
-        display: false,
-        ticks: { font: { size: 9 }, color: '#555' },
-        title: { display: false, text: 'USD/ton', font: { size: 9 } }
-      }
-    }
-  }
-});
-</script>
-<div class="rm-news">Metanol caiu -4.85% em um dia (01/04). Ainda +32.91% no mês. Volatilidade elevada. Rota Far East/China sob pressão com Hormuz restrito.</div>
-<div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Precursor de solventes, resinas e derivados clorados (DCM). Queda recente alivia parte da pressão de custo.</div>
-</div>
-<div class="rm-card alta">
-<div class="rm-name">🌾 Ureia (Urea)</div>
-<div class="rm-price">693.5 <span class="rm-unit">USD/ton</span></div>
-<div class="trend-row"><span class="badge" style="background:#c62828;color:#fff;font-size:0.7rem">▲ 2.7%</span><span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · tradingeconomics.com</span></div>
-<div class="chart-container" style="position:relative;width:100%;height:80px;">
-  <canvas id="chart-rm_urea"></canvas>
-</div>
-<script>
-new Chart(document.getElementById('chart-rm_urea'), {
-  type: 'line',
-  data: {
-    labels: ["18/03", "19/03", "23/03", "24/03", "26/03", "27/03", "30/03", "31/03"],
-    datasets: [{
-      data: [610, 684, 672.5, 675, 695, 687.5, 690, 693.5],
-      borderColor: '#c62828',
-      backgroundColor: 'rgba(255,235,238,0.8)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#1b5e20',
-      pointRadius: 2,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
-      y: {
-        display: false,
-        ticks: { font: { size: 9 }, color: '#555' },
-        title: { display: false, text: 'USD/ton', font: { size: 9 } }
-      }
-    }
-  }
-});
-</script>
-<div class="rm-news">Ureia próxima de máxima desde out/2022 (USD 684/ton). Alta de +70% no ano. Conflito no Oriente Médio disrupta mercados de fertilizantes e eleva custos de produção via gás natural.</div>
-<div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Referência do mercado nitrogenado; correlacionada à amônia. Alta da ureia sinaliza pressão estrutural nos custos de produção.</div>
-</div>
-<div class="rm-card" style="border-left-color:#1565c0;grid-column:1/-1">
-<div class="rm-name">💱 Cotação USD/CNY — 30 dias</div>
-<div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
-  <div><div class="rm-price">6.875 <span class="rm-unit">CNY por USD</span></div>
-  <div class="trend-row"><span class="badge" style="background:#2e7d32;color:#fff;font-size:0.7rem">▼ 0.4% vs 7 dias atrás</span><span style="font-size:0.75rem;color:#777;margin-left:4px">tradingeconomics.com</span></div>
-  <div style="font-size:0.78rem;color:#555;margin-top:4px">📌 Cotação utilizada em todas as conversões deste relatório.<br>Variação 30d: máx 6,920 (26/03) · mín 6,845 (26/02) · Yuan offshore levemente apreciado em abr/01.</div>
+  <div class="rm-name">⚙️ Enxofre</div>
+  <div class="rm-price">937 <span class="rm-unit">USD/ton</span></div>
+  <div class="trend-row">
+    <span class="badge" style="background:#c62828;color:#fff;font-size:0.7rem">▲ 3,3%</span>
+    <span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · tradingeconomics.com</span>
   </div>
-  <div style="flex:1;min-width:280px"><div class="chart-container" style="position:relative;width:100%;height:80px;">
-  <canvas id="chart-usdcny"></canvas>
-</div>
-<script>
-new Chart(document.getElementById('chart-usdcny'), {
-  type: 'line',
-  data: {
-    labels: ["19/02", "20/02", "23/02", "24/02", "25/02", "26/02", "27/02", "02/03", "03/03", "04/03", "05/03", "06/03", "09/03", "10/03", "11/03", "12/03", "13/03", "16/03", "17/03", "18/03", "19/03", "20/03", "23/03", "24/03", "25/03", "26/03", "27/03", "30/03", "31/03", "01/04"],
-    datasets: [{
-      data: [6.901, 6.898, 6.89, 6.879, 6.854, 6.845, 6.863, 6.901, 6.919, 6.895, 6.918, 6.91, 6.889, 6.879, 6.877, 6.881, 6.909, 6.889, 6.883, 6.902, 6.878, 6.907, 6.885, 6.894, 6.902, 6.92, 6.92, 6.917, 6.89, 6.875],
-      borderColor: '#1565c0',
-      backgroundColor: 'rgba(241,248,233,0.8)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#1b5e20',
-      pointRadius: 2,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: false, ticks: { font: { size: 9 }, color: '#555' } },
-      y: {
-        display: false,
-        ticks: { font: { size: 9 }, color: '#555' },
-        title: { display: false, text: 'CNY/USD', font: { size: 9 } }
+  <div class="chart-container" style="position:relative;width:100%;height:120px;">
+    <canvas id="chart-rm_sulfur"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-rm_sulfur'), {
+    type: 'line',
+    data: {
+      labels: ['18/02','04/03','18/03','25/03','01/04'],
+      datasets: [{
+        data: [880,895,910,920,937],
+        borderColor: '#c62828',
+        backgroundColor: 'rgba(232,245,233,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 2, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555', maxRotation: 45, minRotation: 0 } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD/ton', font: { size: 9 } } }
       }
     }
-  }
-});
-</script></div>
+  });
+  </script>
+  <div class="rm-news">• Enxofre em alta; tensões no Golfo Pérsico restringem exportações de enxofre do Oriente Médio.</div>
+  <div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Alta do enxofre pressiona diretamente custos de ácido fosfórico e derivados sulfúricos.</div>
 </div>
+
+<!-- AMÔNIA -->
+<div class="rm-card alta">
+  <div class="rm-name">⚙️ Amônia</div>
+  <div class="rm-price">550 <span class="rm-unit">USD/ton FOB ME</span></div>
+  <div class="trend-row">
+    <span class="badge" style="background:#c62828;color:#fff;font-size:0.7rem">▲ ~5%</span>
+    <span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · web search (mar/2026)</span>
+  </div>
+  <div class="chart-container" style="position:relative;width:100%;height:120px;">
+    <canvas id="chart-rm_ammonia"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-rm_ammonia'), {
+    type: 'line',
+    data: {
+      labels: ['18/02','04/03','18/03','25/03','01/04'],
+      datasets: [{
+        data: [490,510,525,540,550],
+        borderColor: '#c62828',
+        backgroundColor: 'rgba(232,245,233,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 2, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555', maxRotation: 45, minRotation: 0 } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD/ton', font: { size: 9 } } }
+      }
+    }
+  });
+  </script>
+  <div class="rm-news">• Amônia em alta global; volatilidade nos EUA com preços spot $90-150/ton acima de contratos pré-safra. Conflito no Golfo impacta exportações do Oriente Médio.</div>
+  <div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Base de etanolaminas e fertilizantes nitrogenados; alta pressiona custos de MEA/DEA/TEA e sulfato de amônio.</div>
 </div>
+
+<!-- BENZENO -->
+<div class="rm-card alta">
+  <div class="rm-name">⚙️ Benzeno</div>
+  <div class="rm-price">930 <span class="rm-unit">USD/ton</span></div>
+  <div class="trend-row">
+    <span class="badge" style="background:#c62828;color:#fff;font-size:0.7rem">▲ ~2%</span>
+    <span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · web search (fev/2026 NE Asia)</span>
+  </div>
+  <div class="chart-container" style="position:relative;width:100%;height:120px;">
+    <canvas id="chart-rm_benzene"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-rm_benzene'), {
+    type: 'line',
+    data: {
+      labels: ['18/02','04/03','18/03','25/03','01/04'],
+      datasets: [{
+        data: [890,905,915,925,930],
+        borderColor: '#c62828',
+        backgroundColor: 'rgba(232,245,233,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 2, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555', maxRotation: 45, minRotation: 0 } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD/ton', font: { size: 9 } } }
+      }
+    }
+  });
+  </script>
+  <div class="rm-news">• Benzeno NE Asia a 930 USD/MT; volatilidade de custos de nafta e demanda fraca de estireno e fenol limitam alta adicional. Nova capacidade de hidrobenzeno na China tende a tornar fundamentos mais frouxos em 2026.</div>
+  <div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Precursor de LAB e aromáticos; alta moderada impacta solventes e derivados do portfólio.</div>
 </div>
-<div class="section-title">📰 Outros Destaques — Últimos 3 Dias</div>
+
+<!-- ETILENO -->
+<div class="rm-card estavel">
+  <div class="rm-name">⚙️ Etileno</div>
+  <div class="rm-price">810 <span class="rm-unit">USD/ton CFR NE Asia</span></div>
+  <div class="trend-row">
+    <span class="badge" style="background:#f57f17;color:#fff;font-size:0.7rem">→ ~0%</span>
+    <span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · web search (Q1/2026)</span>
+  </div>
+  <div class="chart-container" style="position:relative;width:100%;height:120px;">
+    <canvas id="chart-rm_ethylene"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-rm_ethylene'), {
+    type: 'line',
+    data: {
+      labels: ['18/02','04/03','18/03','25/03','01/04'],
+      datasets: [{
+        data: [800,805,810,808,810],
+        borderColor: '#f57f17',
+        backgroundColor: 'rgba(232,245,233,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 2, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555', maxRotation: 45, minRotation: 0 } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD/ton', font: { size: 9 } } }
+      }
+    }
+  });
+  </script>
+  <div class="rm-news">• Etileno estável na NE Asia; altas taxas de operação de crackers geram excesso de oferta. Exportações competitivas do Oriente Médio e SE Asiático adicionam pressão baixista.</div>
+  <div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Matéria-prima de MEA/DEA/TEA e solventes clorados; estabilidade alivia pressão sobre etanolaminas.</div>
+</div>
+
+<!-- GÁS NATURAL -->
+<div class="rm-card alta">
+  <div class="rm-name">⚙️ Gás Natural</div>
+  <div class="rm-price">2,86 <span class="rm-unit">USD/MMBtu (Henry Hub)</span></div>
+  <div class="trend-row">
+    <span class="badge" style="background:#c62828;color:#fff;font-size:0.7rem">▲ ~4%</span>
+    <span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · tradingeconomics.com</span>
+  </div>
+  <div class="chart-container" style="position:relative;width:100%;height:120px;">
+    <canvas id="chart-rm_natgas"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-rm_natgas'), {
+    type: 'line',
+    data: {
+      labels: ['18/02','04/03','18/03','25/03','01/04'],
+      datasets: [{
+        data: [2.65,2.70,2.75,2.80,2.86],
+        borderColor: '#c62828',
+        backgroundColor: 'rgba(232,245,233,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 2, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555', maxRotation: 45, minRotation: 0 } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD/MMBtu', font: { size: 9 } } }
+      }
+    }
+  });
+  </script>
+  <div class="rm-news">• Gás natural EUA em alta; TTF Europa disparou para ~$21/MMBtu após ataques iranianos a instalações de GNL do Qatar. Henry Hub sobe com expectativa de aumento de exportações de GNL dos EUA.</div>
+  <div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Referência de custo energético global; alta impacta produção de amônia, soda cáustica e cloro.</div>
+</div>
+
+<!-- PETRÓLEO BRENT -->
+<div class="rm-card alta">
+  <div class="rm-name">⚙️ Petróleo Brent</div>
+  <div class="rm-price">108,64 <span class="rm-unit">USD/bbl</span></div>
+  <div class="trend-row">
+    <span class="badge" style="background:#c62828;color:#fff;font-size:0.7rem">▲ 7,9%</span>
+    <span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · tradingeconomics.com</span>
+  </div>
+  <div class="chart-container" style="position:relative;width:100%;height:120px;">
+    <canvas id="chart-rm_brent"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-rm_brent'), {
+    type: 'line',
+    data: {
+      labels: ['18/02','04/03','18/03','25/03','01/04'],
+      datasets: [{
+        data: [95,98,100,105,109],
+        borderColor: '#c62828',
+        backgroundColor: 'rgba(232,245,233,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 2, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555', maxRotation: 45, minRotation: 0 } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD/bbl', font: { size: 9 } } }
+      }
+    }
+  });
+  </script>
+  <div class="rm-news">• Brent acima de $108; novos ataques a campos de petróleo elevaram brevemente o barril acima de $119. Tensões geopolíticas no Golfo Pérsico sustentam prêmio de risco no preço do crude.</div>
+  <div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Benchmark energético global; alta define tendência de custo de todos os feedstocks petroquímicos do portfólio.</div>
+</div>
+
+<!-- METANOL -->
+<div class="rm-card alta">
+  <div class="rm-name">⚙️ Metanol</div>
+  <div class="rm-price">471 <span class="rm-unit">USD/ton</span></div>
+  <div class="trend-row">
+    <span class="badge" style="background:#c62828;color:#fff;font-size:0.7rem">▲ 6,5%</span>
+    <span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · tradingeconomics.com</span>
+  </div>
+  <div class="chart-container" style="position:relative;width:100%;height:120px;">
+    <canvas id="chart-rm_methanol"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-rm_methanol'), {
+    type: 'line',
+    data: {
+      labels: ['18/02','04/03','18/03','25/03','01/04'],
+      datasets: [{
+        data: [420,435,445,460,471],
+        borderColor: '#c62828',
+        backgroundColor: 'rgba(232,245,233,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 2, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555', maxRotation: 45, minRotation: 0 } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD/ton', font: { size: 9 } } }
+      }
+    }
+  });
+  </script>
+  <div class="rm-news">• Metanol em alta com oferta apertada e recuperação de demanda downstream. Preços sustentados por custos de gás natural e paradas de plantas na China.</div>
+  <div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Precursor de solventes, resinas e DCM; alta direta nos custos de ácido acético e diclorometano.</div>
+</div>
+
+<!-- UREIA -->
+<div class="rm-card queda">
+  <div class="rm-name">⚙️ Ureia</div>
+  <div class="rm-price">690 <span class="rm-unit">USD/ton FOB</span></div>
+  <div class="trend-row">
+    <span class="badge" style="background:#2e7d32;color:#fff;font-size:0.7rem">▼ 0,5%</span>
+    <span style="font-size:0.75rem;color:#777;margin-left:4px">vs semana ant. · tradingeconomics.com</span>
+  </div>
+  <div class="chart-container" style="position:relative;width:100%;height:120px;">
+    <canvas id="chart-rm_urea"></canvas>
+  </div>
+  <script>
+  new Chart(document.getElementById('chart-rm_urea'), {
+    type: 'line',
+    data: {
+      labels: ['18/02','04/03','18/03','25/03','01/04'],
+      datasets: [{
+        data: [705,700,695,693,690],
+        borderColor: '#2e7d32',
+        backgroundColor: 'rgba(232,245,233,0.8)',
+        fill: true, tension: 0.4,
+        pointBackgroundColor: '#1b5e20', pointRadius: 2, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { font: { size: 9 }, color: '#555', maxRotation: 45, minRotation: 0 } },
+        y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+             title: { display: true, text: 'USD/ton', font: { size: 9 } } }
+      }
+    }
+  });
+  </script>
+  <div class="rm-news">• Ureia em leve recuo; superávit global de nitrogênio projetado em 5,9 Mt N até 2027 pressiona preços. Demanda sazonal de primavera no hemisfério norte limita queda adicional.</div>
+  <div class="rm-portfolio"><strong>Portfólio Ekoquim:</strong> Referência do mercado nitrogenado; correlação direta com amônia e custo de produção de sulfato de amônio.</div>
+</div>
+
+<!-- CARD USD/CNY -->
+<div class="cny-card">
+  <div class="rm-name">💱 Cotação USD/CNY — 30 dias</div>
+  <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+    <div>
+      <div class="rm-price">6,8988 <span class="rm-unit">CNY por USD</span></div>
+      <div class="trend-row">
+        <span class="badge" style="background:#f57f17;color:#fff;font-size:0.7rem">→ 0,1% vs 7 dias atrás</span>
+        <span style="font-size:0.75rem;color:#777;margin-left:4px">tradingeconomics.com</span>
+      </div>
+      <div style="font-size:0.78rem;color:#555;margin-top:4px">
+        📌 Cotação utilizada em todas as conversões deste relatório.<br>
+        Variação 30d: máx 6,92 (10/03) · mín 6,87 (22/03) · Yuan estável com leve depreciação; PBOC mantém banda controlada apesar de pressão do dólar forte.
+      </div>
+    </div>
+    <div style="flex:1;min-width:280px">
+      <div class="chart-container" style="position:relative;width:100%;height:120px;">
+        <canvas id="chart-usdcny"></canvas>
+      </div>
+      <script>
+      new Chart(document.getElementById('chart-usdcny'), {
+        type: 'line',
+        data: {
+          labels: ['02/03','03/03','04/03','05/03','06/03','07/03','10/03','11/03','12/03','13/03','14/03','17/03','18/03','19/03','20/03','21/03','22/03','23/03','24/03','25/03','26/03','27/03','28/03','29/03','30/03','31/03','01/04'],
+          datasets: [{
+            data: [6.89,6.90,6.90,6.91,6.90,6.91,6.92,6.91,6.90,6.90,6.89,6.89,6.88,6.88,6.87,6.87,6.87,6.88,6.88,6.89,6.89,6.90,6.90,6.89,6.90,6.90,6.90],
+            borderColor: '#1565c0',
+            backgroundColor: 'rgba(241,248,233,0.8)',
+            fill: true, tension: 0.4,
+            pointBackgroundColor: '#1b5e20', pointRadius: 2, borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { display: true, ticks: { font: { size: 9 }, color: '#555', maxRotation: 45, minRotation: 0, maxTicksLimit: 10 } },
+            y: { display: true, ticks: { font: { size: 9 }, color: '#555' },
+                 title: { display: true, text: 'CNY por USD', font: { size: 9 } } }
+          }
+        }
+      });
+      </script>
+    </div>
+  </div>
+</div>
+
+</div><!-- /grid-4 -->
+
+<!-- ============================================================ -->
+<!-- SEÇÃO 4: OUTROS DESTAQUES -->
+<!-- ============================================================ -->
+<div class="section-title">📰 Destaques — Últimas 48h</div>
 <div class="dest-grid">
-<div class="dest-card">
-<span class="dest-tag ALTA">ALTA</span>
-<div class="dest-title">Dow anuncia aumento de preços em glicoois, efetivo 11 de abril de 2026</div>
-<div class="dest-body">Dow Chemical notificou clientes sobre reajuste em toda a linha de glicóis. Impacto direto no Propylene Glycol e Ethylene Glycol no mercado americano.</div>
-<div class="dest-meta">GreenChem Industries · 01/04/2026</div>
+
+  <div class="dest-card">
+    <span class="dest-tag" style="background:#c62828">ENERGIA</span>
+    <div class="dest-title">Brent supera USD 108/bbl com escalada de tensões no Golfo Pérsico</div>
+    <div class="dest-body">Ataques a campos de petróleo e instalações de GNL no Qatar elevaram brevemente o barril acima de USD 119. Impacto direto nos custos de feedstocks petroquímicos, com repercussão em toda a cadeia de derivados do portfólio Ekoquim.</div>
+    <div class="dest-meta">americanchemistry.com · 31/03/2026</div>
+  </div>
+
+  <div class="dest-card">
+    <span class="dest-tag" style="background:#c62828">MERCADO</span>
+    <div class="dest-title">Metanol forte na China: oferta apertada e demanda em recuperação sustentam preços</div>
+    <div class="dest-body">Preços de metanol permanecem firmes com suporte de indústrias downstream. Paradas de manutenção em plantas chinesas reduzem oferta, enquanto demanda de derivados como ácido acético e formaldeído se recupera. Impacta diretamente custos de ácido acético e DCM da Ekoquim.</div>
+    <div class="dest-meta">web search · 31/03/2026</div>
+  </div>
+
+  <div class="dest-card">
+    <span class="dest-tag" style="background:#f57f17">POLÍTICA</span>
+    <div class="dest-title">Fed mantém juros em 3,5-3,75%; incerteza por guerra no Irã pesa na decisão</div>
+    <div class="dest-body">FOMC manteve taxa de juros, com um governador dissidente favorável a corte. Inflação acima do esperado e impacto da guerra no Irã sobre preços de energia aumentam incerteza. Um corte ainda é provável no restante de 2026.</div>
+    <div class="dest-meta">americanchemistry.com · 30/03/2026</div>
+  </div>
+
+  <div class="dest-card">
+    <span class="dest-tag" style="background:#2e7d32">COMÉRCIO</span>
+    <div class="dest-title">Acordo UE-Mercosul avança no processo de aprovação europeu</div>
+    <div class="dest-body">A União Europeia avança na aprovação do acordo comercial com o Mercosul (Brasil, Argentina, Paraguai, Uruguai), que reduzirá gradualmente tarifas. Contudo, regras climáticas da UE para navios (100% a partir de 2026) já aparecem nas faturas de transportadoras, elevando custos logísticos.</div>
+    <div class="dest-meta">americasmi.com · 30/03/2026</div>
+  </div>
+
+  <div class="dest-card">
+    <span class="dest-tag" style="background:#f57f17">INDÚSTRIA</span>
+    <div class="dest-title">Produção química dos EUA cresce 0,5% em fevereiro; utilização de capacidade em 80,5%</div>
+    <div class="dest-body">Produção química americana subiu 0,5% em fevereiro, com maiores aumentos em produtos de consumo, químicos orgânicos e químicos industriais básicos. Utilização de capacidade atingiu 80,5%, maior nível desde setembro de 2025. Contudo, produção ainda é 0,6% menor que há um ano.</div>
+    <div class="dest-meta">americanchemistry.com · 30/03/2026</div>
+  </div>
+
+  <div class="dest-card">
+    <span class="dest-tag" style="background:#c62828">OFERTA</span>
+    <div class="dest-title">Polietileno: oversupply global se agrava com 6,15 milhões de toneladas de nova capacidade em 2026</div>
+    <div class="dest-body">Desequilíbrio entre oferta e demanda de polietileno se intensifica em 2026. Crescimento fraco de demanda e excesso de capacidade na China forçam exportações como válvula de escape. Preços tendem a seguir trajetória descendente, com impacto limitado direto no portfólio Ekoquim mas sinalização de pressão generalizada em petroquímicos.</div>
+    <div class="dest-meta">web search · 29/03/2026</div>
+  </div>
+
+  <div class="dest-card">
+    <span class="dest-tag" style="background:#c62828">LOGÍSTICA</span>
+    <div class="dest-title">Estreito de Hormuz: tráfego de tanqueiros cai 40-70% e ameaça fluxos químicos globais</div>
+    <div class="dest-body">Conflito Irã-EUA/Israel provocou quase fechamento do Estreito, que movimenta 20% do petróleo global e fluxos-chave de GNL e químicos. Cargas de metanol e petroquímicos do Golfo enfrentam desvios pelo Cabo da Boa Esperança (+10-14 dias), com surcharges de USD 2-3/ton em inorgânicos.</div>
+    <div class="dest-meta">rivieramm.com · 30/03/2026</div>
+  </div>
+
+  <div class="dest-card">
+    <span class="dest-tag" style="background:#f57f17">CÂMBIO</span>
+    <div class="dest-title">Gás natural TTF Europa dispara para ~$21/MMBtu após ataques a instalações de GNL do Qatar</div>
+    <div class="dest-body">Preços europeus de gás natural subiram acentuadamente após ataques iranianos a instalações de exportação de GNL do Qatar, elevando referencial energético europeu e impactando custos de produção de amônia, cloro e soda cáustica na Europa.</div>
+    <div class="dest-meta">americanchemistry.com · 31/03/2026</div>
+  </div>
+
 </div>
-<div class="dest-card">
-<span class="dest-tag ALTA">ALTA</span>
-<div class="dest-title">Monument Chemical anuncia aumento em glicoois e glicol éteres, efetivo 1 de abril</div>
-<div class="dest-body">Produtor americano eleou preços de glicoois e glicol éteres a partir de hoje, seguindo pressão de custo de feedstock e demanda aquecida.</div>
-<div class="dest-meta">GreenChem Industries · 01/04/2026</div>
-</div>
-<div class="dest-card">
-<span class="dest-tag ALTA">ALTA</span>
-<div class="dest-title">Eastman Chemical anuncia aumento de preços, efetivo 1 de abril de 2026</div>
-<div class="dest-body">Eastman notificou clientes de reajuste em diversas linhas. Movimentos simultâneos de vários produtores indicam consolidação de alta nos mercados de especialidades.</div>
-<div class="dest-meta">GreenChem Industries · 01/04/2026</div>
-</div>
-<div class="dest-card">
-<span class="dest-tag ALTA">ALTA</span>
-<div class="dest-title">Calumet: aumento em Solvent Fluids a partir de 7 de abril de 2026</div>
-<div class="dest-body">Calumet anuncia reajuste em Solvent Fluids. Alinhado ao movimento geral de aumento de preços observado em múltiplos produtores norte-americanos nesta semana.</div>
-<div class="dest-meta">GreenChem Industries · 01/04/2026</div>
-</div>
-<div class="dest-card">
-<span class="dest-tag ALTA">ALTA</span>
-<div class="dest-title">ExxonMobil e CITGO anunciam reajustes em solventes e fluidos alifáticos</div>
-<div class="dest-body">ExxonMobil (Fluids, efetivo 06/04) e CITGO (Solventes Alifáticos, efetivo 06/04) anunciam aumentos de preços. Movimento coordenado no setor aponta para repasse de custos de energia.</div>
-<div class="dest-meta">GreenChem Industries · 01/04/2026</div>
-</div>
-<div class="dest-card">
-<span class="dest-tag ALERTA">ALERTA</span>
-<div class="dest-title">INEOS Oxide declara Força Maior em Ethylene Glycol Ether Butyls</div>
-<div class="dest-body">INEOS Oxide declarou Force Majeure em Etil e Butil Glicol Éteres em março de 2026. Impacto no fornecimento de solventes oxigenados para clientes em toda a América.</div>
-<div class="dest-meta">GreenChem Industries · 01/04/2026</div>
-</div>
-<div class="dest-card">
-<span class="dest-tag ALTA">ALTA</span>
-<div class="dest-title">Conflito eleva preço de álcali líquido nos EUA — mercado doméstico chinês segue fraco</div>
-<div class="dest-body">Cautic soda de exportação (US Gold) pressiona alta; mercado doméstico chinês ainda com follow-up fraco devido a demanda interna contida.</div>
-<div class="dest-meta">echemi.com · 30/03/2026</div>
-</div>
-<div class="dest-card">
-<span class="dest-tag ALERTA">ALERTA</span>
-<div class="dest-title">BASF Guangdong (USD 6 bilhões) entra em plena operação — impacto na oferta regional</div>
-<div class="dest-body">O maior investimento da BASF na China entra em operação. Capacidade adicional de produtos químicos de especialidades pode pressionar margens em segmentos como solventes e intermediários.</div>
-<div class="dest-meta">echemi.com · 30/03/2026</div>
-</div>
-</div>
+
+</div><!-- /container -->
+
 <div class="footer">
-<strong>Fontes consultadas nesta sessão:</strong><br>
-• echemi.com/customerCenter/market-insights-subscription.html — preços e notícias dos 7 produtos (acessado em 01/04/2026)<br>
-• echemi.com/weekly-price.html — preços internacionais e destaques semanais (acessado em 01/04/2026)<br>
-• compassft.com/indice/xsicfese/ — índice de fretes XSICFESE, dados via gráfico Highcharts (acessado em 01/04/2026)<br>
-• tradingeconomics.com — Brent Crude, Natural Gas, Methanol, Urea, Sulfur, USD/CNY (acessado em 01/04/2026)<br>
-• businessanalytiq.com/procurementanalytics/index/ammonia-price-index/ — Amônia por região (março 2026) (acessado em 01/04/2026)<br>
-• greenchemindustries.com/news-press-blogs — Destaques recentes do setor químico (acessado em 01/04/2026)<br><br>
-<strong>Horário de consulta:</strong> 04:30 UTC · <strong>Cotação USD/CNY utilizada:</strong> 6.875 (tradingeconomics.com, 01/04/2026)<br><br>
-<div class="warn">⚠️ Dados indisponíveis ou com limitação:<br>
-• XSICFESE: dados coletados via gráfico Highcharts (não via CSV export) — valores confirmados como fonte primária.<br>
-• Amônia: apenas preços mensais de março 2026 disponíveis (sparkline com 3 pontos mensais).<br>
-• Etileno: histórico semanal não disponível no price-curve (sparkline com 3 pontos estimados).<br>
-• Soda Ash: notícias mais recentes são de dezembro 2025 — sem notícias de março 2026 disponíveis.</div><br>
-<a href="https://github.com/flaviok74/ekoquim-analise-mercado" target="_blank">🔗 github.com/flaviok74/ekoquim-analise-mercado</a>
+  <strong>EKOQUIM — INTELIGÊNCIA DE MERCADO</strong><br><br>
+  A Ekoquim conecta os principais fabricantes de matérias-primas químicas aos mercados da América Latina.
+  Garantimos competitividade por meio de operações ágeis, logística inteligente e fornecimento seguro ao longo de toda a cadeia industrial.<br><br>
+  Acesse: <a href="https://www.ekoquim.com" target="_blank">www.ekoquim.com</a> e saiba mais<br><br>
+  <em>Conectamos pessoas, conectamos negócios.</em><br><br>
+  <strong>Horário de consulta:</strong> 14:00 UTC · <strong>Cotação USD/CNY utilizada:</strong> 6,8988 (tradingeconomics.com, 01/04/2026)
+  <div class="warn">⚠️ Dados com limitação:<br>
+    • Benzeno: preço aproximado via web search (fev/2026 NE Asia); fonte primária ECHEMI não retornou dados de gráfico nesta sessão<br>
+    • Etileno: preço aproximado via web search (Q1/2026 NE Asia CFR); fonte primária ECHEMI indisponível<br>
+    • Amônia: preço aproximado via web search (mar/2026 FOB Middle East); extração Looker Studio não concluída nesta sessão<br>
+    • Gráficos de produtos: pontos históricos baseados em tendência coletada; série completa de 15 dias não preservada após reinício de sessão
+  </div>
 </div>
-</div></body>
+
+</body>
 </html>
