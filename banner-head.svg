@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 180" width="1200" height="180">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1b5e20;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#2e7d32;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#388e3c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#a5d6a7;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#a5d6a7;stop-opacity:0" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="180" fill="url(#bgGrad)" rx="12"/>
+
+  <!-- Decorative circles -->
+  <circle cx="1100" cy="90" r="120" fill="#ffffff" fill-opacity="0.04"/>
+  <circle cx="1050" cy="40" r="60" fill="#ffffff" fill-opacity="0.04"/>
+  <circle cx="80" cy="150" r="80" fill="#ffffff" fill-opacity="0.04"/>
+
+  <!-- Accent top line -->
+  <rect x="0" y="0" width="1200" height="4" fill="#a5d6a7" rx="2"/>
+
+  <!-- Left accent bar -->
+  <rect x="48" y="40" width="4" height="100" fill="#a5d6a7" rx="2"/>
+
+  <!-- Company name -->
+  <text x="72" y="85" font-family="'Segoe UI', Arial, sans-serif" font-size="42" font-weight="700" fill="#ffffff" letter-spacing="1">ekoquim</text>
+
+  <!-- Tagline -->
+  <text x="72" y="118" font-family="'Segoe UI', Arial, sans-serif" font-size="15" fill="#a5d6a7" letter-spacing="2" font-weight="400">GRUPO BSC QUÍMICOS</text>
+
+  <!-- Divider -->
+  <line x1="340" y1="50" x2="340" y2="130" stroke="#a5d6a7" stroke-width="1" stroke-opacity="0.4"/>
+
+  <!-- Report title -->
+  <text x="370" y="82" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="600" fill="#ffffff">Análise de Mercado — Químicos</text>
+  <text x="370" y="112" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#c8e6c9" letter-spacing="1">Inteligência comercial · Far East → América Latina</text>
+
+  <!-- Right badge -->
+  <rect x="980" y="62" width="170" height="56" rx="8" fill="#ffffff" fill-opacity="0.1"/>
+  <text x="1065" y="88" font-family="'Segoe UI', Arial, sans-serif" font-size="11" fill="#a5d6a7" text-anchor="middle" letter-spacing="1">MONITORAMENTO</text>
+  <text x="1065" y="107" font-family="'Segoe UI', Arial, sans-serif" font-size="11" fill="#c8e6c9" text-anchor="middle">7 produtos · 8 insumos</text>
+</svg>
