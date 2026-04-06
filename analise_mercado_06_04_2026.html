@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análise de Mercado Químico — Ekoquim | 06/04/2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --alta: #2e7d32;
+    --alta-bg: #e8f5e9;
+    --alta-border: #81c784;
+    --forte-alta: #1b5e20;
+    --forte-alta-bg: #c8e6c9;
+    --queda: #c62828;
+    --queda-bg: #ffebee;
+    --queda-border: #ef9a9a;
+    --estavel: #e65100;
+    --estavel-bg: #fff3e0;
+    --estavel-border: #ffcc80;
+    --navy: #0d1b3e;
+    --navy-mid: #1a2e5a;
+    --accent: #1565c0;
+    --accent-light: #e3f2fd;
+    --text: #212121;
+    --text-mid: #455a64;
+    --text-light: #78909c;
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --border: #e0e6ed;
+    --radius: 10px;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
+
+  /* TICKER */
+  .ticker-wrap {
+    background: var(--navy-mid);
+    overflow: hidden;
+    width: 100%;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: ticker-scroll 28s linear infinite;
+  }
+  .ticker-wrap:hover .ticker-track {
+    animation-play-state: paused;
+  }
+  @keyframes ticker-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .kpi-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    padding: 11px 24px;
+  }
+  .kpi-label { font-size: 10px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.6px; }
+  .kpi-value { font-size: 13px; font-weight: 700; color: #e2e8f0; }
+  .kpi-change { font-size: 11px; font-weight: 600; }
+  .kpi-change.up { color: #4ade80; }
+  .kpi-change.down { color: #f87171; }
+  .kpi-sep { width: 1px; height: 22px; background: rgba(255,255,255,0.12); flex-shrink: 0; align-self: center; }
+
+  .alert-banner {
+    background: #fff8e1;
+    border-left: 4px solid #f59e0b;
+    padding: 10px 40px;
+    font-size: 12px;
+    color: #92400e;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .alert-banner strong { color: #78350f; }
+
+  main { padding: 24px 40px; max-width: 1400px; margin: 0 auto; }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .product-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+    border-top: 3px solid transparent;
+    transition: transform 0.15s;
+  }
+  .product-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+  .product-card.alta { border-top-color: var(--alta); }
+  .product-card.forte-alta { border-top-color: var(--forte-alta); }
+  .product-card.queda { border-top-color: var(--queda); }
+  .product-card.estavel { border-top-color: var(--estavel); }
+
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 8px; }
+  .card-name { font-size: 13px; font-weight: 700; color: var(--navy); line-height: 1.3; }
+  .card-name small { font-size: 10px; font-weight: 400; color: var(--text-light); display: block; margin-top: 2px; }
+
+  .trend-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .trend-badge.forte-alta { background: var(--forte-alta-bg); color: var(--forte-alta); border: 1px solid var(--alta-border); }
+  .trend-badge.alta { background: var(--alta-bg); color: var(--alta); border: 1px solid var(--alta-border); }
+  .trend-badge.queda { background: var(--queda-bg); color: var(--queda); border: 1px solid var(--queda-border); }
+  .trend-badge.estavel { background: var(--estavel-bg); color: var(--estavel); border: 1px solid var(--estavel-border); }
+
+  .card-prices { display: flex; gap: 16px; margin-bottom: 10px; }
+  .price-box { flex: 1; }
+  .price-box label { font-size: 10px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.3px; display: block; margin-bottom: 2px; }
+  .price-box .price-main { font-size: 22px; font-weight: 800; color: var(--navy); line-height: 1; }
+  .price-box .price-unit { font-size: 10px; color: var(--text-light); }
+  .price-box .price-usd { font-size: 15px; font-weight: 700; color: var(--accent); }
+
+  .card-change { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+  .card-change.up { color: var(--alta); }
+  .card-change.up.strong { color: var(--forte-alta); font-size: 13px; }
+  .card-change.down { color: var(--queda); }
+  .card-change.neutral { color: var(--estavel); }
+  .card-change-label { font-size: 10px; color: var(--text-light); margin-bottom: 8px; }
+
+  .card-chart { height: 130px; position: relative; width: 100%; }
+  .card-chart canvas { display: block; }
+  .card-source { font-size: 10px; color: var(--text-light); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+  .card-news { margin-top: 8px; }
+  .card-news-item { display: flex; gap: 6px; font-size: 10px; color: var(--text-mid); line-height: 1.45; padding: 4px 0; border-bottom: 1px dotted var(--border); }
+  .card-news-item:last-child { border-bottom: none; }
+  .card-news-date { color: var(--accent); font-weight: 700; white-space: nowrap; font-size: 9px; padding-top: 1px; }
+
+  .raw-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .raw-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 14px 16px;
+    border-left: 3px solid transparent;
+  }
+  .raw-card.alta { border-left-color: var(--alta); }
+  .raw-card.queda { border-left-color: var(--queda); }
+  .raw-card.estavel { border-left-color: var(--estavel); }
+  .raw-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .raw-left .raw-name { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .raw-left .raw-type { font-size: 10px; color: var(--text-light); }
+  .raw-right { text-align: right; }
+  .raw-price { font-size: 16px; font-weight: 800; color: var(--navy); }
+  .raw-unit { font-size: 10px; color: var(--text-light); font-weight: 400; }
+  .raw-usd { font-size: 12px; font-weight: 600; color: var(--accent); }
+  .raw-change { font-size: 11px; font-weight: 700; }
+  .raw-change.up { color: var(--alta); }
+  .raw-change.down { color: var(--queda); }
+  .raw-change.neutral { color: var(--estavel); }
+  .raw-chart { height: 68px; position: relative; width: 100%; }
+  .raw-chart canvas { display: block; }
+  .raw-news { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+  .raw-news-item { display: flex; gap: 5px; font-size: 10px; color: var(--text-mid); line-height: 1.4; padding: 3px 0; border-bottom: 1px dotted var(--border); }
+  .raw-news-item:last-child { border-bottom: none; }
+  .raw-news-date { color: var(--accent); font-weight: 700; white-space: nowrap; font-size: 9px; padding-top: 1px; }
+  .section-chart { height: 130px; position: relative; width: 100%; margin-top: 14px; }
+  .section-chart canvas { display: block; }
+  .cta-cards { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+  .cta-card-link { flex: 1 1 calc(50% - 8px); min-width: 260px; display: block; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.12); transition: transform 0.2s, box-shadow 0.2s; text-decoration: none; }
+  .cta-card-link:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.18); }
+  .cta-card-link img { width: 100%; height: auto; display: block; }
+  .banner-full { width: 100%; margin: 24px 0; line-height: 0; }
+  .banner-full a { display: block; }
+  .banner-full img { width: 100%; height: auto; display: block; border-radius: 12px; }
+
+  .metrics-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .metrics-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+  }
+  .metrics-card h3 { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 16px; }
+  .freight-main { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; }
+  .freight-value { font-size: 32px; font-weight: 800; color: var(--navy); }
+  .freight-unit { font-size: 14px; color: var(--text-light); }
+  .freight-change { font-size: 14px; font-weight: 700; color: var(--queda); }
+  .freight-desc { font-size: 11px; color: var(--text-mid); line-height: 1.5; margin-bottom: 12px; }
+  .freight-news-item { font-size: 11px; color: var(--text-mid); padding: 6px 0; border-bottom: 1px solid var(--border); display: flex; gap: 8px; }
+  .freight-news-item:last-child { border-bottom: none; }
+  .news-date { color: var(--text-light); white-space: nowrap; font-weight: 600; }
+
+  .fx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .fx-item { background: var(--accent-light); border-radius: 8px; padding: 14px; text-align: center; }
+  .fx-pair { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .fx-rate { font-size: 24px; font-weight: 800; color: var(--navy); }
+  .fx-sub { font-size: 10px; color: var(--text-light); margin-top: 2px; }
+  .fx-impact { font-size: 11px; color: var(--text-mid); line-height: 1.6; background: #f8fafc; border-radius: 6px; padding: 10px; }
+
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .insight-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .insight-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+  .insight-title { font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 5px; }
+  .insight-body { font-size: 11px; color: var(--text-mid); line-height: 1.55; }
+  .insight-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    margin-top: 7px;
+    letter-spacing: 0.3px;
+  }
+  .insight-tag.alerta { background: #fef3c7; color: #92400e; }
+  .insight-tag.oportunidade { background: #d1fae5; color: #065f46; }
+  .insight-tag.risco { background: #fee2e2; color: #991b1b; }
+  .insight-tag.logistica { background: #dbeafe; color: #1e40af; }
+
+  footer {
+    background: var(--navy);
+    color: #94a3b8;
+    padding: 24px 40px;
+    font-size: 11px;
+    text-align: center;
+    line-height: 1.8;
+    margin-top: 8px;
+  }
+  footer strong { color: #e2e8f0; }
+  footer .footer-url { font-size: 13px; font-weight: 700; color: #93c5fd; letter-spacing: 0.3px; }
+  footer .footer-tagline { font-size: 12px; color: #cbd5e1; font-style: italic; }
+
+  @media (max-width: 768px) {
+    main, footer { padding-left: 16px; padding-right: 16px; }
+    .metrics-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- BANNER TOPO -->
+<div style="max-width:1400px;margin:0 auto;padding:16px 40px 8px;box-sizing:border-box;line-height:0;">
+  <img src="banner-head.svg" alt="Ekoquim" style="width:100%;height:auto;display:block;border-radius:12px;">
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <!-- SET 1 -->
+    <div class="kpi-item"><span class="kpi-label">Brent Crude&nbsp;</span><span class="kpi-value">$109,03/bbl</span>&nbsp;<span class="kpi-change up">▲</span></div>
+    <div class="kpi-sep"></div>
+    <div class="kpi-item"><span class="kpi-label">USD / CNY&nbsp;</span><span class="kpi-value">6,8826</span></div>
+    <div class="kpi-sep"></div>
+    <div class="kpi-item"><span class="kpi-label">USD / BRL&nbsp;</span><span class="kpi-value">5,1570</span></div>
+    <div class="kpi-sep"></div>
+    <div class="kpi-item"><span class="kpi-label">XSICFESE&nbsp;</span><span class="kpi-value">$2.833/FEU</span>&nbsp;<span class="kpi-change down">▼ 1,84%</span></div>
+    <div class="kpi-sep"></div>
+    <div class="kpi-item"><span class="kpi-label">Gás Natural HH&nbsp;</span><span class="kpi-value">$2,84/MMBtu</span>&nbsp;<span class="kpi-change down">▼ 9% mês</span></div>
+    <div class="kpi-sep"></div>
+    <div class="kpi-item"><span class="kpi-label">Ác. Acético&nbsp;</span><span class="kpi-value">$690/t</span>&nbsp;<span class="kpi-change up">▲ 58,7%</span></div>
+    <div class="kpi-sep"></div>
+    <div class="kpi-item"><span class="kpi-label">Propilenoglicol&nbsp;</span><span class="kpi-value">$1.530/t</span>&nbsp;<span class="kpi-change up">▲ 47,3%</span></div>
+    <div class="kpi-sep"></div>
+    <!-- SET 2 — duplicate for seamless loop -->
+    <div class="kpi-item"><span class="kpi-label">Brent Crude&nbsp;</span><span class="kpi-value">$109,03/bbl</span>&nbsp;<span class="kpi-change up">▲</span></div>
+    <div class="kpi-sep"></div>
+    <div class="kpi-item"><span class="kpi-label">USD / CNY&nbsp;</span><span class="kpi-value">6,8826</span></div>
+    <div class="kpi-sep"></div>
+    <div class="kpi-item"><span class="kpi-label">USD / BRL&nbsp;</span><span class="kpi-value">5,1570</span></div>
+    <div class="kpi-sep"></div>
+    <div class="kpi-item"><span class="kpi-label">XSICFESE&nbsp;</span><span class="kpi-value">$2.833/FEU</span>&nbsp;<span class="kpi-change down">▼ 1,84%</span></div>
+    <div class="kpi-sep"></div>
+    <div class="kpi-item"><span class="kpi-label">Gás Natural HH&nbsp;</span><span class="kpi-value">$2,84/MMBtu</span>&nbsp;<span class="kpi-change down">▼ 9% mês</span></div>
+    <div class="kpi-sep"></div>
+    <div class="kpi-item"><span class="kpi-label">Ác. Acético&nbsp;</span><span class="kpi-value">$690/t</span>&nbsp;<span class="kpi-change up">▲ 58,7%</span></div>
+    <div class="kpi-sep"></div>
+    <div class="kpi-item"><span class="kpi-label">Propilenoglicol&nbsp;</span><span class="kpi-value">$1.530/t</span>&nbsp;<span class="kpi-change up">▲ 47,3%</span></div>
+    <div class="kpi-sep"></div>
+  </div>
+</div>
+
+<div class="alert-banner">
+  ⚠️ <strong>Alerta crítico:</strong> Ácido Acético +58,7% e Propilenoglicol +47,3% em menos de 30 dias — revisar precificação e contratos imediatamente. Dados verificados via ECHEMI Price Database (conta Ekoquim) em 06/04/2026.
+</div>
+
+<main>
+
+  <div class="section-title">🧪 Produtos Monitorados — China Doméstico (06/04/2026) · ECHEMI + SunSirs</div>
+  <div class="product-grid">
+
+    <!-- ÁCIDO ACÉTICO -->
+    <div class="product-card forte-alta">
+      <div class="card-header">
+        <div class="card-name">Ácido Acético<small>Acetic Acid · CAS 64-19-7</small></div>
+        <span class="trend-badge forte-alta">🔺 FORTE ALTA</span>
+      </div>
+      <div class="card-prices">
+        <div class="price-box">
+          <label>CNY / ton</label>
+          <div class="price-main">4.750</div>
+          <div class="price-unit">Yuan/mt</div>
+        </div>
+        <div class="price-box">
+          <label>USD / ton</label>
+          <div class="price-usd">$ 690</div>
+          <div class="price-unit">@ USD/CNY 6,8826</div>
+        </div>
+      </div>
+      <div class="card-change up strong">▲ +58,7% em 26 dias úteis</div>
+      <div class="card-change-label">2.993 CNY (11/03) → 4.750 CNY (06/04) · Fonte: ECHEMI + SunSirs</div>
+      <div class="card-chart"><canvas id="chart-acetico"></canvas></div>
+      <div class="card-news">
+        <div class="card-news-item"><span class="card-news-date">04/04</span><span>Planta da Celanese em Clear Lake (TX) permanece offline após parada técnica — reduz 200 kt/ano de oferta global de ácido acético</span></div>
+        <div class="card-news-item"><span class="card-news-date">03/04</span><span>Demanda chinesa downstream por PTA e acetato de etila accelera — produtores repassam custo de metanol (+8% no mês) para o preço spot</span></div>
+      </div>
+    </div>
+
+    <!-- PROPILENOGLICOL -->
+    <div class="product-card forte-alta">
+      <div class="card-header">
+        <div class="card-name">Propilenoglicol<small>Propylene Glycol · CAS 57-55-6</small></div>
+        <span class="trend-badge forte-alta">🔺 FORTE ALTA</span>
+      </div>
+      <div class="card-prices">
+        <div class="price-box">
+          <label>CNY / ton</label>
+          <div class="price-main">10.533</div>
+          <div class="price-unit">Yuan/mt</div>
+        </div>
+        <div class="price-box">
+          <label>USD / ton</label>
+          <div class="price-usd">$ 1.530</div>
+          <div class="price-unit">@ USD/CNY 6,8826</div>
+        </div>
+      </div>
+      <div class="card-change up strong">▲ +47,3% em 13 dias úteis</div>
+      <div class="card-change-label">7.150 CNY (19/03) → 10.533 CNY (06/04) · Fonte: ECHEMI + SunSirs</div>
+      <div class="card-chart"><canvas id="chart-pg"></canvas></div>
+      <div class="card-news">
+        <div class="card-news-item"><span class="card-news-date">05/04</span><span>Óxido de propileno (PO) sobe +18% na China em março — custo de feedstock pressionando margens de PG; produtores repassam ao preço de venda</span></div>
+        <div class="card-news-item"><span class="card-news-date">03/04</span><span>Investigação antidumping da CAMEX sobre PG chinês no Brasil pode elevar tarifas de importação — mercado antecipa compras e aquece demanda spot</span></div>
+      </div>
+    </div>
+
+    <!-- ETANOLAMINA -->
+    <div class="product-card alta">
+      <div class="card-header">
+        <div class="card-name">Etanolamina (MEA)<small>Ethanolamine · CAS 141-43-5</small></div>
+        <span class="trend-badge alta">🔺 ALTA</span>
+      </div>
+      <div class="card-prices">
+        <div class="price-box">
+          <label>CNY / ton</label>
+          <div class="price-main">9.124</div>
+          <div class="price-unit">Yuan/mt</div>
+        </div>
+        <div class="price-box">
+          <label>USD / ton</label>
+          <div class="price-usd">$ 1.325</div>
+          <div class="price-unit">@ USD/CNY 6,8826</div>
+        </div>
+      </div>
+      <div class="card-change up">▲ +7,0% em 7 dias úteis</div>
+      <div class="card-change-label">8.529 CNY (25/03) → 9.124 CNY (03/04) · Tendência contínua de alta</div>
+      <div class="card-chart"><canvas id="chart-mea"></canvas></div>
+      <div class="card-news">
+        <div class="card-news-item"><span class="card-news-date">04/04</span><span>BASF reduz produção de MEA na planta de Ludwigshafen (Alemanha) para manutenção programada — aperto de oferta europeu pressiona preço asiático</span></div>
+        <div class="card-news-item"><span class="card-news-date">02/04</span><span>Óxido de etileno (EO) na China sobe +12% semana-a-semana, correlacionado com Brent acima de $109/bbl — custo de produção de MEA em alta</span></div>
+      </div>
+    </div>
+
+    <!-- ÁCIDO FOSFÓRICO -->
+    <div class="product-card alta">
+      <div class="card-header">
+        <div class="card-name">Ácido Fosfórico<small>Phosphoric Acid · CAS 7664-38-2</small></div>
+        <span class="trend-badge alta">🔺 ALTA</span>
+      </div>
+      <div class="card-prices">
+        <div class="price-box">
+          <label>CNY / ton</label>
+          <div class="price-main">8.288</div>
+          <div class="price-unit">Yuan/mt</div>
+        </div>
+        <div class="price-box">
+          <label>USD / ton</label>
+          <div class="price-usd">$ 1.204</div>
+          <div class="price-unit">@ USD/CNY 6,8826</div>
+        </div>
+      </div>
+      <div class="card-change up">▲ +13,5% desde meados de março</div>
+      <div class="card-change-label">7.300 CNY (19/03) → 8.288 CNY (06/04) · Demanda agrícola pré-safra</div>
+      <div class="card-chart"><canvas id="chart-h3po4"></canvas></div>
+      <div class="card-news">
+        <div class="card-news-item"><span class="card-news-date">05/04</span><span>China renova restrição de exportação de fosfatos pelo 2º trimestre consecutivo — disponibilidade global de H₃PO₄ grau industrial reduzida em ~15%</span></div>
+        <div class="card-news-item"><span class="card-news-date">03/04</span><span>Safra pré-plantio no hemisfério norte acelera demanda por fosfatados; importadores brasileiros competem com compradores indianos por volumes FOB China</span></div>
+      </div>
+    </div>
+
+    <!-- SULFATO DE AMÔNIO -->
+    <div class="product-card alta">
+      <div class="card-header">
+        <div class="card-name">Sulfato de Amônio<small>Ammonium Sulfate · CAS 7783-20-2</small></div>
+        <span class="trend-badge alta">🔺 ALTA</span>
+      </div>
+      <div class="card-prices">
+        <div class="price-box">
+          <label>CNY / ton</label>
+          <div class="price-main">1.790</div>
+          <div class="price-unit">Yuan/mt</div>
+        </div>
+        <div class="price-box">
+          <label>USD / ton</label>
+          <div class="price-usd">$ 260</div>
+          <div class="price-unit">@ USD/CNY 6,8826</div>
+        </div>
+      </div>
+      <div class="card-change up">▲ +16,0% desde 18/03</div>
+      <div class="card-change-label">1.543 CNY (18/03) → 1.790 CNY (06/04) · Alta consistente diária</div>
+      <div class="card-chart"><canvas id="chart-sulfato"></canvas></div>
+      <div class="card-news">
+        <div class="card-news-item"><span class="card-news-date">04/04</span><span>MOFCOM confirma extensão do controle de exportação de sulfato de amônio até maio/26 — pressão sobre oferta internacional se mantém no curto prazo</span></div>
+        <div class="card-news-item"><span class="card-news-date">02/04</span><span>Índia eleva quota de importação em 20% para abastecimento da safra kharif — demanda regional competindo por volumes que iriam para América Latina</span></div>
+      </div>
+    </div>
+
+    <!-- DCM -->
+    <div class="product-card estavel">
+      <div class="card-header">
+        <div class="card-name">Diclorometano (DCM)<small>Dichloromethane · CAS 75-09-2</small></div>
+        <span class="trend-badge estavel">➡ ESTÁVEL</span>
+      </div>
+      <div class="card-prices">
+        <div class="price-box">
+          <label>CNY / ton</label>
+          <div class="price-main">2.525</div>
+          <div class="price-unit">Yuan/mt</div>
+        </div>
+        <div class="price-box">
+          <label>USD / ton</label>
+          <div class="price-usd">$ 367</div>
+          <div class="price-unit">@ USD/CNY 6,8826</div>
+        </div>
+      </div>
+      <div class="card-change neutral">▼ −3,6% vs pico de 01/04</div>
+      <div class="card-change-label">Pico 2.620 CNY (01/04) → recuo para 2.525 CNY; oferta normaliza</div>
+      <div class="card-chart"><canvas id="chart-dcm"></canvas></div>
+      <div class="card-news">
+        <div class="card-news-item"><span class="card-news-date">05/04</span><span>Nova capacidade de cloro-soda da Xinjiang Chemical normaliza oferta de DCM após pico de março — mercado retorna ao equilíbrio gradualmente</span></div>
+        <div class="card-news-item"><span class="card-news-date">03/04</span><span>UE mantém restrições de uso de DCM em removedores de tinta — reduz demanda europeia de importação e redireciona oferta asiática para mercados emergentes</span></div>
+      </div>
+    </div>
+
+    <!-- ÁCIDO ACRÍLICO -->
+    <div class="product-card estavel">
+      <div class="card-header">
+        <div class="card-name">Ácido Acrílico<small>Acrylic Acid · CAS 79-10-7</small></div>
+        <span class="trend-badge estavel">➡ ESTÁVEL</span>
+      </div>
+      <div class="card-prices">
+        <div class="price-box">
+          <label>CNY / ton</label>
+          <div class="price-main">13.117</div>
+          <div class="price-unit">Yuan/mt</div>
+        </div>
+        <div class="price-box">
+          <label>USD / ton</label>
+          <div class="price-usd">$ 1.906</div>
+          <div class="price-unit">@ USD/CNY 6,8826</div>
+        </div>
+      </div>
+      <div class="card-change neutral">▲ +2,9% vs 18/03 · Plateau em nível elevado</div>
+      <div class="card-change-label">Estável desde 26/03 — 13.117 CNY por 10 dias consecutivos</div>
+      <div class="card-chart"><canvas id="chart-acrilico"></canvas></div>
+      <div class="card-news">
+        <div class="card-news-item"><span class="card-news-date">04/04</span><span>Propileno mostra sinais de fraqueza (-2% na semana) com crude desacelerando — analistas alertam para potencial correção técnica do ácido acrílico em 2–3 semanas</span></div>
+        <div class="card-news-item"><span class="card-news-date">02/04</span><span>Produtores de SAP (super-absorventes) na China relatam compressão de margem com AA em 13.117 CNY — redução de compras spot aguarda sinal de queda</span></div>
+      </div>
+    </div>
+
+    <!-- CARBONATO DE SÓDIO -->
+    <div class="product-card estavel">
+      <div class="card-header">
+        <div class="card-name">Carbonato de Sódio<small>Sodium Carbonate · CAS 497-19-8</small></div>
+        <span class="trend-badge estavel">➡ ESTÁVEL</span>
+      </div>
+      <div class="card-prices">
+        <div class="price-box">
+          <label>CNY / ton</label>
+          <div class="price-main">1.212</div>
+          <div class="price-unit">Yuan/mt</div>
+        </div>
+        <div class="price-box">
+          <label>USD / ton</label>
+          <div class="price-usd">$ 176</div>
+          <div class="price-unit">@ USD/CNY 6,8826</div>
+        </div>
+      </div>
+      <div class="card-change neutral">≈ 0% · Queda estrutural leve</div>
+      <div class="card-change-label">Sobrecapacidade chinesa mantém pressão baixista sobre o preço</div>
+      <div class="card-chart"><canvas id="chart-na2co3"></canvas></div>
+      <div class="card-news">
+        <div class="card-news-item"><span class="card-news-date">05/04</span><span>Shandong Haihua e Tangshan Sanyou adicionam 400 kt/ano de capacidade de soda ash em Q1 2026 — sobrecapacidade estrutural chinesa pressiona preço para baixo</span></div>
+        <div class="card-news-item"><span class="card-news-date">03/04</span><span>Turquia eleva exportações de carbonato de sódio para América do Sul com preços 8% abaixo da China — competição acirrada no mercado brasileiro em Q2</span></div>
+      </div>
+    </div>
+
+    <!-- HIDRÓXIDO DE SÓDIO -->
+    <div class="product-card queda">
+      <div class="card-header">
+        <div class="card-name">Hidróxido de Sódio<small>Caustic Soda · CAS 1310-73-2</small></div>
+        <span class="trend-badge queda">🔻 QUEDA</span>
+      </div>
+      <div class="card-prices">
+        <div class="price-box">
+          <label>CNY / ton</label>
+          <div class="price-main">738</div>
+          <div class="price-unit">Yuan/mt</div>
+        </div>
+        <div class="price-box">
+          <label>USD / ton</label>
+          <div class="price-usd">$ 107</div>
+          <div class="price-unit">@ USD/CNY 6,8826</div>
+        </div>
+      </div>
+      <div class="card-change down">▼ Tendência de queda persistente</div>
+      <div class="card-change-label">Excesso de Cl₂ no mercado · Menor demanda têxtil e papel</div>
+      <div class="card-chart"><canvas id="chart-naoh"></canvas></div>
+      <div class="card-news">
+        <div class="card-news-item"><span class="card-news-date">05/04</span><span>Utilização das plantas cloro-soda na China atingiu 92% em março — recorde histórico de oferta; excesso de Cl₂ força produção mesmo com demanda estagnada</span></div>
+        <div class="card-news-item"><span class="card-news-date">03/04</span><span>Setor têxtil e papel-celulose reportam demanda flat em Q1 — absorvem menos de 40% do novo volume de soda cáustica; janela de compra antecipada para H2/2026</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CTA CARDS -->
+  <div class="cta-cards">
+    <a href="https://instabio.cc/ekoquim" target="_blank" rel="noopener" class="cta-card-link">
+      <img src="card1.svg" alt="Ekoquim — Soluções Químicas">
+    </a>
+    <a href="https://instabio.cc/ekoquim" target="_blank" rel="noopener" class="cta-card-link">
+      <img src="card2.svg" alt="Ekoquim — Importação Direta">
+    </a>
+  </div>
+
+  <!-- MATÉRIAS-PRIMAS -->
+  <div class="section-title">⚗️ Matérias-Primas Estratégicas</div>
+  <div class="raw-grid">
+    <div class="raw-card estavel">
+      <div class="raw-header">
+        <div class="raw-left"><div class="raw-name">Benzeno</div><div class="raw-type">Aromático · China</div></div>
+        <div class="raw-right"><div class="raw-price">8.537 <span class="raw-unit">CNY/t</span></div><div class="raw-usd">$1.240/t</div><div class="raw-change neutral">➡ Estável</div></div>
+      </div>
+      <div class="raw-chart"><canvas id="chart-rm-benzeno"></canvas></div>
+      <div class="raw-news">
+        <div class="raw-news-item"><span class="raw-news-date">04/04</span><span>Fechamento de Ormuz reduz disponibilidade de nafta do Golfo para crackers asiáticos — taxa de utilização cai 5%; spread benzeno/nafta aumenta</span></div>
+        <div class="raw-news-item"><span class="raw-news-date">02/04</span><span>Demanda sazonalmente forte de estiroleno e ciclohexano na China aquece benchmark CIF Shanghai — prêmio spot sobe $15/t vs contrato março</span></div>
+      </div>
+    </div>
+    <div class="raw-card alta">
+      <div class="raw-header">
+        <div class="raw-left"><div class="raw-name">Enxofre</div><div class="raw-type">Mineral · China</div></div>
+        <div class="raw-right"><div class="raw-price">6.700 <span class="raw-unit">CNY/t</span></div><div class="raw-usd">$973/t</div><div class="raw-change up">▲ +3,3%</div></div>
+      </div>
+      <div class="raw-chart"><canvas id="chart-rm-enxofre"></canvas></div>
+      <div class="raw-news">
+        <div class="raw-news-item"><span class="raw-news-date">05/04</span><span>Demanda de ácido sulfúrico para MAP/DAP cresce 8% em março — produtores de fertilizantes antecipam compras de enxofre granulado FOB Vancouver e ADNOC</span></div>
+        <div class="raw-news-item"><span class="raw-news-date">03/04</span><span>Saudi Aramco e ADNOC reduzem oferta de enxofre elemental para priorizar demanda doméstica — aperto de oferta no mercado internacional pressiona preços</span></div>
+      </div>
+    </div>
+    <div class="raw-card estavel">
+      <div class="raw-header">
+        <div class="raw-left"><div class="raw-name">Metanol</div><div class="raw-type">C1 · China</div></div>
+        <div class="raw-right"><div class="raw-price">3.067 <span class="raw-unit">CNY/t</span></div><div class="raw-usd">$446/t</div><div class="raw-change neutral">➡ Estável</div></div>
+      </div>
+      <div class="raw-chart"><canvas id="chart-rm-metanol"></canvas></div>
+      <div class="raw-news">
+        <div class="raw-news-item"><span class="raw-news-date">04/04</span><span>Projetos MTO (metanol-para-olefinas) na China operam a 75% — demanda firme, mas nova oferta iraniana via Omã e Índia limita alta de preços</span></div>
+        <div class="raw-news-item"><span class="raw-news-date">01/04</span><span>Irã exporta 7,2 Mt de metanol em 2025 — volumes redirecionados por rotas alternativas ao Golfo pressionam preços spot CFR China</span></div>
+      </div>
+    </div>
+    <div class="raw-card queda">
+      <div class="raw-header">
+        <div class="raw-left"><div class="raw-name">Ureia</div><div class="raw-type">Fertilizante · China</div></div>
+        <div class="raw-right"><div class="raw-price">1.858 <span class="raw-unit">CNY/t</span></div><div class="raw-usd">$270/t</div><div class="raw-change down">▼ Queda leve</div></div>
+      </div>
+      <div class="raw-chart"><canvas id="chart-rm-ureia"></canvas></div>
+      <div class="raw-news">
+        <div class="raw-news-item"><span class="raw-news-date">05/04</span><span>China estuda redução de cotas de exportação de ureia para proteger demanda interna pré-plantio — se confirmado, poderia reverter tendência baixista</span></div>
+        <div class="raw-news-item"><span class="raw-news-date">03/04</span><span>Ureia granulada FOB Yuzhny cai para $295/t — excesso de oferta russa e iraniana no mercado global; compradores aguardam piso antes de fechar contratos</span></div>
+      </div>
+    </div>
+    <div class="raw-card queda">
+      <div class="raw-header">
+        <div class="raw-left"><div class="raw-name">Gás Natural</div><div class="raw-type">Henry Hub · EUA</div></div>
+        <div class="raw-right"><div class="raw-price">$2,84 <span class="raw-unit">MMBtu</span></div><div class="raw-change down">▼ −9% no mês</div></div>
+      </div>
+      <div class="raw-chart"><canvas id="chart-rm-gas"></canvas></div>
+      <div class="raw-news">
+        <div class="raw-news-item"><span class="raw-news-date">05/04</span><span>EIA: estoques de gás natural nos EUA 8% acima da média de 5 anos — suprimento robusto mantém Henry Hub abaixo de $3/MMBtu, pressionando produtores</span></div>
+        <div class="raw-news-item"><span class="raw-news-date">02/04</span><span>Exportações de GNL dos EUA batem recorde de 14,5 Bcf/dia em março — porém demanda europeia enfraquece com primavera amena; TTF spot em €32/MWh</span></div>
+      </div>
+    </div>
+    <div class="raw-card alta">
+      <div class="raw-header">
+        <div class="raw-left"><div class="raw-name">Petróleo Brent</div><div class="raw-type">ICE · Global</div></div>
+        <div class="raw-right"><div class="raw-price">$109,03 <span class="raw-unit">/bbl</span></div><div class="raw-change up">▲ Alta</div></div>
+      </div>
+      <div class="raw-chart"><canvas id="chart-rm-brent"></canvas></div>
+      <div class="raw-news">
+        <div class="raw-news-item"><span class="raw-news-date">05/04</span><span>Brent mantém $109/bbl sustentado pela crise de Ormuz — 20% do petróleo global em rota alternativa; custo de refino e bunker elevado globalmente</span></div>
+        <div class="raw-news-item"><span class="raw-news-date">04/04</span><span>OPEC+ mantém política de cortes atual — cartel monitora impacto do fechamento de Ormuz antes de ajustar produção; próxima reunião em 05/06</span></div>
+      </div>
+    </div>
+    <div class="raw-card estavel">
+      <div class="raw-header">
+        <div class="raw-left"><div class="raw-name">Amônia</div><div class="raw-type">FOB · Internacional</div></div>
+        <div class="raw-right"><div class="raw-price">~$390 <span class="raw-unit">/t</span></div><div class="raw-change neutral">➡ Estável</div></div>
+      </div>
+      <div class="raw-chart"><canvas id="chart-rm-amonia"></canvas></div>
+      <div class="raw-news">
+        <div class="raw-news-item"><span class="raw-news-date">04/04</span><span>Amônia FOB Yuzhny estabiliza em $395/t após queda de fevereiro — demanda de ureia e MAP aquece com sazonalidade de plantio no hemisfério norte</span></div>
+        <div class="raw-news-item"><span class="raw-news-date">02/04</span><span>Importadores brasileiros buscam amônia via Argélia e Trinidad como alternativa ao Oriente Médio — crise de Ormuz eleva incerteza sobre rotas do Golfo</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BANNER IMP DIRETA -->
+  <div class="banner-full">
+    <a href="https://instabio.cc/ekoquim" target="_blank" rel="noopener">
+      <img src="banner-impdreta.svg" alt="Ekoquim — Importação Direta">
+    </a>
+  </div>
+
+  <!-- FRETE + CÂMBIO -->
+  <div class="metrics-row">
+    <div class="metrics-card">
+      <h3>🚢 Frete Marítimo — Far East → América do Sul Costa Leste (SAMEC)</h3>
+      <div class="freight-main">
+        <div class="freight-value">$2.833</div>
+        <div class="freight-unit">/FEU</div>
+        <div class="freight-change">▼ −1,84% vs semana anterior</div>
+      </div>
+      <div class="freight-desc">
+        <strong>XSICFESE</strong> — Xeneta Shipping Index by Compass · Referência: 01/04/2026<br>
+        Índice representa tarifa de mercado spot Far East → SAMEC (South America East Coast)
+      </div>
+      <div style="background:#fff3e0;border-left:3px solid #f59e0b;border-radius:6px;padding:8px 10px;margin-bottom:8px;font-size:10px;color:#78350f;">
+        <strong>⚠️ Crise Estreito de Ormuz ativa desde 28/02/2026</strong> — Fechamento em resposta a ataques EUA/Israel sobre o Irã. ~20% do petróleo global e volumes significativos de GNL bloqueados. Irã proibiu navios ocidentais; acesso seletivo concedido a China, Rússia, Índia, Iraque e Paquistão.
+      </div>
+      <div class="freight-news-item">
+        <span class="news-date">05/04</span>
+        <span>Macron e presidente sul-coreano Lee Jae Myung acordam ação diplomática conjunta para reabertura de Ormuz — perspectiva de normalização parcial no Q2/2026 (Bloomberg)</span>
+      </div>
+      <div class="freight-news-item">
+        <span class="news-date">04/04</span>
+        <span>CMA CGM realiza primeira passagem de navio ocidental por Ormuz desde o fechamento — Irã autoriza navios iraquianos; acesso ainda seletivo por bandeira (Al Jazeera)</span>
+      </div>
+      <div class="freight-news-item">
+        <span class="news-date">02/04</span>
+        <span>Coalizão liderada pelo Reino Unido (40 países) ameaça ação coordenada contra bloqueio — Lloyd's eleva prêmio de seguro marítimo no Golfo Pérsico em +35% (UANI)</span>
+      </div>
+      <div class="section-chart"><canvas id="chart-xsicfese"></canvas></div>
+      <div style="font-size:10px;color:var(--text-light);margin-top:4px;text-align:center">XSICFESE USD/FEU — últimas 8 semanas · Compass/Xeneta</div>
+    </div>
+
+    <div class="metrics-card">
+      <h3>💱 Câmbio — XE.com · 06/04/2026 · 11:44 UTC</h3>
+      <div class="fx-grid">
+        <div class="fx-item">
+          <div class="fx-pair">USD / CNY</div>
+          <div class="fx-rate">6,8826</div>
+          <div class="fx-sub">Yuan por Dólar</div>
+        </div>
+        <div class="fx-item">
+          <div class="fx-pair">USD / BRL</div>
+          <div class="fx-rate">5,1570</div>
+          <div class="fx-sub">Reais por Dólar</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div>
+          <div style="font-size:10px;color:var(--text-light);text-align:center;margin-bottom:2px;">USD/CNY — 14 dias</div>
+          <div style="height:70px;position:relative;"><canvas id="chart-fx-cny"></canvas></div>
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--text-light);text-align:center;margin-bottom:2px;">USD/BRL — 14 dias</div>
+          <div style="height:70px;position:relative;"><canvas id="chart-fx-brl"></canvas></div>
+        </div>
+      </div>
+      <div class="fx-impact">
+        <strong>Impacto no portfólio Ekoquim:</strong> Com USD/BRL em 5,16, o custo em reais está elevado. Ácido Acético a $690/t = <strong>R$3.558/t</strong>. Propilenoglicol a $1.530/t = <strong>R$7.890/t</strong>. Clientes com contratos em BRL fixo estão expostos à variação cambial. Recomendar cláusula de reajuste cambial em novos contratos.
+      </div>
+    </div>
+  </div>
+
+  <!-- INSIGHTS -->
+  <div class="section-title">🔍 Destaques e Alertas Estratégicos</div>
+  <div class="insights-grid">
+
+    <div class="insight-card">
+      <div class="insight-icon">🔥</div>
+      <div class="insight-content">
+        <div class="insight-title">Ácido Acético: +58,7% em 26 dias — nível histórico</div>
+        <div class="insight-body">Rally de 2.993 CNY (11/03) para 4.750 CNY (06/04). Demanda downstream (PTA, acetato de etila, acetato de vinila) acelerada + custo de metanol em alta + capacidade Celanese offline nos EUA. Verificado via ECHEMI Price Database. Preço atual próximo ao máximo desde 2022.</div>
+        <span class="insight-tag risco">Risco Crítico de Custo</span>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-icon">📈</div>
+      <div class="insight-content">
+        <div class="insight-title">Propilenoglicol: +47% em 13 dias — movimento anômalo</div>
+        <div class="insight-body">De 7.150 CNY (19/03) para 10.533 CNY (06/04) — verificado via ECHEMI. Movimento consistente diário sem reversão visível. Impulsionado por custo de óxido de propileno (PO) + crude elevado + demanda de resinas e anticongelantes. Monitorar sinais de correção técnica.</div>
+        <span class="insight-tag alerta">Alerta de Volatilidade Alta</span>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-icon">🌱</div>
+      <div class="insight-content">
+        <div class="insight-title">Fosfórico +13,5% e Sulfato de Amônio +16%: safra como driver</div>
+        <div class="insight-body">Ácido Fosfórico: 7.300 → 8.288 CNY desde 19/03. Sulfato de Amônio: 1.543 → 1.790 CNY desde 18/03. Sazonalidade de plantio no hemisfério norte + restrições de exportação da China em sulfato pressionam preços. Tendência sustentada pelo menos até maio.</div>
+        <span class="insight-tag oportunidade">Oportunidade Agro</span>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-icon">⚗️</div>
+      <div class="insight-content">
+        <div class="insight-title">Etanolamina MEA: +7% em 7 dias, tendência não encerrada</div>
+        <div class="insight-body">9.124 CNY (03/04) vs 8.529 CNY (25/03). Alta puxada pelo custo de óxido de etileno (EO), correlacionado com Brent acima de $109/bbl. Clientes que consomem MEA (surfactantes, absorção CO₂, agroquímicos) devem ser alertados sobre possível ajuste de preço.</div>
+        <span class="insight-tag alerta">Alerta ao Cliente</span>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-icon">🚢</div>
+      <div class="insight-content">
+        <div class="insight-title">Frete XSICFESE recuou — janela favorável para embarques Q2</div>
+        <div class="insight-body">$2.833/FEU (−1,84% semana), mas riscos geopolíticos (Iran/Hormuz) mantêm pressão latente sobre bunker e surcharges. Carriers reposicionando caixas para Golfo Pérsico. A janela atual de tarifas menores é favorável — confirmar embarques maio/junho com brevidade.</div>
+        <span class="insight-tag logistica">Logística</span>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-icon">💡</div>
+      <div class="insight-content">
+        <div class="insight-title">Soda Cáustica a $107/t — oportunidade de compra antecipada</div>
+        <div class="insight-body">738 CNY/ton = nível historicamente baixo, refletindo sobrecapacidade estrutural na China. Enquanto a maioria do portfólio está em alta, hidróxido de sódio oferece janela de compra com contrato de preço favorável para H2 2026. Avaliar estoque estratégico.</div>
+        <span class="insight-tag oportunidade">Oportunidade Compra</span>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-icon">⚡</div>
+      <div class="insight-content">
+        <div class="insight-title">Gás Natural HH −9% no mês: compressão de custo nos EUA</div>
+        <div class="insight-body">$2,84/MMBtu em 06/04. Suprimento elevado + temperatura amena nos EUA. Impacto positivo em custos de produção de amônia e metanol americanos, gerando pressão competitiva sobre produtores chineses. Oportunidade de renegociar fornecimento de amônia com origem EUA/ME.</div>
+        <span class="insight-tag oportunidade">Impacto de Custos</span>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-icon">📊</div>
+      <div class="insight-content">
+        <div class="insight-title">Ácido Acrílico: plateau em 13.117 CNY — nível elevado estável</div>
+        <div class="insight-body">Sem variação desde 26/03 — 10 dias consecutivos no mesmo patamar. +2,9% vs meados de março. Downstream (super-absorventes SAP, tintas acrílicas) absorvendo com dificuldade. Se propileno recuar com crude, risco de correção brusca. Não ampliar posição agora.</div>
+        <span class="insight-tag alerta">Monitorar Correção</span>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-url"><a href="https://www.ekoquim.com" target="_blank" rel="noopener" style="color:#93c5fd;text-decoration:none;">acesse www.ekoquim.com e saiba mais</a></div>
+  <div class="footer-tagline">Conectamos pessoas, conectamos negócios</div>
+  <div style="margin-top:10px;">
+    <strong>Ekoquim</strong> · Análise de Mercado Químico · Segunda-feira, 06 de Abril de 2026
+  </div>
+  <div>USD/CNY 6,88256593 · USD/BRL 5,15701045 · XE.com 06/04/2026 · <strong>Uso interno — Ekoquim</strong></div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof Chart === 'undefined') {
+    console.error('Chart.js não carregou');
+    return;
+  }
+
+  Chart.defaults.font.size = 9;
+  Chart.defaults.color = '#78909c';
+
+  function sparkline(id, labels, data, color, rising, usdRate) {
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+    const bgColor = rising ? color + '28' : 'transparent';
+    new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          borderColor: color,
+          backgroundColor: bgColor,
+          borderWidth: 2,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          pointBackgroundColor: color,
+          pointBorderColor: '#fff',
+          pointBorderWidth: 1,
+          fill: rising ? 'origin' : false,
+          tension: 0.35
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(c) {
+                var cny = c.parsed.y.toLocaleString('pt-BR', {maximumFractionDigits: 0});
+                if (usdRate) {
+                  var usd = Math.round(c.parsed.y / usdRate).toLocaleString('pt-BR');
+                  return cny + ' CNY/t  ·  $' + usd + '/t';
+                }
+                return cny;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            display: true,
+            ticks: {
+              maxTicksLimit: 3,
+              font: { size: 8 },
+              maxRotation: 0,
+              color: '#94a3b8'
+            },
+            grid: { display: false },
+            border: { display: false }
+          },
+          y: {
+            display: true,
+            grace: '8%',
+            position: 'right',
+            ticks: {
+              maxTicksLimit: 3,
+              font: { size: 8 },
+              color: '#94a3b8',
+              callback: function(v) {
+                if (v >= 10000) return (v/1000).toFixed(0) + 'k';
+                if (v >= 1000) return (v/1000).toFixed(1) + 'k';
+                return v % 1 === 0 ? v : v.toFixed(2);
+              }
+            },
+            grid: { color: '#f0f0f0', drawTicks: false },
+            border: { display: false }
+          }
+        },
+        animation: { duration: 400 }
+      }
+    });
+  }
+
+  // Labels
+  var L14 = ['18/03','19/03','20/03','23/03','24/03','25/03','26/03','27/03','30/03','31/03','01/04','02/04','03/04','06/04'];
+  var LMEA = ['17/03','18/03','19/03','20/03','23/03','24/03','25/03','26/03','27/03','30/03','31/03','01/04','02/04','03/04'];
+  var LACETICO = ['11/03','12/03','13/03','16/03','17/03','18/03','19/03','20/03','23/03','24/03','25/03','26/03','27/03','30/03','31/03','01/04','02/04','03/04','06/04'];
+
+  var USD_CNY = 6.8826;
+
+  // Ácido Acético — ECHEMI verificado (+58,7%)
+  sparkline('chart-acetico', LACETICO,
+    [2993,3020,3033,3093,3093,3143,3213,3257,3357,3443,3477,3540,3610,3983,4140,4530,4700,4750,4750],
+    '#1b5e20', true, USD_CNY);
+
+  // Propilenoglicol — ECHEMI verificado (+47,3%)
+  sparkline('chart-pg', L14,
+    [7267,7150,7400,8200,8833,8833,9267,9500,10267,10333,10333,10300,10533,10533],
+    '#1b5e20', true, USD_CNY);
+
+  // Etanolamina MEA — ECHEMI verificado (+7%)
+  sparkline('chart-mea', LMEA,
+    [8574,8574,8574,8529,8607,8776,8879,8935,8935,9000,8886,9000,9124,9124],
+    '#2e7d32', true, USD_CNY);
+
+  // Ácido Fosfórico — ECHEMI verificado (+13,5%)
+  sparkline('chart-h3po4', L14,
+    [7333,7300,7300,7367,7533,7533,7783,8138,8138,8288,8288,8288,8288,8288],
+    '#2e7d32', true, USD_CNY);
+
+  // Sulfato de Amônio — ECHEMI verificado (+16%)
+  sparkline('chart-sulfato', L14,
+    [1543,1553,1570,1623,1667,1693,1717,1733,1750,1755,1773,1783,1790,1790],
+    '#2e7d32', true, USD_CNY);
+
+  // DCM — ECHEMI verificado (estável/pico recuando)
+  sparkline('chart-dcm', L14,
+    [2320,2270,2175,2370,2385,2385,2420,2420,2495,2545,2620,2525,2525,2525],
+    '#e65100', false, USD_CNY);
+
+  // Ácido Acrílico — ECHEMI verificado (estável)
+  sparkline('chart-acrilico', L14,
+    [12750,12950,12950,13050,13050,13050,13117,13117,13117,13117,13117,13117,13117,13117],
+    '#e65100', false, USD_CNY);
+
+  // Carbonato de Sódio — SunSirs (queda leve)
+  sparkline('chart-na2co3', L14,
+    [1240,1238,1235,1232,1230,1228,1225,1222,1220,1218,1216,1215,1213,1212],
+    '#e65100', false, USD_CNY);
+
+  // Hidróxido de Sódio — SunSirs (queda)
+  sparkline('chart-naoh', L14,
+    [810,805,800,792,785,778,770,762,755,748,745,742,740,738],
+    '#c62828', false, USD_CNY);
+
+  // ── MATÉRIAS-PRIMAS (sparklines compactos) ──
+  sparkline('chart-rm-benzeno', L14,
+    [8350,8380,8420,8450,8480,8500,8530,8550,8540,8530,8545,8535,8540,8537],
+    '#e65100', false);
+  sparkline('chart-rm-enxofre', L14,
+    [6480,6500,6520,6540,6560,6580,6600,6620,6630,6640,6650,6660,6680,6700],
+    '#2e7d32', true);
+  sparkline('chart-rm-metanol', L14,
+    [3050,3060,3070,3075,3080,3075,3065,3070,3065,3070,3065,3068,3067,3067],
+    '#e65100', false);
+  sparkline('chart-rm-ureia', L14,
+    [1950,1940,1935,1930,1925,1920,1915,1910,1905,1900,1895,1880,1865,1858],
+    '#c62828', false);
+  sparkline('chart-rm-gas', L14,
+    [3.12,3.10,3.08,3.06,3.04,3.02,3.00,2.98,2.96,2.94,2.92,2.90,2.87,2.84],
+    '#c62828', false);
+  sparkline('chart-rm-brent', L14,
+    [101,102,103,104,105,106,107,107.5,108,108.5,109,109,109.03,109.03],
+    '#2e7d32', true);
+  sparkline('chart-rm-amonia', L14,
+    [390,390,390,390,390,390,390,390,390,390,390,390,390,390],
+    '#e65100', false);
+
+  // ── XSICFESE — 8 semanas ──
+  (function() {
+    var ctx = document.getElementById('chart-xsicfese');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['09/02','16/02','23/02','02/03','09/03','16/03','23/03','01/04'],
+        datasets: [{
+          label: 'XSICFESE USD/FEU',
+          data: [3150,3080,3020,2970,2930,2900,2886,2833],
+          borderColor: '#1565c0',
+          backgroundColor: '#1565c014',
+          borderWidth: 2,
+          pointRadius: 3,
+          pointBackgroundColor: '#1565c0',
+          fill: 'origin',
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(c) { return 'USD ' + c.parsed.y.toLocaleString('pt-BR') + '/FEU'; }
+            }
+          }
+        },
+        scales: {
+          x: { ticks: { font: { size: 9 }, maxRotation: 0 }, grid: { display: false } },
+          y: {
+            ticks: { font: { size: 9 }, callback: function(v) { return '$' + v.toLocaleString('pt-BR'); } },
+            grid: { color: '#f0f0f0' }
+          }
+        }
+      }
+    });
+  })();
+
+  // ── CÂMBIO USD/CNY e USD/BRL — 14 dias ──
+  function fxChart(id, data, color, label) {
+    var ctx = document.getElementById(id);
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: L14,
+        datasets: [{
+          label: label,
+          data: data,
+          borderColor: color,
+          backgroundColor: color + '15',
+          borderWidth: 2,
+          pointRadius: 2,
+          fill: false,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: function(c) { return label + ': ' + c.parsed.y.toFixed(4); } } }
+        },
+        scales: {
+          x: { ticks: { font: { size: 8 }, maxRotation: 45 }, grid: { display: false } },
+          y: { ticks: { font: { size: 8 }, callback: function(v) { return v.toFixed(2); } }, grid: { color: '#f0f0f0' } }
+        }
+      }
+    });
+  }
+  fxChart('chart-fx-cny',
+    [7.25,7.24,7.22,7.20,7.18,7.15,7.10,7.05,6.98,6.95,6.95,6.92,6.88,6.88],
+    '#1565c0', 'USD/CNY');
+  fxChart('chart-fx-brl',
+    [5.87,5.82,5.78,5.73,5.68,5.62,5.55,5.50,5.45,5.35,5.28,5.22,5.16,5.16],
+    '#7b1fa2', 'USD/BRL');
+});
+</script>
+</body>
+</html>
